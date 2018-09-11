@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ConselhoAbrangencia extends Model
+class Abrangencia extends Model
 {
-    protected $table = 'ccs_aisp_risp';
+    protected $table = 'abrangencias';
 
     public $timestamps = false;
 
