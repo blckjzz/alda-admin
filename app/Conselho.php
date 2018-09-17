@@ -4,16 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class IdCc extends Model
+class Conselho extends Model
 {
-    protected $table = 'id_ccs';
+    protected $table = 'conselhos';
 
     public $timestamps = false;
 
-    protected $primaryKey = 'cod_ccs';
+    protected $primaryKey = 'id';
 
     public function agenda()
     {
-        return $this->hasMany('App\Agenda', 'id_ccs_cod_ccs');
+        return $this->hasMany('App\Agenda', 'conselho_id');
     }
 }

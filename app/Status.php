@@ -4,12 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MembroNato extends Model
+class Status extends Model
 {
-    protected $table = 'membros_natos';
-
-    public $timestamps = false;
+    protected $table = 'status';
 
     protected $primaryKey = 'id';
+
+    public $timestamps = false;
 
 }

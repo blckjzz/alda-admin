@@ -4,11 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Diretoria extends Model
+class Assunto extends Model
 {
-    protected $table = 'diretorias';
+    protected $primaryKey = 'id';
+
+    protected $table = 'assuntos';
 
     public $timestamps = false;
 
-    protected $primaryKey = 'id';
 }
