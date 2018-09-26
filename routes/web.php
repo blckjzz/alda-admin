@@ -19,7 +19,7 @@ Route::get('/', function () {
 Route::get('/db', function (){
     try {
         DB::connection()->getPdo();
-        return DB::table('agenda')->get();
+        return \App\Agenda::first();
 
     } catch (\Exception $e) {
         die("Could not connect to the database.  Please check your configuration. error:" . $e );
