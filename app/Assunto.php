@@ -10,6 +10,6 @@ class Assunto extends Model
 
     protected $table = 'assuntos';
 
-    public $timestamps = false;
+    #public $timestamps = false;
 
 }
