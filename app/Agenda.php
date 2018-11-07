@@ -15,6 +15,8 @@ class Agenda extends Model
 
     protected $dates = ['data'];
 
+    public $additional_attributes = ['id_css_endereco'];
+
     public function conselho()
     {
         return $this->belongsTo('App\Conselho', 'conselho_id');
@@ -31,6 +33,19 @@ class Agenda extends Model
             return null;
         else
             return Carbon::parse($data)->format('d/m/Y');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo('App\Status', 'status_id');
+    }
+
+
+    public function getIdCssEnderecoAttribute()
+    {
+
+        return "[ ID AGENDA $this->id] [{$this->status->status} ] [ {$this->conselho->ccs} ] [{$this->endereco}]";
+
     }
 
 }
