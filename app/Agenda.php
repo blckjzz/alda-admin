@@ -44,7 +44,7 @@ class Agenda extends Model
     public function getIdCssEnderecoAttribute()
     {
 
-        return "[ ID AGENDA $this->id] [{$this->status->status} ] [ {$this->conselho->ccs} ] [{$this->endereco}]";
+        return "[ ID AGENDA $this->id] [ Data/Hora $this->data $this->hora] [{$this->status->status} ] [ {$this->conselho->ccs} ] [{$this->endereco}]";
 
     }
 
