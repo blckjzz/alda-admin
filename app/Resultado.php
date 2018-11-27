@@ -10,4 +10,9 @@ class Resultado extends Model
 
     protected $table = 'resultados';
 
+    public function agenda()
+    {
+        return $this->hasOne('\App\Agenda');
+    }
+
 }
