@@ -12,8 +12,13 @@ class Conselho extends Model
 
     protected $primaryKey = 'id';
 
-    public function agenda()
+    public function agendas()
     {
         return $this->hasMany('App\Agenda', 'conselho_id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne('App\User');
     }
 }
