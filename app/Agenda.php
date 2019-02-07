@@ -32,12 +32,15 @@ class Agenda extends Model
         if ($data == null || $data == '')
             return "00/00/0000";
         else
-            return Carbon::parse($data)->format('d/m/Y');
+            $date = Carbon::parse($data)->format('d/m/Y');
+            return $date;
+
     }
 
     public function setDataAttribute($data)
     {
-        $this->attributes['data'] = DateTime::createFromFormat('d/m/Y', $data);
+        $data = DateTime::createFromFormat('d/m/Y', $data);
+        $this->attributes['data'] = $data;
     }
 
     public function status()
