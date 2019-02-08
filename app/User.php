@@ -38,13 +38,5 @@ class User extends \TCG\Voyager\Models\User
         return $this->belongsTo('App\Conselho', 'conselho_id');
     }
 
-    public function meetingList()
-    {
-        $agendas = $this->conselho->agendas;
-        return $agendas->where('status_id',5)->pluck('id', 'list_agenda');
-    }
-
-
-
 
 }
