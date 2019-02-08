@@ -4,7 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-
+use DateTime;
 class Agenda extends Model
 {
     protected $primaryKey = 'id';
@@ -30,9 +30,17 @@ class Agenda extends Model
     public function getDataAttribute($data)
     {
         if ($data == null || $data == '')
-            return null;
+            return "00/00/0000";
         else
-            return Carbon::parse($data)->format('d/m/Y');
+            $date = Carbon::parse($data)->format('d/m/Y');
+            return $date;
+
+    }
+
+    public function setDataAttribute($data)
+    {
+        $data = DateTime::createFromFormat('d/m/Y', $data);
+        $this->attributes['data'] = $data;
     }
 
     public function status()
