@@ -15,7 +15,7 @@ class Agenda extends Model
 
     protected $dates = ['data'];
 
-    public $additional_attributes = ['id_css_endereco'];
+    public $additional_attributes = ['id_css_endereco', 'list_agenda'];
 
     public function conselho()
     {
@@ -54,6 +54,11 @@ class Agenda extends Model
 
         return "[ ID AGENDA $this->id] [ Data/Hora $this->data $this->hora] [{$this->status->status} ] [ {$this->conselho->ccs} ] [{$this->endereco}]";
 
+    }
+
+    public function getListAgendaAttribute()
+    {
+        return "[{$this->conselho->ccs}] [Data/Hora $this->data $this->hora] [{$this->status->status} ] [{$this->endereco}] ]";
     }
 
 }
