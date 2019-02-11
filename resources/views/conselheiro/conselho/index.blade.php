@@ -15,7 +15,7 @@
 
     <div class="page-content container-fluid">
         <form class="form-edit-add" role="form"
-              action="{{ action('ConselheiroController@store') }}"
+              action="{{ action('ConselheiroController@storeDiretoria') }}"
               method="POST" enctype="multipart/form-data" autocomplete="off">
             <!-- PUT Method if we are editing -->
             {{ csrf_field() }}
@@ -35,31 +35,29 @@
 
                         <div class="panel-body">
                             <div class="form-group">
-                                <label for="name">Reunião</label>
-                                @foreach($agendas->where('status_id', 5) as $agenda)
-                                <select class="form-control" name="agenda">
-                                    <option value="{{$agenda->id}}"> {{$agenda->list_agenda}} </option>
-                                </select>
-                                @endforeach
-                            </div>
-                            <div class="form-group">
-                                <label for="resumo">Resumo</label>
-                                <textarea class="form-control" name="resumo">
-                                </textarea>
+                                <label for="name">{{$conselho->ccs}}</label>
+                                    <select class="form-control" id="dir" name="id">
+                                        <option default>  Selecione uma opção </option>
+                                        @foreach($conselho->diretoria as $diretoria)
+                                            <option value="{{$diretoria->id}}"> {{$diretoria->nome .' - '. $diretoria->cargo}} </option>
+                                        @endforeach
+                                    </select>
                             </div>
 
                             <div class="form-group">
-                                <label for="resumo">Assuntos</label>
-                                <input type="text" class="form-control">
+                                <label for="">Nome</label>
+                                <input type="text" class="form-control" name="nome" />
+                                <label for="">Cargo</label>
+                                <input type="text" class="form-control" name="cargo">
+                                <label for="">Início da Gestão</label>
+                                <input type="text" class="form-control" name="inicio_gestao"/>
+                                <label for="">Fim da Gestão</label>
+                                <input type="text" class="form-control" name="fim_gestao" >
                             </div>
 
                             <div class="form-group">
-                                <label for="resumo">Data</label>
-                                <input type="text" value="{{ Carbon\Carbon::now()->format('d/m/Y')  }}" class="form-control">
-                            </div>
-
-                            <div class="form-group">
-                                <input type="submit" class="btn btn-default" >
+                                <button  class="btn btn-danger" >Cancelar</button>
+                                <button type="submit" class="btn btn-success" >Salvar</button>
                             </div>
 
                         </div>
@@ -68,4 +66,26 @@
             </div>
         </form>
 @endsection
+@section('javascript')
+        <script>
+            $("#dir").click(function(){
+                var id = $("select option:selected").val();
+                $.ajax({
+                    method: 'GET', // Type of response and matches what we said in the route
+                    url: '/admin/diretoria/' + id , // This is the url we gave in the route
+                    success: function(response){ // What to do if we succeed
+                        //console.log(response)
+                        $("input[name='nome']").val(response.nome);
+                        $("input[name='cargo']").val(response.cargo);
+                        $("input[name='inicio_gestao']").val(response.inicio_gestao);
+                        $("input[name='fim_gestao']").val(response.fim_gestao);
 
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+                        console.log(JSON.stringify(jqXHR));
+                        console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                    }
+                });
+            });
+        </script>
+@endsection

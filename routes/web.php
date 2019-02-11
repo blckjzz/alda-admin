@@ -26,5 +26,12 @@ Route::group([
     'prefix' => 'admin',
     'middleware' => ['checkConselheiro']
 ], function() {
-    Route::Resource('conselheiro','ConselheiroController');
+    Route::GET('conselheiro/pauta','ConselheiroController@index');
+    Route::POST('conselheiro/pauta','ConselheiroController@storePauta');
+
+    Route::GET('conselheiro/ccs','ConselheiroController@viewCCS');
+    Route::POST('conselheiro/ccs','ConselheiroController@storeDiretoria');
+
+    route::GET('diretoria/{id}', 'DiretoriaController@findDiretoriaById');
+
 });

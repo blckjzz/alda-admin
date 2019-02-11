@@ -15,7 +15,7 @@
 
     <div class="page-content container-fluid">
         <form class="form-edit-add" role="form"
-              action="{{ action('ConselheiroController@store') }}"
+              action="{{ action('ConselheiroController@storeDiretoria') }}"
               method="POST" enctype="multipart/form-data" autocomplete="off">
             <!-- PUT Method if we are editing -->
             {{ csrf_field() }}
@@ -59,7 +59,10 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="submit" class="btn btn-default" >
+
+                                <button type="" class="btn btn-danger"> Cancelar</button>
+                                <button type="submit" class="btn btn-success"> Salvar </button>
+
                             </div>
 
                         </div>

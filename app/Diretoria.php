@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use DateTime;
 
 class Diretoria extends Model
 {
@@ -44,12 +45,12 @@ class Diretoria extends Model
     public function setInicioDaGestaoAttribute($data)
     {
         $data = DateTime::createFromFormat('d/m/Y', $data);
-        $this->attributes['data'] = $data;
+        $this->attributes['inicio_gestao'] = $data;
     }
 
     public function setFimGestaoAttribute($data)
     {
         $data = DateTime::createFromFormat('d/m/Y', $data);
-        $this->attributes['data'] = $data;
+        $this->attributes['fim_gestao'] = $data;
     }
 }
