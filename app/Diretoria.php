@@ -11,4 +11,10 @@ class Diretoria extends Model
     public $timestamps = false;
 
     protected $primaryKey = 'id';
+
+
+    public function conselho()
+    {
+        return $this->hasOne('App\Conselho', 'conselho_id');
+    }
 }

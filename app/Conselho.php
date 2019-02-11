@@ -21,4 +21,9 @@ class Conselho extends Model
     {
         return $this->hasOne('App\User');
     }
+
+    public function diretoria()
+    {
+        return $this->hasMany('App\Diretoria', 'conselho_id');
+    }
 }
