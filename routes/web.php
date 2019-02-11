@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Middleware\CheckConselheiro;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,25 +16,11 @@ Route::get('/', function () {
     return redirect('/admin');
 });
 
-//Route::get('/db', function (){
-//    try {
-//        DB::connection()->getPdo();
-//        return \App\Agenda::first();
-//
-//    } catch (\Exception $e) {
-//        die("Could not connect to the database.  Please check your configuration. error:" . $e );
-//    }
-//});
-
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 
 });
-
-//Route::group(['prefix' => 'admin'], function(){
-//    Route::resource('conselheiro', 'ConselheiroController');
-//})->middleware('checkConselheiro');
 
 Route::group([
     'prefix' => 'admin',
