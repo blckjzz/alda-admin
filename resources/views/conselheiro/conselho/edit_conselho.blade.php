@@ -4,7 +4,7 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="voyager-calendar"></i> Cadastro de Pauta de Reunião
+        <i class="voyager-calendar"></i> Edição Conselho
     </h1>
 @stop
 
@@ -19,7 +19,6 @@
               method="POST" enctype="multipart/form-data" autocomplete="off">
             <!-- PUT Method if we are editing -->
             {{ csrf_field() }}
-
             <div class="row">
                 <div class="col-md-8">
                     <div class="panel panel-bordered">
