@@ -22,9 +22,9 @@ class Agenda extends Model
         return $this->belongsTo('App\Conselho', 'conselho_id');
     }
 
-    public function resultados()
+    public function resultado()
     {
-        return $this->hasMany('App\Resultado', 'agenda_id');
+        return $this->hasOne('App\Resultado', 'agenda_id');
     }
 
     public function getDataAttribute($data)
@@ -60,5 +60,4 @@ class Agenda extends Model
     {
         return "[{$this->conselho->ccs}] [Data/Hora $this->data $this->hora] [{$this->status->status} ] [{$this->endereco}] ";
     }
-
 }
