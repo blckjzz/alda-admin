@@ -26,4 +26,10 @@ class Conselho extends Model
     {
         return $this->hasMany('App\Diretoria', 'conselho_id');
     }
+
+    public function abrangencias()
+    {
+        return $this->hasMany('App\ConselhoAbrangencia', 'conselho_id');
+    }
+
 }

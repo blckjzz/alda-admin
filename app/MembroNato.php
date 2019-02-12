@@ -12,4 +12,9 @@ class MembroNato extends Model
 
     protected $primaryKey = 'id';
 
+    public function abrangencias()
+    {
+        return $this->hasMany('App\ConselhoAbrangencia', 'membronato_id');
+    }
+
 }
