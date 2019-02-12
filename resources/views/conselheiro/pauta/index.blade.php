@@ -44,8 +44,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="resumo">Resumo</label>
-                                <textarea class="form-control" name="resumo">
-                                </textarea>
+                                <textarea class="form-control" name="resumo"></textarea>
                             </div>
 
                             <div class="form-group">
