@@ -4,7 +4,7 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="voyager-calendar"></i> Edição Conselho
+        <i class="voyager-calendar"></i> Lista Membros Nato
     </h1>
 @stop
 
@@ -15,7 +15,7 @@
 
     <div class="page-content container-fluid">
         <form class="form-edit-add" role="form"
-              action="{{ action('ConselheiroController@storeDiretoria') }}"
+              action=""
               method="POST" enctype="multipart/form-data" autocomplete="off">
             <!-- PUT Method if we are editing -->
             {{ csrf_field() }}
@@ -38,22 +38,12 @@
                                 <label for="name">{{$conselho->ccs}}</label>
                                     <select class="form-control" id="dir" name="id">
                                         <option default>  Selecione uma opção </option>
-                                        @foreach($conselho->diretoria as $diretoria)
-                                            <option value="{{$diretoria->id}}"> {{$diretoria->nome .' - '. $diretoria->cargo}} </option>
+                                        @foreach($conselho->abrangencias as $abrangencia)
+                                            <option value="{{$abrangencia->membrosnato->id}}"> {{$abrangencia->membrosnato->cmd_bpm.' - '. $abrangencia->membrosnato->delegado}} </option>
                                         @endforeach
                                     </select>
                             </div>
 
-                            <div class="form-group">
-                                <label for="">Nome</label>
-                                <input type="text" class="form-control" name="nome" />
-                                <label for="">Cargo</label>
-                                <input type="text" class="form-control" name="cargo">
-                                <label for="">Início da Gestão</label>
-                                <input type="text" class="form-control" name="inicio_gestao"/>
-                                <label for="">Fim da Gestão</label>
-                                <input type="text" class="form-control" name="fim_gestao" >
-                            </div>
 
                             <div class="form-group">
                                 <button  class="btn btn-danger" >Cancelar</button>

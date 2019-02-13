@@ -26,12 +26,25 @@ Route::group([
     'prefix' => 'admin',
     'middleware' => ['checkConselheiro']
 ], function() {
-    Route::GET('conselheiro/pauta','ConselheiroController@index');
+    Route::GET('conselheiro/pauta','ConselheiroController@viewPauta');
     Route::POST('conselheiro/pauta','ConselheiroController@storePauta');
 
     Route::GET('conselheiro/ccs','ConselheiroController@viewCCS');
     Route::POST('conselheiro/ccs','ConselheiroController@storeDiretoria');
 
+    Route::GET('conselheiro/membrosnato','ConselheiroController@viewMembrosNato');
+
     route::GET('diretoria/{id}', 'DiretoriaController@findDiretoriaById');
+
+    /**
+     * Resultados
+     */
+    route::GET('resultado/{id}', 'ResultadoController@findResultadoById');
+    route::GET('resultado/{id}/assuntos', 'ResultadoController@findAssuntosByResultadoId');
+
+    /***
+     * Agenda
+     */
+    route::GET('agenda/{id}/resultado/', 'AgendaController@findResultadoById');
 
 });
