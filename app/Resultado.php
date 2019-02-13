@@ -10,9 +10,17 @@ class Resultado extends Model
 
     protected $table = 'resultados';
 
+    protected $fillable = ['agenda_id', 'texto', 'status_id', 'revision_status'];
+
     public function agenda()
     {
-        return $this->hasOne('\App\Agenda');
+        return $this->belongsTo('\App\Agenda',  'agenda_id');
+    }
+
+
+    public function assuntos()
+    {
+        return $this->belongsToMany('App\Assunto','assunto_resultado');
     }
 
 }

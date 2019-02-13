@@ -12,4 +12,10 @@ class Assunto extends Model
 
     #public $timestamps = false;
 
+
+    public function resultados()
+    {
+        return $this->belongsToMany('App\Resultado','assunto_resultado');
+    }
+
 }
