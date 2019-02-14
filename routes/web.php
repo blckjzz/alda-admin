@@ -20,6 +20,13 @@ Route::get('/', function () {
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 
+
+    /**
+     * Moderação
+     */
+
+    route::GET('moderacao/resultados', 'ModeracaoController@listaPautas');
+
 });
 
 Route::group([
@@ -41,10 +48,13 @@ Route::group([
      */
     route::GET('resultado/{id}', 'ResultadoController@findResultadoById');
     route::GET('resultado/{id}/assuntos', 'ResultadoController@findAssuntosByResultadoId');
+    route::GET('resultado/view/{id}', 'ResultadoController@show');
 
     /***
      * Agenda
      */
     route::GET('agenda/{id}/resultado/', 'AgendaController@findResultadoById');
+
+
 
 });

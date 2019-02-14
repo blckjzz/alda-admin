@@ -18,4 +18,10 @@ class ResultadoController extends Controller
         $resultado = Resultado::find($id);
         return $resultado->assuntos;
     }
+
+    public function show($id)
+    {
+        $resultado = Resultado::find($id);
+        return $resultado;
+    }
 }
