@@ -84,13 +84,13 @@ class ConselheiroController extends Controller
                         ]
                     );
                 //FIX - Precisa consertar o metodo para caso de alteração na pivot table
-                $a->resultado()->sync(array($request->assunto));
+                $a->resultado->assuntos()->sync($request->assunto);
 
             } else { // cria caso não tenha
                 $r = new Resultado();
                 $r->agenda_id = $request->agenda_id;
                 $r->texto = $request->texto;
-                $r->status_id = 5; //Realizada
+//                $r->status_id = 5; //Realizada
                 $r->revision_status = 1;
 
                 $r->save();
