@@ -25,68 +25,24 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                @foreach($emAnalise as $resultado)
+            @foreach($resultados as $resultado)
+                <tr>
+
                     <th scope="row">{{$resultado->agenda->conselho->ccs}}</th>
                     <th scope="row">{{str_limit($resultado->texto, 10)}}</th>
-                    @if($resultado->revision_status == 1)
-                        <th scope="row"> Em análise </th>
-                    @elseif($resultado->revision_status == 2)
-                        <th scope="row"> Aprovado </th>
-                    @endif
+
+                    <th scope="row"> {{ $resultado->revisionStatus->status }}</th>
+
                     <th scope="row">{{$resultado->agenda->list_agenda }}</th>
 
                     <th scope="row">
-                        <a href="{{ action('ResultadoController@show', $resultado->id) }}" class="">Ver</a>
+                        <a href="{{ action('ModeracaoController@showPauta', $resultado->id) }}" class="">Ver</a>
                     </th>
-                @endforeach
-            </tr>
+
+                </tr>
+            @endforeach
             </tbody>
         </table>
 
     </div>
-@endsection
-
-@section('javascript')
-    <script src="{{asset('js/jquery-ui.js')}}"></script>
-    <script src="{{asset('js/tag-it.js')}}" type="text/javascript" charset="utf-8"></script>
-
-    <script>
-
-        $("#agenda").click(function () {
-            var id = $("select option:selected").val();
-            $.ajax({
-                method: 'GET', // Type of response and matches what we said in the route,
-                dataType: 'json',
-                url: '/admin/agenda/' + id + '/resultado/', // This is the url we gave in the route
-                success: function (response) { // What to do if we succeed
-                    $("textarea[name='texto']").val(response.texto);
-                    //console.log(response) debugg only
-
-                    $.ajax({
-                        method: 'GET', // Type of response and matches what we said in the route
-                        dataType: 'json',
-                        url: '/admin/resultado/' + response.id + '/assuntos/', // This is the url we gave in the route
-                        success: function (assunto) { // What to do if we succeed
-                            //console.log(assunto) debugg only
-                            $.each(assunto, function (key, value) {
-                                $('#assunto' + key + ' option[value=' + value.id + ']').attr('selected', 'selected');
-                            });
-                        }
-                    });
-                },
-
-                error: function (jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    console.log(JSON.stringify(jqXHR));
-                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
-                }
-            });
-        });
-
-    </script>
-
-
-
-
-
 @endsection

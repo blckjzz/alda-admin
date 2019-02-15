@@ -1,5 +1,5 @@
 <?php
-use App\Http\Middleware\CheckConselheiro;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,6 +26,8 @@ Route::group(['prefix' => 'admin'], function () {
      */
 
     route::GET('moderacao/resultados', 'ModeracaoController@listaPautas');
+    route::GET('moderacao/resultado/{id}/visualizar', 'ModeracaoController@showPauta');
+    route::POST('moderacao/resultado', 'ModeracaoController@storeResultado');
 
 });
 
