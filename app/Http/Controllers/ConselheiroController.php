@@ -37,6 +37,8 @@ class ConselheiroController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+
+    // TODO Refactor - Method belongs to Diretoria Controller
     public function storeDiretoria(Request $request)
     {
 
@@ -58,52 +60,20 @@ class ConselheiroController extends Controller
                 ]
             );
 
-        return redirect()->action('ConselheiroController@viewCCS')->with(['message' => "Diretoria alterada com sucesso!", 'alert-type' => 'success']);
-
-
+        return redirect()->action('ConselheiroController@viewCCS')
+                            ->with(['message' => "Diretoria alterada com sucesso!",
+                                    'alert-type' => 'success']);
     }
+
+
 
     public function storePauta(Request $request)
     {
-        $this->validate($request, [
-            'texto' => 'required',
-            'agenda_id' => 'required',
-        ]);
-
-        try {
-
-            $a = Agenda::find($request->agenda_id);
-
-            if ($a->resultado) {
-                $a->resultado
-                    ->update
-                    (
-                        [
-                            'agenda_id' => $request->agenda_id,
-                            'texto' => $request->texto,
-                        ]
-                    );
-                //FIX - Precisa consertar o metodo para caso de alteração na pivot table
-                $a->resultado->assuntos()->sync($request->assunto);
-
-            } else { // cria caso não tenha
-                $r = new Resultado();
-                $r->agenda_id = $request->agenda_id;
-                $r->texto = $request->texto;
-//                $r->status_id = 5; //Realizada
-                $r->revision_status = 1;
-
-                $r->save();
-            }
-
-            return redirect()->action('ConselheiroController@viewPauta')->with(['message' => "Pauta atualizada com sucesso! Aguarde a aprovação do membro Interno para publicação na Alda!", 'alert-type' => 'success']);
-
-
-        } catch (Error $e) {
-            abort($e->getMessage());
-        }
-
-
+        $rc = new ResultadoController();
+        $rc->store($request);
+        return redirect()->action('ConselheiroController@viewPauta')
+            ->with(['message' => "Resultado atualizado com sucesso! Aguarde a aprovação do membro Interno para publicação na Alda!",
+                'alert-type' => 'success']);
     }
 
 

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Resultado;
+use App\RevisionStatus;
 use Illuminate\Http\Request;
+use Exception;
 
 class ModeracaoController extends Controller
 {
@@ -14,46 +16,32 @@ class ModeracaoController extends Controller
      */
     public function listaPautas()
     {
-        $emAnalise = Resultado::where('revision_status', 1)->get();
-        return view('moderador.index', compact('emAnalise'));
+        $resultados = Resultado::where('revisionstatus_id', '=', 1)
+                                 ->orWhere('revisionstatus_id', '=', 2)
+            ->orderBy('updated_at')
+            ->get();
+        return view('moderador.index', compact('resultados'));
     }
 
     public function showPauta($id)
     {
-
+        $rc = new ResultadoController();
+        $resultado = $rc->findResultadoById($id);
+        $revision_status = RevisionStatus::all();
+        return view('moderador.details', compact('resultado', 'revision_status'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function storeResultado(Request $request)
     {
-        //
-    }
+        $rc = new ResultadoController();
+        try {
+            $resultado = $rc->store($request);
+            return redirect()->action('ModeracaoController@listaPautas')
+                ->with(['message' => "Você alterou o Resultado ". $resultado->agenda->list_agenda ."com sucesso.",
+                    'alert-type' => 'success']);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
