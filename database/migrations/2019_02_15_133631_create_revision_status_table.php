@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterResultadosTableAddModerationStatus extends Migration
+class CreateRevisionStatusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AlterResultadosTableAddModerationStatus extends Migration
      */
     public function up()
     {
-        Schema::table('resultados', function (Blueprint $table) {
-            $table->integer('revision_status')->default(0);
+        Schema::create('revision_status', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('status');
         });
     }
 
@@ -25,8 +26,6 @@ class AlterResultadosTableAddModerationStatus extends Migration
      */
     public function down()
     {
-        Schema::table('resultados', function (Blueprint $table) {
-            $table->dropColumn('revision_status');
-        });
+        Schema::drop('revision_status');
     }
 }
