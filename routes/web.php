@@ -19,12 +19,13 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
+});
 
+/**
+ * Moderação
+ */
 
-    /**
-     * Moderação
-     */
-
+Route::group(['prefix' => 'admin', 'middleware' => ['checkModerador']], function () {
     route::GET('moderacao/resultados', 'ModeracaoController@listaPautas');
     route::GET('moderacao/resultado/{id}/visualizar', 'ModeracaoController@showPauta');
     route::POST('moderacao/resultado', 'ModeracaoController@storeResultado');
@@ -34,14 +35,14 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group([
     'prefix' => 'admin',
     'middleware' => ['checkConselheiro']
-], function() {
-    Route::GET('conselheiro/pauta','ConselheiroController@viewPauta');
-    Route::POST('conselheiro/pauta','ConselheiroController@storePauta');
+], function () {
+    Route::GET('conselheiro/pauta', 'ConselheiroController@viewPauta');
+    Route::POST('conselheiro/pauta', 'ConselheiroController@storePauta');
 
-    Route::GET('conselheiro/ccs','ConselheiroController@viewCCS');
-    Route::POST('conselheiro/ccs','ConselheiroController@storeDiretoria');
+    Route::GET('conselheiro/ccs', 'ConselheiroController@viewCCS');
+    Route::POST('conselheiro/ccs', 'ConselheiroController@storeDiretoria');
 
-    Route::GET('conselheiro/membrosnato','ConselheiroController@viewMembrosNato');
+    Route::GET('conselheiro/membrosnato', 'ConselheiroController@viewMembrosNato');
 
     route::GET('diretoria/{id}', 'DiretoriaController@findDiretoriaById');
 
@@ -56,7 +57,6 @@ Route::group([
      * Agenda
      */
     route::GET('agenda/{id}/resultado/', 'AgendaController@findResultadoById');
-
 
 
 });
