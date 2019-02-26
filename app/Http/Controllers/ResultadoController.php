@@ -38,7 +38,7 @@ class ResultadoController extends Controller
 
             $a = Agenda::find($request->agenda_id);
 
-//            dd($request->all());
+
             if ($a->resultado) { //update
                 $a->resultado
                     ->update
@@ -46,22 +46,19 @@ class ResultadoController extends Controller
                         [
                             'agenda_id' => $request->agenda_id,
                             'texto' => $request->texto,
+                            'revisionstatus_id' => ($request->revisionstatus_id == null)? 1 : $request->revisionstatus_id
                         ]
                     );
-                $a->resultado->revisionStatus->resultado
-                    ->update(
-                            ['revisionstatus_id' => $request->revisionstatus_id]
-                    );
-                //FIX - Precisa consertar o metodo para caso de alteração na pivot table
                 $a->resultado->assuntos()->sync($request->assunto);
 
                 return $a->resultado;
 
             } else { // cria caso não tenha
+                //dd($request->all());
                 $r = new Resultado();
                 $r->agenda_id = $request->agenda_id;
                 $r->texto = $request->texto;
-                $r->revisionstatus_id = $request->revisionstatus_id;
+                $r->revisionstatus_id = 1; // Em análise
                 $r->save();
 
                 return $r;
