@@ -19,10 +19,10 @@ class CheckConselheiro
         if(Auth::guest()){
             return redirect('/admin');
         }else{
-            if(Auth::user()->hasRole('conselheiro') || Auth::user()->hasRole('admin') || Auth::user()->hasRole('moderador'))
+            if(Auth::user()->hasRole('conselheiro'))
                 return $next($request);
             else
-                abort(403, "Usuário não possui permissão para acessar essa área");
+                abort(403, "Área reservada para conselheiro!");
             }
         }
 

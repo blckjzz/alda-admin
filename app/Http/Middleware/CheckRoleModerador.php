@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class CheckRoleModerador
 {
@@ -15,7 +16,7 @@ class CheckRoleModerador
      */
     public function handle($request, Closure $next)
     {
-        if (! $request->user()->hasRole('admin')) {
+        if (!Auth::user()->hasRole('admin')) {
             abort('203', 'Você não tem autorização para acessar essa área!');
         }
         return $next($request);
