@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends('voyager.master')
 
 @section('page_title', 'Adicionar Pauta')
 
