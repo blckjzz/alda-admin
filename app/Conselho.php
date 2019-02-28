@@ -14,7 +14,7 @@ class Conselho extends Model
 
     public function agendas()
     {
-        return $this->hasMany('App\Agenda', 'conselho_id');
+        return $this->hasMany('App\Agenda', 'conselho_id')->orderBy('data', 'DESC');
     }
 
     public function user()

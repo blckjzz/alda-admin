@@ -48,10 +48,9 @@ class updateAgendaStatus extends Command
                     ['data', '<=', Carbon::today()],
 
                     ['status_id', '=', 4]
-                ]
-            )->update(
+                ])->update(
                 [
-                    'status_id' => 5,
+                    'realizada' => true,
                 ]);
         $this->info('Numero de agendas atualizadas: ' . $affected);
     }

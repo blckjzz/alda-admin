@@ -42,7 +42,7 @@
                                 <label for="name">Reunião</label>
                                 <select class="form-control" id="agenda" name="agenda_id">
                                     <option selected="true" disabled="disabled">Selecione uma reunião</option>
-                                    @foreach($agendas->where('status_id', 5) as $agenda)
+                                    @foreach($agendas as $agenda)
                                         <option value="{{$agenda->id}}"> {{$agenda->list_agenda}} </option>
                                     @endforeach
                                 </select>

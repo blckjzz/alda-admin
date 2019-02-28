@@ -20,7 +20,7 @@ class ConselheiroController extends Controller
     public function viewPauta()
     {
         $user = Auth::user();
-        $agendas = $user->conselho->agendas;
+        $agendas = $user->conselho->agendas->where('realizada', true);
         $assuntos = Assunto::all();
         return view('conselheiro.pauta.index', compact('agendas', 'assuntos'));
     }
