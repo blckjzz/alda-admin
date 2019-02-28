@@ -13,7 +13,7 @@ class add_new_status_to_status_table extends Seeder
     public function run()
     {
         DB::table('status')->insert([
-            'id' => 4,
+            'id' => 5,
             'status' => 'Reunião realizada'
         ]);
     }
