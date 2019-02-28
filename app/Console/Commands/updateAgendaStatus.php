@@ -33,21 +33,26 @@ class updateAgendaStatus extends Command
     }
 
     /**
+     *  Altera agendas para o status de realizada data a condição
+     *  de a data da realização seja anterior ao dia de hoje
+     *  e que o status da agenda seja 4 (Marcada)
      * Execute the console command.
      *
      * @return mixed
      */
     public function handle()
     {
-
         $affected = DB::table('agendas')
-            ->where('data','<=', Carbon::today())
-            ->update(
+            ->where(
+                [
+                    ['data', '<=', Carbon::today()],
+
+                    ['status_id', '=', 4]
+                ]
+            )->update(
                 [
                     'status_id' => 5,
                 ]);
-
         $this->info('Numero de agendas atualizadas: ' . $affected);
-
     }
 }
