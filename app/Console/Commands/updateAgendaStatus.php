@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Log;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -42,16 +43,39 @@ class updateAgendaStatus extends Command
      */
     public function handle()
     {
-        $affected = DB::table('agendas')
-            ->where(
-                [
-                    ['data', '<=', Carbon::today()],
+        $log = new Log();
 
-                    ['status_id', '=', 4]
-                ])->update(
-                [
-                    'realizada' => true,
-                ]);
-        $this->info('Numero de agendas atualizadas: ' . $affected);
+        $lastdata = DB::table('logs')
+            ->where('event', '=', 'AGENDA_STATUS_UPDATER')
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        // in case any data is found, will assume the yesterday date for updating
+        if (!is_object($lastdata)) {
+            if (isset($lastdata->created_at))
+                $lastdata->created_at = Carbon::yesterday();
+        }
+
+
+        $affected = DB::table('agendas')
+            ->whereBetween('data', [$lastdata->created_at, Carbon::yesterday()])
+            ->where('status_id', '=', 4)
+            ->where('realizada', '=', 0)
+            ->get();
+
+        // print elements which will be updated
+        print_r($affected);
+
+
+        $affected = DB::table('agendas')
+            ->whereBetween('data', [$lastdata->created_at, Carbon::yesterday()])
+            ->where('status_id', '=', 4)
+            ->update(['realizada' => true]);
+
+        $log->event = 'AGENDA_STATUS_UPDATER';
+        $log->message = 'Numero de agendas atualizadas: ' . $affected;
+        $log->save();
+        $this->info($log->message);
+
     }
 }
