@@ -57,15 +57,16 @@ class updateAgendaStatus extends Command
         }
 
 
-        $affected = DB::table('agendas')
+        $records = DB::table('agendas')
             ->whereBetween('data', [$lastdata->created_at, Carbon::yesterday()])
             ->where('status_id', '=', 4)
             ->where('realizada', '=', 0)
             ->get();
 
         // print elements which will be updated
-        print_r($affected);
-
+        foreach ($records as $r){
+            print_r($r);
+        }
 
         $affected = DB::table('agendas')
             ->whereBetween('data', [$lastdata->created_at, Carbon::yesterday()])
