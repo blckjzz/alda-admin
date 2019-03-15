@@ -31,7 +31,7 @@
         </div>
         @if (@auth::user()->hasRole('admin'))
             {!! menu('admin', 'admin_menu') !!}
-        @else
+        @elseif(@auth::user()->hasRole('conselheiro'))
             {{ menu('Conselheiro','voyager.menu.side-menu') }}
         @endif
     </nav>
