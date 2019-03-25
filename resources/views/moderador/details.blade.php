@@ -1,4 +1,4 @@
-@extends('voyager.master')
+@extends('voyager::master')
 
 @section('page_title', 'Resultados em Análise')
 @section('page_header')

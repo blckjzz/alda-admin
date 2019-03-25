@@ -13,7 +13,8 @@
 
 
 Route::get('/', function () {
-    return redirect('/admin');
+//    return redirect('/admin');
+    return view('welcome');
 });
 
 
@@ -36,8 +37,9 @@ Route::group([
     'prefix' => 'admin',
     'middleware' => ['checkConselheiro']
 ], function () {
-    Route::GET('conselheiro/pauta', 'ConselheiroController@viewPauta');
-    Route::POST('conselheiro/pauta', 'ConselheiroController@storePauta');
+
+    Route::GET('conselheiro/ata', 'ConselheiroController@viewPauta');
+    Route::POST('conselheiro/ata', 'ConselheiroController@storePauta');
 
     Route::GET('conselheiro/ccs', 'ConselheiroController@viewCCS');
     Route::POST('conselheiro/ccs', 'ConselheiroController@storeDiretoria');

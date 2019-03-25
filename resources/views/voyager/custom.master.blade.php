@@ -69,7 +69,7 @@ if (starts_with(Auth::user()->avatar, 'http://') || starts_with(Auth::user()->av
     <div class="fadetoblack visible-xs"></div>
     <div class="row content-container">
         @include('voyager::dashboard.navbar')
-        @include('voyager.dashboard.sidebar') {{----------- custom------------}}
+        @include('voyager::dashboard.sidebar') {{----------- custom------------}}
         <script>
             (function(){
                 var appContainer = document.querySelector('.app-container'),
