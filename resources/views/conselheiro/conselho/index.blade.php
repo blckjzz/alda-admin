@@ -13,9 +13,6 @@
     </div>
 
     <div class="page-content container-fluid">
-        @if(Auth::user()->hasRole('conselheiro'))
-            {{ menu('Conselheiro','voyager.menu.side-menu') }}
-        @endif
         <form class="form-edit-add" role="form"
               action="{{ action('ConselheiroController@storeDiretoria') }}"
               method="POST" enctype="multipart/form-data" autocomplete="off">
