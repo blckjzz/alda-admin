@@ -11,14 +11,21 @@
 |
 */
 
-
 Route::get('/', function () {
-    return redirect('/admin');
+    return redirect('/admin/login');
 });
+
+Route::get('/teste', function () {
+    return view('conselheiro.index');
+});
+
 
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
+    // Your overwrites here
+//    Route::post('login', ['uses' => 'ConselheiroController@postLogin', 'as' => 'conselheiroLogin']);
+
 });
 
 /**
@@ -36,6 +43,7 @@ Route::group([
     'prefix' => 'admin',
     'middleware' => ['checkConselheiro']
 ], function () {
+    Route::GET('conselheiro', 'ConselheiroController@dashboard');
     Route::GET('conselheiro/pauta', 'ConselheiroController@viewPauta');
     Route::POST('conselheiro/pauta', 'ConselheiroController@storePauta');
 
@@ -43,6 +51,8 @@ Route::group([
     Route::POST('conselheiro/ccs', 'ConselheiroController@storeDiretoria');
 
     Route::GET('conselheiro/membrosnato', 'ConselheiroController@viewMembrosNato');
+
+    route::get('conselheiro/logout','ConselheiroController@logout');
 
     route::GET('diretoria/{id}', 'DiretoriaController@findDiretoriaById');
 
@@ -57,6 +67,5 @@ Route::group([
      * Agenda
      */
     route::GET('agenda/{id}/resultado/', 'AgendaController@findResultadoById');
-
 
 });
