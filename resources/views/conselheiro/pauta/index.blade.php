@@ -1,13 +1,13 @@
 @extends('layout.master')
 
-@section('page_title', 'Adicionar Pauta')
+@section('page_title', 'Adicionar Ata Eletrônica')
 
 @section('css')
     {{--<link href="{{asset('css/jquery.tagit.css')}}" rel="stylesheet" type="text/css">--}}
 @endsection
 @section('page_header')
     <h1 class="page-title">
-        <i class="voyager-calendar"></i> Cadastro de Pauta de Reunião
+        <i class="voyager-calendar"></i> Cadastro de Ata Eletrônica de reunião
     </h1>
 
 @stop
@@ -86,7 +86,45 @@
                                        class="form-control">
                             </div>
 
-                            <div class="form-group-lg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="panel panel-bordered">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="">Haviam quantos presentes na reunião?</label>
+                                <input type="number" class="form-control" name="members_present">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="">Quais membros da Diretoria estavam presentes?</label>
+                                {{--{{dd($agenda->conselho->abrangencias)}}--}}
+                                @foreach($agenda->conselho->diretoria as $diretor)
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="{{$diretor->id}}"
+                                               value="{{$diretor->id}}" name="diretoria[]">
+                                        <label class="form-check-label" for="{{$diretor->id}}">{{$diretor->nome}} - {{$diretor->cargo}}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Membros Natos Presentes: </label>
+                                @foreach( $membrosnatos as $membroNato)
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="{{$membroNato->id}}"
+                                               value="{{$membroNato->id}}" name="membronato[]">
+                                        <label class="form-check-label" for="{{$membroNato->id}}">{{$membroNato->cmd_bpm . ' - ' .$membroNato->delegado}}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+
+
+                            <div class="form-group">
                                 {{--<button type="" class="btn-block btn-danger"> Cancelar</button>--}}
                                 {{--<a href="">--}}
                                 {{--<button type="submit" class="btn btn-success"> Editar</button>--}}
@@ -139,6 +177,11 @@
     </script>
 
 
+    {{--<script>--}}
+        {{--$("input:checkbox[name=type]:checked").each(function(){--}}
+            {{--diretorias.push($(this).val());--}}
+        {{--});--}}
+    {{--</script>--}}
 
 
 

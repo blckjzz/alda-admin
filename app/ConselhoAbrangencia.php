@@ -19,7 +19,7 @@ class ConselhoAbrangencia extends Model
 
     public function membrosNato()
     {
-        return $this->belongsTo('App\MembroNato','membronato_id');
+        return $this->belongsTo('\App\MembroNato','membronato_id');
     }
 }
 

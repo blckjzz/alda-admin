@@ -17,7 +17,7 @@ class CheckConselheiro
     public function handle($request, Closure $next)
     {
         if(Auth::guest()){
-            return redirect('/admin');
+            return redirect('/');
         }else{
             if(Auth::user()->hasRole('conselheiro'))
                 return $next($request);

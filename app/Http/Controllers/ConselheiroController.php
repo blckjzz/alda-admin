@@ -8,7 +8,7 @@ use App\Resultado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Assunto;
-use Error;
+use App\MembroNato;
 
 class ConselheiroController extends Controller
 {
@@ -17,6 +17,7 @@ class ConselheiroController extends Controller
     {
         return view('conselheiro.dashboard');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +28,10 @@ class ConselheiroController extends Controller
         $user = Auth::user();
         $agendas = $user->conselho->agendas->where('realizada', true);
         $assuntos = Assunto::all();
-        return view('conselheiro.pauta.index', compact('agendas', 'assuntos'));
+        $membrosnatos = MembroNato::whereIn('id', $user->conselho->abrangencias
+                                        ->pluck('membronato_id')->unique())
+                                        ->get();
+        return view('conselheiro.pauta.index', compact('agendas', 'assuntos', 'membrosnatos'));
     }
 
     public function viewCCS()
@@ -66,14 +70,14 @@ class ConselheiroController extends Controller
             );
 
         return redirect()->action('ConselheiroController@viewCCS')
-                            ->with(['message' => "Diretoria alterada com sucesso!",
-                                    'alert-type' => 'success']);
+            ->with(['message' => "Diretoria alterada com sucesso!",
+                'alert-type' => 'success']);
     }
-
 
 
     public function storePauta(Request $request)
     {
+        dd($request);
         $rc = new ResultadoController();
         $rc->store($request);
         return redirect()->action('ConselheiroController@viewPauta')
@@ -106,7 +110,6 @@ class ConselheiroController extends Controller
     {
 
 
-
         $this->validate(
             $request,
             [
@@ -119,16 +122,15 @@ class ConselheiroController extends Controller
             ]
         );
 
-        if(Auth::check()){
+        if (Auth::check()) {
 
 
-
-            if(Auth::user()->hasRole('admin')){
+            if (Auth::user()->hasRole('admin')) {
                 return Voyager::view('voyager::index');
-            }elseif(Auth::user()->hasRole('conselheiro')) {
+            } elseif (Auth::user()->hasRole('conselheiro')) {
                 return Redirect::action('ConselheiroController@viewCCS');
             }
-        }else{
+        } else {
             Auth::check();
         }
     }

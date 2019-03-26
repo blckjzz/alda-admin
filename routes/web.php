@@ -12,17 +12,17 @@
 */
 
 Route::get('/', function () {
-    return redirect('/admin/login');
+    return redirect('/painel/login');
 });
-
-Route::get('/teste', function () {
-    return view('conselheiro.index');
-});
+//
+//Route::get('/teste', function () {
+//    return view('conselheiro.index');
+//});
 
 
 /**
  */
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'painel'], function () {
     Voyager::routes();
     // Your overwrites here
 //    Route::post('login', ['uses' => 'ConselheiroController@postLogin', 'as' => 'conselheiroLogin']);
@@ -33,7 +33,7 @@ Route::group(['prefix' => 'admin'], function () {
  * Moderação
  */
 
-Route::group(['prefix' => 'admin', 'middleware' => ['checkModerador']], function () {
+Route::group(['prefix' => 'painel', 'middleware' => ['checkModerador']], function () {
     route::GET('moderacao/resultados', 'ModeracaoController@listaPautas');
     route::GET('moderacao/resultado/{id}/visualizar', 'ModeracaoController@showPauta');
     route::POST('moderacao/resultado', 'ModeracaoController@storeResultado');
@@ -41,7 +41,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['checkModerador']], function
 });
 
 Route::group([
-    'prefix' => 'admin',
+    'prefix' => 'painel',
     'middleware' => ['checkConselheiro']
 ], function () {
 
@@ -58,13 +58,14 @@ Route::group([
 
     Route::GET('conselheiro/membrosnato', 'ConselheiroController@viewMembrosNato');
 
-    route::get('conselheiro/logout','ConselheiroController@logout');
+    route::get('conselheiro/logout', 'ConselheiroController@logout');
 
     route::GET('diretoria/{id}', 'DiretoriaController@findDiretoriaById');
 
     /**
      * Resultados
      */
+
     route::GET('resultado/{id}', 'ResultadoController@findResultadoById');
     route::GET('resultado/{id}/assuntos', 'ResultadoController@findAssuntosByResultadoId');
     route::GET('resultado/view/{id}', 'ResultadoController@show');
