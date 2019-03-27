@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class NewMembroNatotable extends Migration
+class AddNewFieldsToResultadosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class NewMembroNatotable extends Migration
      */
     public function up()
     {
-        Schema::create('membros_nato', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('nome');
-            $table->string('tipo');
+        Schema::table('resultados', function (Blueprint $table) {
+            $table->text('present_members')->nullable();
         });
     }
 
@@ -27,6 +25,8 @@ class NewMembroNatotable extends Migration
      */
     public function down()
     {
-        Schema::drop('membros_nato');
+        Schema::table('resultados', function (Blueprint $table) {
+            $table->dropColumn('present_members');
+        });
     }
 }

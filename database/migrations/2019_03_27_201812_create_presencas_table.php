@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class NewMembroNatotable extends Migration
+class CreatePresencasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class NewMembroNatotable extends Migration
      */
     public function up()
     {
-        Schema::create('membros_nato', function (Blueprint $table) {
+        Schema::table('presenca_reuniao', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nome');
-            $table->string('tipo');
+            $table->unsignedInteger('membronato_id');
+            $table->unsignedInteger('agenda_id');
+            $table->timestamps();
         });
     }
 
@@ -27,6 +28,8 @@ class NewMembroNatotable extends Migration
      */
     public function down()
     {
-        Schema::drop('membros_nato');
+        Schema::table('presenca_reuniao', function (Blueprint $table) {
+            //
+        });
     }
 }
