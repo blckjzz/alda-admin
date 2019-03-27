@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Assunto;
 use App\MembroNato;
-
+use App\User;
 class ConselheiroController extends Controller
 {
 
@@ -96,43 +96,4 @@ class ConselheiroController extends Controller
     {
 
     }
-
-
-    public function logout()
-    {
-        return redirect('/admin/login')->with(Auth::logout());
-    }
-
-    /*
-     * TODO finalizar login personalizado para redirecionar usuario pelo seu papel na aplicação
-     */
-    public function postLogin(Request $request)
-    {
-
-
-        $this->validate(
-            $request,
-            [
-                'email' => 'required|string',
-                'password' => 'required|string',
-            ],
-            [
-                'email.required' => 'Username or email is required',
-                'password.required' => 'Password is required',
-            ]
-        );
-
-        if (Auth::check()) {
-
-
-            if (Auth::user()->hasRole('admin')) {
-                return Voyager::view('voyager::index');
-            } elseif (Auth::user()->hasRole('conselheiro')) {
-                return Redirect::action('ConselheiroController@viewCCS');
-            }
-        } else {
-            Auth::check();
-        }
-    }
-
 }
