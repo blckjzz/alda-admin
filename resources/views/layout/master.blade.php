@@ -82,7 +82,7 @@ desired effect
                     <!-- User Account Menu -->
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->
-                        <a href="{{ action('ConselheiroController@logout') }}" class="dropdown-toggle">
+                        <a href="{{ action('LoginController@logout') }}" class="dropdown-toggle">
                             <span class="fa fa-power-off"></span> Sair
                         </a>
                     </li>
@@ -153,24 +153,24 @@ desired effect
         <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
     </footer>
 
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <!-- Home tab content -->
-            <div class="tab-pane active" id="control-sidebar-home-tab">
-                <ul class="control-sidebar-menu">
-                    <li>
-                        <a href="{{ action('ConselheiroController@logout') }}" class="pull-left info">
-                            <i class="menu-icon fa fa-power-off bg-red"></i> Sair
-                        </a>
-                    </li>
-                </ul>
+    {{--<!-- Control Sidebar -->--}}
+    {{--<aside class="control-sidebar control-sidebar-dark">--}}
+        {{--<!-- Tab panes -->--}}
+        {{--<div class="tab-content">--}}
+            {{--<!-- Home tab content -->--}}
+            {{--<div class="tab-pane active" id="control-sidebar-home-tab">--}}
+                {{--<ul class="control-sidebar-menu">--}}
+                    {{--<li>--}}
+                        {{--<a href="{{ action('ConselheiroController@logout') }}" class="pull-left info">--}}
+                            {{--<i class="menu-icon fa fa-power-off bg-red"></i> Sair--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
+                {{--</ul>--}}
 
-            </div>
+            {{--</div>--}}
 
-        </div>
-    </aside>
+        {{--</div>--}}
+    {{--</aside>--}}
 </div>
 <!-- ./wrapper -->
 
