@@ -14,18 +14,13 @@
 Route::get('/', function () {
     return redirect('/painel/login');
 });
-//
-//Route::get('/teste', function () {
-//    return view('conselheiro.index');
-//});
-
 
 /**
  */
-Route::group(['prefix' => 'painel'], function () {
+Route::group(['prefix' => 'painel', 'middleware' => 'checkPanel'], function () {
     Voyager::routes();
     // Your overwrites here
-//    Route::post('login', ['uses' => 'ConselheiroController@postLogin', 'as' => 'conselheiroLogin']);
+    Route::post('login', ['uses' => 'LoginController@novoLogin', 'as' => 'custom.login.logic']);
 
 });
 
@@ -42,14 +37,15 @@ Route::group(['prefix' => 'painel', 'middleware' => ['checkModerador']], functio
 
 Route::group([
     'prefix' => 'painel',
-    'middleware' => ['checkConselheiro']
+    'middleware' => ['checkConselheiro', 'checkPanel']
 ], function () {
 
 
     Route::GET('conselheiro/ata', 'ConselheiroController@viewPauta');
     Route::POST('conselheiro/ata', 'ConselheiroController@storePauta');
 
-    Route::GET('conselheiro', 'ConselheiroController@dashboard');
+    Route::GET('conselheiro', ['uses' => 'ConselheiroController@dashboard', 'as' => 'conselheiro.dashboard']);
+
     Route::GET('conselheiro/pauta', 'ConselheiroController@viewPauta');
     Route::POST('conselheiro/pauta', 'ConselheiroController@storePauta');
 
@@ -58,7 +54,7 @@ Route::group([
 
     Route::GET('conselheiro/membrosnato', 'ConselheiroController@viewMembrosNato');
 
-    route::get('conselheiro/logout', 'ConselheiroController@logout');
+    route::get('conselheiro/logout', 'LoginController@logout');
 
     route::GET('diretoria/{id}', 'DiretoriaController@findDiretoriaById');
 
