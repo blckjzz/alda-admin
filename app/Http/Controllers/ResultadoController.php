@@ -30,8 +30,13 @@ class ResultadoController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'texto' => 'required',
+            'texto' => 'required|min:30',
             'agenda_id' => 'required',
+            'data' => 'required',
+            "assunto"    => "required|array|min:1",
+            "assunto.*"  => "required|string|distinct|min:1",
+            'data' => 'required',
+            'present_members' => 'required|integer|min:1',
         ]);
 
         try {
@@ -54,7 +59,7 @@ class ResultadoController extends Controller
                 return $a->resultado;
 
             } else { // cria caso não tenha
-                //dd($request->all());
+                dd($request->all());
                 $r = new Resultado();
                 $r->agenda_id = $request->agenda_id;
                 $r->texto = $request->texto;
