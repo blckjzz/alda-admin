@@ -13,8 +13,10 @@ class NewMembroNatotable extends Migration
      */
     public function up()
     {
-        Schema::table('membronato', function (Blueprint $table) {
-            //
+        Schema::table('membros_nato', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('nome');
+            $table->string('tipo');
         });
     }
 
@@ -25,8 +27,6 @@ class NewMembroNatotable extends Migration
      */
     public function down()
     {
-        Schema::table('membronato', function (Blueprint $table) {
-            //
-        });
+        Schema::drop('membros_nato');
     }
 }
