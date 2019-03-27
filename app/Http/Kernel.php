@@ -61,5 +61,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'checkConselheiro' => \App\Http\Middleware\CheckConselheiro::class,
         'checkModerador' => \App\Http\Middleware\CheckRoleModerador::class,
+        'checkPanel' => \App\Http\Middleware\redirectsUserToSpecificPanel::class,
     ];
 }
