@@ -72,7 +72,7 @@
             var id = $("select option:selected").val();
             $.ajax({
                 method: 'GET', // Type of response and matches what we said in the route
-                url: '/admin/diretoria/' + id, // This is the url we gave in the route
+                url: '/painel/diretoria/' + id, // This is the url we gave in the route
                 success: function (response) { // What to do if we succeed
                     //console.log(response)
                     $("input[name='nome']").val(response.nome);
