@@ -10,7 +10,7 @@ class Resultado extends Model
 
     protected $table = 'resultados';
 
-    protected $fillable = ['agenda_id', 'texto', 'status_id', 'revisionstatus_id'];
+    protected $fillable = ['agenda_id', 'texto', 'status_id', 'present_members', 'revisionstatus_id'];
 
     public function agenda()
     {
