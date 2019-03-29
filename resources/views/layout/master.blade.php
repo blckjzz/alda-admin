@@ -147,10 +147,10 @@ desired effect
     <footer class="main-footer">
         <!-- To the right -->
         <div class="pull-right hidden-xs">
-            Anything you want
+
         </div>
         <!-- Default to the left -->
-        <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
+        <strong>Desenvolvido pelo <a href="https://itsrio.org" target="_blank">Instituto de Tecnologia e Sociedade do Rio</a></a>.</strong>
     </footer>
 
     {{--<!-- Control Sidebar -->--}}
