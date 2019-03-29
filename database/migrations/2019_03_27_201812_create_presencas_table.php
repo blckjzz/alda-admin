@@ -13,11 +13,18 @@ class CreatePresencasTable extends Migration
      */
     public function up()
     {
-        Schema::table('presenca_reuniao', function (Blueprint $table) {
+        Schema::create('presenca_reuniao', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('membronato_id');
-            $table->unsignedInteger('agenda_id');
+            $table->integer('agenda_id');
+            $table->json('membrosnato');
+            $table->json('diretoria');
             $table->timestamps();
+        });
+
+        Schema::table('presenca_reuniao', function (Blueprint $table){
+            $table->foreign('agenda_id')
+                ->references('id')
+                ->on('agendas');
         });
     }
 
@@ -28,8 +35,6 @@ class CreatePresencasTable extends Migration
      */
     public function down()
     {
-        Schema::table('presenca_reuniao', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('presenca_reuniao');
     }
 }
