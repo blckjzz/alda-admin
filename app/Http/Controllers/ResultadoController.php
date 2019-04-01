@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Presenca;
 use App\Resultado;
 use App\Agenda;
 use Illuminate\Http\Request;
@@ -29,15 +30,6 @@ class ResultadoController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'texto' => 'required|min:30',
-            'agenda_id' => 'required',
-            'data' => 'required',
-            "assunto"    => "required|array|min:1",
-            "assunto.*"  => "required|string|distinct|min:1",
-            'data' => 'required',
-            'present_members' => 'required|integer|min:1',
-        ]);
 
         try {
 
@@ -51,21 +43,37 @@ class ResultadoController extends Controller
                         [
                             'agenda_id' => $request->agenda_id,
                             'texto' => $request->texto,
-                            'revisionstatus_id' => ($request->revisionstatus_id == null)? 1 : $request->revisionstatus_id
+                            'revisionstatus_id' => ($request->revisionstatus_id == null) ? 1 : $request->revisionstatus_id,
+                            'present_members' => $request->present_members,
+                            'data' => $request->data,
                         ]
                     );
+                $a->presenca// update
+                ->update
+                (
+                    [
+                        'diretoria' => array($request->diretoria),
+                        'membrosnato' => array($request->membrosnato),
+                    ]
+                );
+
                 $a->resultado->assuntos()->sync($request->assunto);
 
                 return $a->resultado;
 
             } else { // cria caso não tenha
-                dd($request->all());
                 $r = new Resultado();
                 $r->agenda_id = $request->agenda_id;
                 $r->texto = $request->texto;
                 $r->revisionstatus_id = 1; // Em análise
-                $r->save();
+                $r->present_members = $request->present_members;
+                $r->data = $request->data;
+                $r->save(); //salva resultado da ata eletronica
 
+                $p = new Presenca(); //cria a presença
+                $p->diretoria = $request->diretoria;
+                $p->membrosnato = $request->membrosnato;
+                $p->save(); //salva a presença
                 return $r;
             }
 

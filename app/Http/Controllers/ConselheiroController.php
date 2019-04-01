@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Assunto;
 use App\MembroNato;
 use App\User;
+
 class ConselheiroController extends Controller
 {
 
@@ -29,8 +30,8 @@ class ConselheiroController extends Controller
         $agendas = $user->conselho->agendas->where('realizada', true);
         $assuntos = Assunto::all();
         $membrosnatos = MembroNato::whereIn('id', $user->conselho->abrangencias
-                                        ->pluck('membronato_id')->unique())
-                                        ->get();
+            ->pluck('membronato_id')->unique())
+            ->get();
         return view('conselheiro.pauta.index', compact('agendas', 'assuntos', 'membrosnatos'));
     }
 
@@ -77,22 +78,44 @@ class ConselheiroController extends Controller
 
     public function storePauta(Request $request)
     {
-        dd($request);
-        $rc = new ResultadoController();
-        $rc->store($request);
-        return redirect()->action('ConselheiroController@viewPauta')
-            ->with(['message' => "Resultado atualizado com sucesso! Aguarde a aprovação do membro Interno para publicação na Alda!",
-                'alert-type' => 'success']);
+
+        $this->validate($request, [
+            'texto' => 'required|min:30',
+            'agenda_id' => 'required',
+            'data' => 'required',
+            "assunto" => "required|array|min:1",
+            "assunto.*" => "required|string|distinct|min:1",
+            'data' => 'required',
+            'present_members' => 'required|integer|min:1',
+        ]);
+
+        try {
+            $rc = new ResultadoController();
+            $rc->store($request); // armazena o Resultado da reunião
+
+            return redirect()->action('ConselheiroController@viewPauta')
+                ->with('success', 'Ata eletrônica registrada com
+             sucesso! Em breve estará disponível na Alda!');
+//                ->with(['message' => "Ata eletrônica registrada com sucesso! Em breve estará disponível na Alda!",
+//                    'alert-type' => 'success']);
+
+        } catch (\Exception $e) {
+            $e->getTrace();
+        }
+
+
     }
 
 
-    public function viewMembrosNato()
+    public
+    function viewMembrosNato()
     {
         $conselho = Auth::user()->conselho;
         return view('conselheiro.membrosnato.index', compact('conselho'));
     }
 
-    public function editAgenda()
+    public
+    function editAgenda()
     {
 
     }
