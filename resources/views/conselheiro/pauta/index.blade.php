@@ -11,14 +11,9 @@
 
 @section('content')
     <div class="page-content container-fluid">
-        @include('voyager::alerts')
-    </div>
-
-    <div class="page-content container-fluid">
-        <form class="form-edit-add" role="form"
+        <form id="form" class="form-edit-add" role="form"
               action="{{ action('ConselheiroController@storePauta') }}"
               method="POST" enctype="multipart/form-data" autocomplete="off">
-            <!-- PUT Method if we are editing -->
             {{ csrf_field() }}
 
             <div class="row">
@@ -38,7 +33,8 @@
                         <div class="panel-body">
                             <div class="form-text">
                                 <div class="text-right">
-                                    <span style="color:red">*</span> são campos obrigatórios para envio da ata eletrônica.
+                                    <span style="color:red">*</span> são campos obrigatórios para envio da ata
+                                    eletrônica.
                                 </div>
                             </div>
                             <div class="form-group">
@@ -53,13 +49,15 @@
 
                             <div class="form-group">
                                 <label for="">Data</label> <span style="color:red">*</span>
-                                <input type="text" name="data" value="{{ Carbon\Carbon::now()->format('d/m/Y')  }}"
+                                <input type="input" name="data"
+                                       value="{{(collect(old('data'))->contains($agenda->data)) ? $agenda->data : \Carbon\Carbon::today()->format('d/m/Y') }}"
                                        class="form-control">
                             </div>
 
                             <div class="form-group">
                                 <label for="resumo">Resumo da reunião</label> <span style="color:red">*</span>
-                                <textarea class="form-control" name="texto">{{old('texto')}}</textarea>
+                                <textarea class="form-control"
+                                          name="texto">{{ (collect(old('present_members'))->contains($agenda->texto)) ? $agenda->texto : '' }}</textarea>
                             </div>
 
                             <div class="form-group">
@@ -95,34 +93,45 @@
                     </div>
                 </div>
             </div>
+            {{--{{dd($agenda->resultado)}}--}}
             <div class="row">
                 <div class="col-md-10">
                     <div class="panel panel-bordered">
                         <div class="panel-body">
                             <div class="form-group">
-                                <label for="">Haviam quantos presentes na reunião?</label> <span style="color:red">*</span>
-                                <input type="number" class="form-control" name="present_members">
+                                <label for="">Haviam quantos presentes na reunião?</label> <span
+                                        style="color:red">*</span>
+                                <input type="number" class="form-control" name="present_members"
+                                       value="{{ (collect(old('present_members'))->contains($agenda->resultado->present_members)) ? $agenda->resultado->present_members : '' }}">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="diretoria">
                                 <label for="">Quais membros da Diretoria estavam presentes?</label>
                                 @foreach($agenda->conselho->diretoria->sort() as $diretor)
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="{{$diretor->id}}"
-                                               value="{{$diretor->id}}" name="diretoria[]">
-                                        <label class="form-check-label" for="{{$diretor->id}}">{{$diretor->nome}}
+                                        <input class="form-check-input" type="checkbox" id="diretor{{$diretor->id}}"
+                                               value="{{$diretor->nome}}" name="diretoria[]">
+                                        <label class="form-check-label" for="diretor{{$diretor->id}}">{{$diretor->nome}}
                                             - {{$diretor->cargo}}</label>
                                     </div>
+
                                 @endforeach
                             </div>
 
                             <div class="form-group">
                                 <label for="">Membros Natos Presentes: </label> <span style="color:red">*</span>
+                                <div class="form-check form-check-inline" >
+                                    <input class="form-check-input" type="checkbox" id="{{$membrosnatos[0]->cmd_bpm}}"
+                                           value="{{$membrosnatos[0]->cmd_bpm}}" name="membrosnato[]">
+                                    <label class="form-check-label"
+                                           for="{{$membrosnatos[0]->cmd_bpm}}">{{$membrosnatos[0]->cmd_bpm}}</label>
+                                </div>
                                 @foreach( $membrosnatos->sort() as $membroNato)
+
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="{{$membroNato->id}}"
-                                               value="{{$membroNato->id}}" name="membronato[]">
+                                        <input class="form-check-input" type="checkbox" id="{{$membroNato->delegado}}"
+                                               value="{{$membroNato->delegado}}" name="membrosnato[]">
                                         <label class="form-check-label"
-                                               for="{{$membroNato->id}}">{{$membroNato->cmd_bpm . ' - ' .$membroNato->delegado}}</label>
+                                               for="{{$membroNato->delegado}}">{{$membroNato->delegado}}</label>
                                     </div>
                                 @endforeach
                             </div>
@@ -146,23 +155,30 @@
     <script src="{{asset('js/jquery-ui.js')}}"></script>
     <script src="{{asset('js/tag-it.js')}}" type="text/javascript" charset="utf-8"></script>
 
-    <script>
 
-        $("#agenda").click(function () {
+    <script>
+        $("#agenda").on('change', function () {
             var id = $("select option:selected").val();
             $.ajax({
                 method: 'GET', // Type of response and matches what we said in the route,
                 dataType: 'json',
                 url: '/painel/agenda/' + id + '/resultado', // This is the url we gave in the route
-                success: function (response) { // What to do if we succeed
-                    $("textarea[name='texto']").val(response.texto);
+                success: function (agenda) { // What to do if we succeed
+                    console.log(agenda);
+                    $("textarea[name='texto']").val(agenda.texto);
+                    if ($("input[name='data']").val()) {
+                        $(this).val(new Date());
+                    }
 
-                    if (response.id != null) {
-                        $("#target :input").prop("disabled", true);
+                    $("input[name='data']").val(agenda.data);
+                    $("input[name='present_members']").val(agenda.present_members);
+
+                    if (agenda.revisionstatus_id == 1) {
+                        $("#form:input").prop("disabled", true);
                         $.ajax({
                             method: 'GET', // Type of response and matches what we said in the route
                             dataType: 'json',
-                            url: '/painel/resultado/' + response.id + '/assuntos/', // This is the url we gave in the route
+                            url: '/painel/resultado/' + agenda.id + '/assuntos/', // This is the url we gave in the route
                             success: function (assunto) { // What to do if we succeed
                                 //console.log(assunto) debugg only
                                 $.each(assunto, function (key, value) {
@@ -181,15 +197,61 @@
             });
         });
 
+
+    </script>
+
+    <script>
+        $('#configreset').click(function(){
+            $('#configform')[0].reset();
+        });
     </script>
 
 
-    {{--<script>--}}
-    {{--$("input:checkbox[name=type]:checked").each(function(){--}}
-    {{--diretorias.push($(this).val());--}}
-    {{--});--}}
-    {{--</script>--}}
+    <script>
+        $("#agenda").on('change', function () {
+            var id = $("select option:selected").val();
+            $.ajax({
+                method: 'GET', // Type of response and matches what we said in the route,
+                dataType: 'json',
+                url: '/painel/presenca/' + id, // This is the url we gave in the route
+                success: function (presenca) { // What to do if we succeed
+                    console.log(presenca.membrosnato);
+                    console.log(presenca.diretoria);
 
+                    // $.each(presenca.membrosnato, function (key, value) {
+                    //     console.log($("#membrosnato input[type=checkbox]").val());
+                    //
+                    //     // if ($("#diretoria input[name='diretoria']").val()) {
+                    //     //     console.log($(this))
+                    //     //     console.log('vai dar certo!')
+                    //     // }
+                    // });
+                    //
+                    //
+                    // if (presenca.diretoria != null) {
+                    //     $.each(presenca.diretoria, function (key, value) {
+                    //         $('#assunto' + key + ' option[value=' + value.id + ']').attr('selected', 'selected');
+                    //     });
+                    // }
+                    // // $.each(presenca, function (key, value) {
+                    // //     // console.log(key);
+                    // //     console.log(value['membrosnato'][0]);
+                    // //     // $('#assunto' + key + ' option[value=' + value.id + ']').attr('selected', 'selected');
+                    // // });
+
+                },
+
+                error: function (jqXHR, textStatus, errorThrown) { // What to do if we fail
+                    console.log(JSON.stringify(jqXHR));
+                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                }
+            });
+        });
+
+        // $("#agenda").on('change', function () {
+        //     $("input").val('');
+        // });
+    </script>
 
 
 @endsection
