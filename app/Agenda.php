@@ -48,6 +48,11 @@ class Agenda extends Model
         return $this->belongsTo('App\Status', 'status_id');
     }
 
+    public function presenca()
+    {
+        return $this->hasOne('App\Presenca','agenda_id');
+    }
+
 
     public function getIdCssEnderecoAttribute()
     {

@@ -1,8 +1,9 @@
 <?php
 
 namespace App;
-
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use DateTime;
 
 class Resultado extends Model
 {
@@ -10,7 +11,10 @@ class Resultado extends Model
 
     protected $table = 'resultados';
 
-    protected $fillable = ['agenda_id', 'texto', 'status_id', 'present_members', 'revisionstatus_id'];
+    protected $fillable = ['agenda_id', 'texto', 'status_id', 'data', 'present_members', 'revisionstatus_id'];
+
+    protected $dates = ['data'];
+
 
     public function agenda()
     {
@@ -26,6 +30,19 @@ class Resultado extends Model
     public function revisionStatus()
     {
         return $this->belongsTo('App\RevisionStatus', 'revisionstatus_id');
+    }
+
+    public function getDataAttribute($value)
+    {
+        $date = Carbon::parse($value)->format('d/m/Y');
+        return $date;
+
+    }
+
+    public function setDataAttribute($data)
+    {
+        $data = DateTime::createFromFormat('d/m/Y', $data);
+        $this->attributes['data'] = $data;
     }
 
 }
