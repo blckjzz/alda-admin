@@ -134,9 +134,8 @@ desired effect
             <!--------------------------
               | Your Page Content Here |
               -------------------------->
-
+            @include('layout.flash-message')
             @yield('content')
-
 
         </section>
         <!-- /.content -->
@@ -214,4 +213,12 @@ desired effect
     @endif
 </script>
 @yield('javascript')
+
+<script>
+    $(function() {
+        setTimeout(function() {
+            $("#flashmessage").hide('blind', {}, 500)
+        }, 5000);
+    });
+</script>
 </html>
