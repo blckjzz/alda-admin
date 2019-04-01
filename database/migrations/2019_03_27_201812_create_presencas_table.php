@@ -16,8 +16,8 @@ class CreatePresencasTable extends Migration
         Schema::create('presenca_reuniao', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('agenda_id');
-            $table->json('membrosnato');
-            $table->json('diretoria');
+            $table->text('membrosnato');
+            $table->text('diretoria');
             $table->timestamps();
         });
 
