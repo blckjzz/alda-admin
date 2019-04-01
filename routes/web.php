@@ -71,4 +71,13 @@ Route::group([
      */
     route::GET('agenda/{id}/resultado/', 'AgendaController@findResultadoById');
 
+    /**
+     * Presença
+     */
+
+    route::GET('presenca/{agendaId}', 'PresencaController@findPresencaByAgendaId');
+
+
+
+
 });
