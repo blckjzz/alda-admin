@@ -27,59 +27,75 @@ class ResultadoController extends Controller
         return $resultado;
     }
 
-
+    /** Store new entries for resultado
+     * @param Request $request
+     * @return Resultado
+     */
     public function store(Request $request)
     {
+        $a = Agenda::find($request->agenda_id);
 
-        try {
+//        dd(isset($a->resultado));
+        if (isset($a->resultado)) { //update
+            return $this->update($request, $a);
+        } else { //cria novo
 
-            $a = Agenda::find($request->agenda_id);
+            $r = new Resultado();
+            $r->agenda_id = $request->agenda_id;
+            $r->texto = $request->texto;
+            $r->revisionstatus_id = 1; // Em análise
+            $r->present_members = $request->present_members;
+            $r->data = $request->data;
 
-
-            if ($a->resultado) { //update
-                $a->resultado
-                    ->update
-                    (
-                        [
-                            'agenda_id' => $request->agenda_id,
-                            'texto' => $request->texto,
-                            'revisionstatus_id' => ($request->revisionstatus_id == null) ? 1 : $request->revisionstatus_id,
-                            'present_members' => $request->present_members,
-                            'data' => $request->data,
-                        ]
-                    );
-                $a->presenca// update
-                ->update
-                (
-                    [
-                        'diretoria' => array($request->diretoria),
-                        'membrosnato' => array($request->membrosnato),
-                    ]
-                );
-
-                $a->resultado->assuntos()->sync($request->assunto);
-
-                return $a->resultado;
-
-            } else { // cria caso não tenha
-                $r = new Resultado();
-                $r->agenda_id = $request->agenda_id;
-                $r->texto = $request->texto;
-                $r->revisionstatus_id = 1; // Em análise
-                $r->present_members = $request->present_members;
-                $r->data = $request->data;
-                $r->save(); //salva resultado da ata eletronica
-
-                $p = new Presenca(); //cria a presença
-                $p->diretoria = $request->diretoria;
-                $p->membrosnato = $request->membrosnato;
-                $p->save(); //salva a presença
-                return $r;
+            $r->save(); //salva resultado da ata eletronica
+            foreach ($request->assunto as $assunto) {
+                $r->assuntos()->syncWithoutDetaching($assunto);
             }
 
-        } catch (Error $e) {
-            abort($e->getMessage());
+            $p = new Presenca(); //cria a presença
+            $p->agenda_id = $request->agenda_id;
+            $p->diretoria = json_encode($request->diretoria);
+            $p->membrosnato = json_encode($request->membrosnato);
+            $p->save(); //salva a presença
+            return $r;
+        }
+    }
+
+    /** update existent resultados
+     * @param Request $request
+     * @param Agenda $a
+     * @return mixed
+     */
+
+    public function update(Request $request, Agenda $a)
+    {
+        $a->resultado
+            ->update
+            (
+                [
+                    'agenda_id' => (isset($a->resultado->agenda_id)) ? $request->agenda_id : $a->resultado->agenda_id,
+                    'texto' => (isset($request->texto)) ? $request->texto : $a->resultado->texto,
+                    'revisionstatus_id' => ($request->revisionstatus_id == null) ? 1 : $request->revisionstatus_id,
+                    'present_members' => (isset($$request->present_members)) ? $request->present_members : $a->resultado->present_members, //
+                    'data' => (isset($request->data)) ? $request->data : $a->resultado->data,
+                ]
+            );
+
+        if ($request->has('diretoria')) {
+            $a->presenca()->update([
+                'diretoria' =>  json_encode($request->diretoria),
+            ]);
         }
 
+        if ($request->has('membrosnato')) {
+            $a->presenca()->update([
+                'membrosnato' => json_encode($request->membrosnato),
+            ]);
+        }
+
+        if ($request->has('assunto') && is_array($request->assunto) && count($request->assunto))
+            $a->resultado->assuntos()->sync($request->assunto);
+
+        return $a->resultado->agenda->list_agenda;
     }
 }
