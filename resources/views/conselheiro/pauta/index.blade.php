@@ -57,7 +57,7 @@
                             <div class="form-group">
                                 <label for="resumo">Resumo da reunião</label> <span style="color:red">*</span>
                                 <textarea class="form-control"
-                                          name="texto">{{ (collect(old('present_members'))->contains($agenda->texto)) ? $agenda->texto : '' }}</textarea>
+                                          name="texto">{{ old('texto') }}</textarea>
                             </div>
 
                             <div class="form-group">
