@@ -57,7 +57,7 @@
                             <div class="form-group">
                                 <label for="resumo">Resumo da reunião</label> <span style="color:red">*</span>
                                 <textarea class="form-control"
-                                          name="texto">{{ old('texto') }}</textarea>
+                                          name="texto">{{ old('texto')}}</textarea>
                             </div>
 
                             <div class="form-group">
@@ -102,7 +102,7 @@
                                 <label for="">Haviam quantos presentes na reunião?</label> <span
                                         style="color:red">*</span>
                                 <input type="number" class="form-control" name="present_members"
-                                       value="{{ (collect(old('present_members'))->contains($agenda->resultado->present_members)) ? $agenda->resultado->present_members : '' }}">
+                                       value="{{ old('present_members') }}">
                             </div>
                             <div class="form-group" id="diretoria">
                                 <label for="">Quais membros da Diretoria estavam presentes?</label>
@@ -119,7 +119,7 @@
 
                             <div class="form-group">
                                 <label for="">Membros Natos Presentes: </label> <span style="color:red">*</span>
-                                <div class="form-check form-check-inline" >
+                                <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" id="{{$membrosnatos[0]->cmd_bpm}}"
                                            value="{{$membrosnatos[0]->cmd_bpm}}" name="membrosnato[]">
                                     <label class="form-check-label"
@@ -173,20 +173,18 @@
                     $("input[name='data']").val(agenda.data);
                     $("input[name='present_members']").val(agenda.present_members);
 
-                    if (agenda.revisionstatus_id == 1) {
-                        $("#form:input").prop("disabled", true);
-                        $.ajax({
-                            method: 'GET', // Type of response and matches what we said in the route
-                            dataType: 'json',
-                            url: '/painel/resultado/' + agenda.id + '/assuntos/', // This is the url we gave in the route
-                            success: function (assunto) { // What to do if we succeed
-                                //console.log(assunto) debugg only
-                                $.each(assunto, function (key, value) {
-                                    $('#assunto' + key + ' option[value=' + value.id + ']').attr('selected', 'selected');
-                                });
-                            }
-                        });
-                    }
+                    $.ajax({
+                        method: 'GET', // Type of response and matches what we said in the route
+                        dataType: 'json',
+                        url: '/painel/resultado/' + agenda.id + '/assuntos/', // This is the url we gave in the route
+                        success: function (assunto) { // What to do if we succeed
+                            //console.log(assunto) debugg only
+                            $.each(assunto, function (key, value) {
+                                $('#assunto' + key + ' option[value=' + value.id + ']').attr('selected', 'selected');
+                            });
+                        }
+                    });
+                    // }
 
                 },
 
@@ -201,7 +199,7 @@
     </script>
 
     <script>
-        $('#configreset').click(function(){
+        $('#configreset').click(function () {
             $('#configform')[0].reset();
         });
     </script>
