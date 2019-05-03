@@ -17,7 +17,7 @@ class ModeracaoController extends Controller
     public function listaPautas()
     {
         $resultados = Resultado::where('revisionstatus_id', '=', 1)
-                                 ->orWhere('revisionstatus_id', '=', 2)
+            ->orWhere('revisionstatus_id', '=', 2)
             ->orderBy('updated_at')
             ->get();
         return view('moderador.index', compact('resultados'));
@@ -34,14 +34,10 @@ class ModeracaoController extends Controller
     public function storeResultado(Request $request)
     {
         $rc = new ResultadoController();
-        try {
-            $resultado = $rc->store($request);
-            return redirect()->action('ModeracaoController@listaPautas')
-                ->with(['message' => "Você alterou o Resultado ". $resultado->agenda->list_agenda ."com sucesso.",
-                    'alert-type' => 'success']);
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
 
+        $resultado = $rc->store($request);
+        return redirect()->action('ModeracaoController@listaPautas')
+            ->with(['message' => "Você alterou o Resultado " . $resultado . "com sucesso.",
+                'alert-type' => 'success']);
     }
 }

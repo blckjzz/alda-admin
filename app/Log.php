@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Log extends Model
 {
-    protected $fillable = ['event', 'message'];
-
+    protected $primaryKey = 'id';
+    protected $fillable = ['id','event', 'message'];
 }

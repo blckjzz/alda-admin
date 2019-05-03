@@ -89,34 +89,19 @@ class ConselheiroController extends Controller
             'present_members' => 'required|integer|min:1',
         ]);
 
-        try {
-            $rc = new ResultadoController();
-            $rc->store($request); // armazena o Resultado da reunião
 
-            return redirect()->action('ConselheiroController@viewPauta')
-                ->with('success', 'Ata eletrônica registrada com
+        $rc = new ResultadoController();
+        $rc->store($request); // armazena o Resultado da reunião
+
+        return redirect()->action('ConselheiroController@viewPauta')
+            ->with('success', 'Ata eletrônica registrada com
              sucesso! Em breve estará disponível na Alda!');
-//                ->with(['message' => "Ata eletrônica registrada com sucesso! Em breve estará disponível na Alda!",
-//                    'alert-type' => 'success']);
-
-        } catch (\Exception $e) {
-            $e->getTrace();
-        }
-
-
     }
 
 
-    public
-    function viewMembrosNato()
+    public function viewMembrosNato()
     {
         $conselho = Auth::user()->conselho;
         return view('conselheiro.membrosnato.index', compact('conselho'));
-    }
-
-    public
-    function editAgenda()
-    {
-
     }
 }
