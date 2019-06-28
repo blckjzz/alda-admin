@@ -14,13 +14,14 @@ class Diretoria extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['inicio_gestao', 'fim_gestao','cargo', 'nome'];
+    protected $fillable = ['inicio_gestao','fim_gestao','cargo', 'nome'];
 
 
     public function conselho()
     {
         return $this->hasOne('App\Conselho', 'conselho_id');
     }
+    
 
     public function getInicioGestaoAttribute($data)
     {
@@ -42,7 +43,7 @@ class Diretoria extends Model
 
     }
 
-    public function setInicioDaGestaoAttribute($data)
+    public function setInicioGestaoAttribute($data)
     {
         $data = DateTime::createFromFormat('d/m/Y', $data);
         $this->attributes['inicio_gestao'] = $data;
