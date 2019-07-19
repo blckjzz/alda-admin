@@ -118,7 +118,7 @@
                                 @foreach($agenda->conselho->diretoria->sort() as $diretor)
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" id="diretor{{$diretor->id}}"
-                                               value="{{$diretor->nome}}" name="diretoria[]">
+                                               value="{{$diretor->id}}" name="diretoria[]">
                                         <label class="form-check-label" for="diretor{{$diretor->id}}">{{$diretor->nome}}
                                             - {{$diretor->cargo}}</label>
                                     </div>
@@ -172,17 +172,17 @@
     <script src="{{asset('js/tag-it.js')}}" type="text/javascript" charset="utf-8"></script>
 
     <script>
-        $("#membro-nato").hide();
+        // $("#membro-nato").toggle();
         $("#bairro").on('change', function () {
             var abrangenciaId = $(this).children("select option:selected").val();
-            console.log(abrangenciaId)
+            // console.log(abrangenciaId)
             $.ajax({
                 method: 'GET', // Type of response and matches what we said in the route,
                 dataType: 'json',
                 url: '/painel/conselheiro/getMembroNatoById/' + abrangenciaId, // This is the url we gave in the route
                 success: function (membros) { // What to do if we succeed
                     // console.log(membros);
-                    $("#membro-nato").show('slow');
+                    // $("#membro-nato").show('slow');
                     $("input[name='comandante_id']").val(membros.comandante.id);
                     $('#comandanteName').text(membros.comandante.name);
 
@@ -211,7 +211,7 @@
                 dataType: 'json',
                 url: '/painel/agenda/' + id + '/resultado', // This is the url we gave in the route
                 success: function (agenda) { // What to do if we succeed
-                    console.log(agenda);
+                    // console.log(agenda);
                     $("textarea[name='texto']").val(agenda.texto);
                     $("textarea[name='pauta_interna']").val(agenda.pauta_interna);
                     if ($("input[name='data']").val()) {
@@ -226,9 +226,28 @@
                         dataType: 'json',
                         url: '/painel/resultado/' + agenda.id + '/assuntos/', // This is the url we gave in the route
                         success: function (assunto) { // What to do if we succeed
-                            //console.log(assunto) debugg only
+                            // console.log(assunto); //debugg only
                             $.each(assunto, function (key, value) {
                                 $('#assunto' + key + ' option[value=' + value.id + ']').attr('selected', 'selected');
+                            });
+                        }
+                    });
+
+                    $.ajax({
+                        method: 'GET', // Type of response and matches what we said in the route
+                        dataType: 'json',
+                        url: '/painel/presenca/' + agenda.agenda_id, // This is the url we gave in the route
+                        success: function (presenca) { // What to do if we succeed
+                            $('#comandante').val(presenca.membrosNatos[0].id).prop('checked', true);
+                            $('#comandanteName').text(presenca.membrosNatos[0].name);
+                            $('#delegado').val(presenca.membrosNatos[1].id).prop('checked', true);
+                            $('#delegadoName').text(presenca.membrosNatos[1].name);
+
+                            $.each(presenca.diretoria, function (key, value) {
+                                console.log('#diretor' + value.id);
+                                if ($('#diretor' + value.id).val() == value.id) {
+                                    $('#diretor' + value.id).prop('checked', true);
+                                }
                             });
                         }
                     });
@@ -250,53 +269,6 @@
         $('#configreset').click(function () {
             $('#configform')[0].reset();
         });
-    </script>
-
-
-    <script>
-        $("#agenda").on('change', function () {
-            var id = $("select option:selected").val();
-            $.ajax({
-                method: 'GET', // Type of response and matches what we said in the route,
-                dataType: 'json',
-                url: '/painel/presenca/' + id, // This is the url we gave in the route
-                success: function (presenca) { // What to do if we succeed
-                    console.log(presenca.membrosnato);
-                    console.log(presenca.diretoria);
-
-                    // $.each(presenca.membrosnato, function (key, value) {
-                    //     console.log($("#membrosnato input[type=checkbox]").val());
-                    //
-                    //     // if ($("#diretoria input[name='diretoria']").val()) {
-                    //     //     console.log($(this))
-                    //     //     console.log('vai dar certo!')
-                    //     // }
-                    // });
-                    //
-                    //
-                    // if (presenca.diretoria != null) {
-                    //     $.each(presenca.diretoria, function (key, value) {
-                    //         $('#assunto' + key + ' option[value=' + value.id + ']').attr('selected', 'selected');
-                    //     });
-                    // }
-                    // // $.each(presenca, function (key, value) {
-                    // //     // console.log(key);
-                    // //     console.log(value['membrosnato'][0]);
-                    // //     // $('#assunto' + key + ' option[value=' + value.id + ']').attr('selected', 'selected');
-                    // // });
-
-                },
-
-                error: function (jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    console.log(JSON.stringify(jqXHR));
-                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
-                }
-            });
-        });
-
-        // $("#agenda").on('change', function () {
-        //     $("input").val('');
-        // });
     </script>
 
 
