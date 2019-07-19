@@ -55,9 +55,18 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="resumo">Resumo da reunião</label> <span style="color:red">*</span>
+                                <label for="resumo">Resumo da reunião</label> <span class="text-right"
+                                                                                    style="color:red">(Este é um resumo público que aparecerá na Alda.)</span>
+
                                 <textarea class="form-control"
                                           name="texto">{{ old('texto')}}</textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="resumo">Pauta completa da reunião</label> <span class="text-right"
+                                                                                            style="color:red">(Texto completo. Apenas ISP terá acesso.)</span>
+                                <textarea class="form-control"
+                                          name="pauta_interna">{{ old('pauta_interna')}}</textarea>
                             </div>
 
                             <div class="form-group">
@@ -113,35 +122,42 @@
                                         <label class="form-check-label" for="diretor{{$diretor->id}}">{{$diretor->nome}}
                                             - {{$diretor->cargo}}</label>
                                     </div>
-
                                 @endforeach
+
                             </div>
-
                             <div class="form-group">
-                                <label for="">Membros Natos Presentes: </label> <span style="color:red">*</span>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="{{$membrosnatos[0]->cmd_bpm}}"
-                                           value="{{$membrosnatos[0]->cmd_bpm}}" name="membrosnato[]">
-                                    <label class="form-check-label"
-                                           for="{{$membrosnatos[0]->cmd_bpm}}">{{$membrosnatos[0]->cmd_bpm}}</label>
-                                </div>
-                                @foreach( $membrosnatos->sort() as $membroNato)
+                                <label for="">Selecione um bairro: </label>
+                                <select class="form-control" name="bairro" id="bairro">
+                                    <option selected="true" disabled="disabled">Selecione um bairro</option>
+                                    @foreach($bairros as $id => $bairro)
+                                        <option value="{{$id}}" {{ (collect(old('bairro'))->contains($id)) ? 'selected':'' }}>{{ $bairro }}</option>
+                                    @endforeach
+                                </select>
 
+                                <div id="membro-nato">
+                                    <label for="">Membros Natos presentes </label> <span style="color:red">*</span>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="{{$membroNato->delegado}}"
-                                               value="{{$membroNato->delegado}}" name="membrosnato[]">
+                                        <input class="form-check-input" type="checkbox"
+                                               id="comandante"
+                                               value=""
+                                               name="comandante_id">
                                         <label class="form-check-label"
-                                               for="{{$membroNato->delegado}}">{{$membroNato->delegado}}</label>
+                                               for="comandante" id="comandanteName"></label>
                                     </div>
-                                @endforeach
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox"
+                                               id="delegado"
+                                               value=""
+                                               name="delegado_id">
+                                        <label class="form-check-label"
+                                               for="delegado" id="delegadoName"></label>
+                                    </div>
+                                </div>
                             </div>
 
 
                             <div class="form-group">
                                 <button class="btn btn-danger">Cancelar</button>
-                                {{--<a href="">--}}
-                                {{--<button type="submit" class="btn btn-dark"> Editar</button>--}}
-                                {{--</a>--}}
                                 <button type="submit" class="btn btn-success"> Salvar</button>
                             </div>
                         </div>
@@ -155,6 +171,37 @@
     <script src="{{asset('js/jquery-ui.js')}}"></script>
     <script src="{{asset('js/tag-it.js')}}" type="text/javascript" charset="utf-8"></script>
 
+    <script>
+        $("#membro-nato").hide();
+        $("#bairro").on('change', function () {
+            var abrangenciaId = $(this).children("select option:selected").val();
+            console.log(abrangenciaId)
+            $.ajax({
+                method: 'GET', // Type of response and matches what we said in the route,
+                dataType: 'json',
+                url: '/painel/conselheiro/getMembroNatoById/' + abrangenciaId, // This is the url we gave in the route
+                success: function (membros) { // What to do if we succeed
+                    // console.log(membros);
+                    $("#membro-nato").show('slow');
+                    $("input[name='comandante_id']").val(membros.comandante.id);
+                    $('#comandanteName').text(membros.comandante.name);
+
+                    $("input[name='delegado_id']").val(membros.delegado.id);
+                    $('#delegadoName').text(membros.delegado.name);
+                },
+
+                error:
+
+                    function (jqXHR, textStatus, errorThrown) { // What to do if we fail
+                        console.log(JSON.stringify(jqXHR));
+                        console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                    }
+            })
+        })
+        ;
+
+
+    </script>
 
     <script>
         $("#agenda").on('change', function () {
@@ -250,6 +297,10 @@
         //     $("input").val('');
         // });
     </script>
+
+
+
+
 
 
 @endsection
