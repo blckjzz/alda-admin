@@ -15,6 +15,7 @@ class ResultadoController extends Controller
         return $resultado;
     }
 
+
     public function findAssuntosByResultadoId($id)
     {
         $resultado = Resultado::find($id);
@@ -54,6 +55,7 @@ class ResultadoController extends Controller
                 $r->assuntos()->syncWithoutDetaching($assunto);
             }
 
+
             $p = new Presenca(); //cria a presença // ajustar
             $p->agenda_id = $request->agenda_id; // ajustar
             $p->diretoria = json_encode($request->diretoria); //ajustar
@@ -90,9 +92,10 @@ class ResultadoController extends Controller
             ]);
         }
 
-        if ($request->has('membrosnato')) {
+//        dd($request->all());
+        if ($request->has('delegado_id') || $request->has('comandante_id')) {
             $a->presenca()->update([
-                'membrosnato' => json_encode($request->membrosnato),
+                'membrosnato' => json_encode(array($request->delegado_id, $request->comandante_id)),
             ]);
         }
 

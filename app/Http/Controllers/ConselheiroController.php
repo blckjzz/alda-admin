@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Assunto;
 use App\MembroNato;
 use App\User;
+use \Validator;
 
 class ConselheiroController extends Controller
 {
@@ -77,16 +78,43 @@ class ConselheiroController extends Controller
 
     public function storePauta(Request $request)
     {
+//
+//        $this->validate($request, [
+//            'texto' => 'required|min:30',
+//            'agenda_id' => 'required',
+//            'data' => 'required',
+//            "assunto" => "required|array|min:1",
+//            "assunto.*" => "required|string|distinct|min:1",
+//            "comandante_id" => "required|array|min:1",
+//            "delegado_id." => "required|string|distinct|min:1",
+//            'data' => 'required',
+//            'pauta_interna' => 'required|min:100',
+//            'present_members' => 'required|integer|min:1',
+//        ]);
 
-        $this->validate($request, [
+        $rules = array(
             'texto' => 'required|min:30',
             'agenda_id' => 'required',
             'data' => 'required',
             "assunto" => "required|array|min:1",
             "assunto.*" => "required|string|distinct|min:1",
+            "comandante_id" => 'required_without:delegado_id',
+            'delegado_id' => 'required_without:comandante_id',
             'data' => 'required',
+            'pauta_interna' => 'required|min:100',
             'present_members' => 'required|integer|min:1',
-        ]);
+        );
+
+        $messages = array(
+            'comandante_id.required' => 'Você precisa informar qual Comandante estava presente.',
+            'delegado_id.required' => 'Você precisa informar qual Delegado estava presente.'
+        );
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return back()->withInput($request->all())->withErrors($validator->errors()->first());
+        }
 
 
         $rc = new ResultadoController();
@@ -94,7 +122,7 @@ class ConselheiroController extends Controller
 
         return redirect()->action('ConselheiroController@viewPauta')
             ->with('success', 'Ata eletrônica registrada com
-             sucesso! Em breve estará disponível na Alda!');
+             sucesso! Após aprovação da equipe, será disponobililizada ao público.');
     }
 
 
@@ -108,7 +136,7 @@ class ConselheiroController extends Controller
     public function getMembroNatoByAbrangenciaId($id)
     {
         $abrangencia = ConselhoAbrangencia::find($id);
-        return ['comandante' => $abrangencia->membrosNatos->comandante , 'delegado' =>$abrangencia->membrosNatos->delegado];
+        return ['comandante' => $abrangencia->membrosNatos->comandante, 'delegado' => $abrangencia->membrosNatos->delegado];
 
     }
 }

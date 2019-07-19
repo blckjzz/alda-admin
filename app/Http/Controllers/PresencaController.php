@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\MembroNato;
 use App\Presenca;
 use Illuminate\Http\Request;
 use App\Agenda;
+use DB;
 
 class PresencaController extends Controller
 {
@@ -31,7 +33,7 @@ class PresencaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -52,7 +54,7 @@ class PresencaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -63,7 +65,7 @@ class PresencaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -74,8 +76,8 @@ class PresencaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -86,7 +88,7 @@ class PresencaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -96,6 +98,24 @@ class PresencaController extends Controller
 
     public function findPresencaByAgendaId($agendaId)
     {
-        return response()->json(Agenda::find($agendaId)->presenca);
+        $presenca = Agenda::find($agendaId)->presenca;
+
+
+        $diretoriaPresente =
+            DB::table('diretorias')->
+            whereIn('id', $presenca->diretoria)
+                ->get();
+
+        $membrosNatosPresente =
+            DB::table('membros_natos')->
+            whereIn('id', $presenca->membrosnato)
+                ->get();
+
+        return response()->json(['membrosNatos' => $membrosNatosPresente,'diretoria' => $diretoriaPresente]);
+    }
+
+    public function findAllMembrosById($agendaId)
+    {
+        return response()->json(Agenda::find($agendaId)->membrosnatos);
     }
 }

@@ -7,9 +7,15 @@ use Illuminate\Http\Request;
 
 class AgendaController extends Controller
 {
-    public function findResultadoById($id)
+    public function findResultadoByAgendaId($agendaId)
     {
-        return response()->json(Agenda::find($id)->resultado);
+        return response()->json(Agenda::find($agendaId)->resultado);
 
+    }
+
+
+    public function findAgendaPresencaByAgendaId($agendaId)
+    {
+        return response()->json(Agenda::find($agendaId)->presenca);
     }
 }
