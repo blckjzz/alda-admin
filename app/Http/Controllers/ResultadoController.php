@@ -33,6 +33,7 @@ class ResultadoController extends Controller
      */
     public function store(Request $request)
     {
+
         $a = Agenda::find($request->agenda_id);
 
 //        dd(isset($a->resultado));
@@ -43,7 +44,7 @@ class ResultadoController extends Controller
             $r = new Resultado();
             $r->agenda_id = $request->agenda_id;
             $r->texto = $request->texto;
-            $r->texto = $request->pauta_interna;
+            $r->pauta_interna = $request->pauta_interna;
             $r->revisionstatus_id = 1; // Em análise
             $r->present_members = $request->present_members;
             $r->data = $request->data;
@@ -76,6 +77,7 @@ class ResultadoController extends Controller
                 [
                     'agenda_id' => (isset($a->resultado->agenda_id)) ? $request->agenda_id : $a->resultado->agenda_id,
                     'texto' => (isset($request->texto)) ? $request->texto : $a->resultado->texto,
+                    'pauta_interna' => (isset($request->pauta_interna)) ? $request->pauta_interna : $a->resultado->pauta_interna,
                     'revisionstatus_id' => ($request->revisionstatus_id == null) ? 1 : $request->revisionstatus_id,
                     'present_members' => (isset($$request->present_members)) ? $request->present_members : $a->resultado->present_members, //
                     'data' => (isset($request->data)) ? $request->data : $a->resultado->data,

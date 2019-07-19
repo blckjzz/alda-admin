@@ -213,6 +213,7 @@
                 success: function (agenda) { // What to do if we succeed
                     console.log(agenda);
                     $("textarea[name='texto']").val(agenda.texto);
+                    $("textarea[name='pauta_interna']").val(agenda.pauta_interna);
                     if ($("input[name='data']").val()) {
                         $(this).val(new Date());
                     }
