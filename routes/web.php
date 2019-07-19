@@ -42,7 +42,7 @@ Route::group([
 
 
     Route::GET('conselheiro/ata', 'ConselheiroController@viewPauta');
-    Route::GET('conselheiro/getMembroNatoById/{id}', 'ConselheiroController@getMembroNatoByAbrangenciaId');
+
     Route::POST('conselheiro/ata', 'ConselheiroController@storePauta');
 
     Route::GET('conselheiro', ['uses' => 'ConselheiroController@dashboard', 'as' => 'conselheiro.dashboard']);
@@ -66,17 +66,22 @@ Route::group([
     route::GET('resultado/{id}', 'ResultadoController@findResultadoById');
     route::GET('resultado/{id}/assuntos', 'ResultadoController@findAssuntosByResultadoId');
     route::GET('resultado/view/{id}', 'ResultadoController@show');
+    Route::GET('conselheiro/getMembroNatoById/{id}', 'ConselheiroController@getMembroNatoByAbrangenciaId');
 
     /***
      * Agenda
      */
-    route::GET('agenda/{id}/resultado/', 'AgendaController@findResultadoById');
+    route::GET('agenda/{id}/resultado/', 'AgendaController@findResultadoByAgendaId');
+
 
     /**
      * Presença
      */
 
     route::GET('presenca/{agendaId}', 'PresencaController@findPresencaByAgendaId');
+    route::GET('presenca/{agendaId}/presentes', 'PresencaController@findAllMembrosById');
+
+
 
 
 
