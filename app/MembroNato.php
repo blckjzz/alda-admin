@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use TCG\Voyager\Traits\VoyagerUser;
 
 class MembroNato extends Model
 {
+    use VoyagerUser;
+
     protected $table = 'membros_natos';
 
     public $timestamps = false;
@@ -16,5 +19,6 @@ class MembroNato extends Model
     {
         return $this->hasMany('App\ConselhoAbrangencia', 'membronato_id');
     }
+
 
 }

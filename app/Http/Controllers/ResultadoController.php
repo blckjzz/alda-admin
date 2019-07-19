@@ -43,6 +43,7 @@ class ResultadoController extends Controller
             $r = new Resultado();
             $r->agenda_id = $request->agenda_id;
             $r->texto = $request->texto;
+            $r->texto = $request->pauta_interna;
             $r->revisionstatus_id = 1; // Em análise
             $r->present_members = $request->present_members;
             $r->data = $request->data;
@@ -52,10 +53,10 @@ class ResultadoController extends Controller
                 $r->assuntos()->syncWithoutDetaching($assunto);
             }
 
-            $p = new Presenca(); //cria a presença
-            $p->agenda_id = $request->agenda_id;
-            $p->diretoria = json_encode($request->diretoria);
-            $p->membrosnato = json_encode($request->membrosnato);
+            $p = new Presenca(); //cria a presença // ajustar
+            $p->agenda_id = $request->agenda_id; // ajustar
+            $p->diretoria = json_encode($request->diretoria); //ajustar
+            $p->membrosnato = json_encode($request->membrosnato); // ajustar
             $p->save(); //salva a presença
             return $r;
         }

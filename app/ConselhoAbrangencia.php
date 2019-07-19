@@ -14,13 +14,19 @@ class ConselhoAbrangencia extends Model
 
     public function conselho()
     {
-        return $this->belongsTo('\App\Conselho','conselho_id');
+        return $this->belongsTo('\App\Conselho', 'conselho_id');
     }
 
-    public function membrosNato()
+//    public function membrosNato()
+//    {
+//        return $this->belongsTo('\App\MembroNato','membronato_id');
+//    }
+
+    public function membrosNatos()
     {
-        return $this->belongsTo('\App\MembroNato','membronato_id');
+        return $this->belongsTo('App\MembroNatoAbrangencia', 'membronato_id');
     }
+
 }
 
 

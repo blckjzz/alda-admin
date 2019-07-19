@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Agenda;
+use App\ConselhoAbrangencia;
 use App\Diretoria;
 use App\Resultado;
 use Illuminate\Http\Request;
@@ -29,10 +30,8 @@ class ConselheiroController extends Controller
         $user = Auth::user();
         $agendas = $user->conselho->agendas->where('realizada', true);
         $assuntos = Assunto::all();
-        $membrosnatos = MembroNato::whereIn('id', $user->conselho->abrangencias
-            ->pluck('membronato_id')->unique())
-            ->get();
-        return view('conselheiro.pauta.index', compact('agendas', 'assuntos', 'membrosnatos'));
+        $bairros = $user->conselho->abrangencias->pluck('bairro', 'id');
+        return view('conselheiro.pauta.index', compact('agendas', 'assuntos'))->with(['bairros' => $bairros]);
     }
 
     public function viewCCS()
@@ -44,7 +43,7 @@ class ConselheiroController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
 
@@ -103,5 +102,13 @@ class ConselheiroController extends Controller
     {
         $conselho = Auth::user()->conselho;
         return view('conselheiro.membrosnato.index', compact('conselho'));
+    }
+
+
+    public function getMembroNatoByAbrangenciaId($id)
+    {
+        $abrangencia = ConselhoAbrangencia::find($id);
+        return ['comandante' => $abrangencia->membrosNatos->comandante , 'delegado' =>$abrangencia->membrosNatos->delegado];
+
     }
 }

@@ -31,5 +31,5 @@ class Conselho extends Model
     {
         return $this->hasMany('App\ConselhoAbrangencia', 'conselho_id');
     }
-
+    
 }
