@@ -42,6 +42,7 @@ Route::group([
 
 
     Route::GET('conselheiro/ata', 'ConselheiroController@viewPauta');
+    Route::GET('conselheiro/getMembroNatoById/{id}', 'ConselheiroController@getMembroNatoByAbrangenciaId');
     Route::POST('conselheiro/ata', 'ConselheiroController@storePauta');
 
     Route::GET('conselheiro', ['uses' => 'ConselheiroController@dashboard', 'as' => 'conselheiro.dashboard']);
