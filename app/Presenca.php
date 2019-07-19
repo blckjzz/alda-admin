@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use DB;
 class Presenca extends Model
 {
     protected $primaryKey = 'id';
@@ -24,6 +24,5 @@ class Presenca extends Model
     {
         return $this->belongsTo('App\Agenda', 'agenda_id');
     }
-
 
 }
