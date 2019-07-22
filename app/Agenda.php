@@ -11,7 +11,7 @@ class Agenda extends Model
 
     protected $table = 'agendas';
 
-    protected $fillable = ['data, hora, endereco, conselho_id, status_id, data_hora'];
+    protected $fillable = ['data, hora, endereco, conselho_id, status_id, data_hora', 'bairro'];
 
     protected $dates = ['data'];
 
@@ -71,8 +71,13 @@ class Agenda extends Model
 
     }
 
-    public function getListAgendaAttribute()
+    public function getListaAgendaAttribute()
     {
         return "{$this->id} - [{$this->conselho->ccs}] [Data/Hora $this->data $this->hora] [{$this->status->status} ] [{$this->endereco}] ";
+    }
+
+    public function getListaAgendasConselheiroAttribute()
+    {
+        return "{$this->id} - [Data/Hora $this->data $this->hora] [{$this->status->status} ] [{$this->endereco}] ";
     }
 }

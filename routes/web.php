@@ -41,14 +41,8 @@ Route::group([
 ], function () {
 
 
-    Route::GET('conselheiro/ata', 'ConselheiroController@viewPauta');
-
-    Route::POST('conselheiro/ata', 'ConselheiroController@storePauta');
-
     Route::GET('conselheiro', ['uses' => 'ConselheiroController@dashboard', 'as' => 'conselheiro.dashboard']);
 
-    Route::GET('conselheiro/pauta', 'ConselheiroController@viewPauta');
-    Route::POST('conselheiro/pauta', 'ConselheiroController@storePauta');
 
     Route::GET('conselheiro/ccs', 'ConselheiroController@viewCCS');
     Route::POST('conselheiro/ccs', 'ConselheiroController@storeDiretoria');
@@ -58,6 +52,17 @@ Route::group([
     route::get('conselheiro/logout', 'LoginController@logout');
 
     route::GET('diretoria/{id}', 'DiretoriaController@findDiretoriaById');
+
+    /**
+     * Reunião & Pauta
+     */
+
+    Route::GET('conselheiro/ata', 'ConselheiroController@viewPauta');
+    Route::POST('conselheiro/ata', 'ConselheiroController@storePauta');
+
+    Route::GET('conselheiro/reuniao', 'ConselheiroController@viewCadastrarReuniao');
+    Route::POST('conselheiro/reuniao', 'ConselheiroController@storeReuniao');
+    Route::GET('conselheiro/reuniao/lista', 'ConselheiroController@viewReuniao');
 
     /**
      * Resultados
@@ -72,6 +77,7 @@ Route::group([
      * Agenda
      */
     route::GET('agenda/{id}/resultado/', 'AgendaController@findResultadoByAgendaId');
+    route::GET('agenda/ver/{id}', 'AgendaController@findAgendaById');
 
 
     /**
@@ -80,10 +86,6 @@ Route::group([
 
     route::GET('presenca/{agendaId}', 'PresencaController@findPresencaByAgendaId');
     route::GET('presenca/{agendaId}/presentes', 'PresencaController@findAllMembrosById');
-
-
-
-
 
 
 });

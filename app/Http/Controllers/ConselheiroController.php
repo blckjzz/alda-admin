@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Assunto;
 use App\MembroNato;
 use App\User;
+use Illuminate\Support\Facades\Input;
 use \Validator;
 
 class ConselheiroController extends Controller
@@ -138,5 +139,28 @@ class ConselheiroController extends Controller
         $abrangencia = ConselhoAbrangencia::find($id);
         return ['comandante' => $abrangencia->membrosNatos->comandante, 'delegado' => $abrangencia->membrosNatos->delegado];
 
+    }
+
+    public function viewCadastrarReuniao()
+    {
+        return view('conselheiro.pauta.criar_agenda');
+    }
+
+
+    public function viewReuniao()
+    {
+        $agendas = Auth::user()->conselho->agendas()->where('realizada', 0)->get();
+        return view('conselheiro.pauta.edit_agenda',
+            compact('agendas'));
+    }
+
+    public function storeReuniao(Request $request)
+    {
+
+        $agendaController = new AgendaController();
+
+        $agenda = $agendaController->create($request);
+        return view('conselheiro.pauta.index')->with(['message' => 'Sua agenda foi armazenada com sucesso!']);
+        dd($agenda);
     }
 }
