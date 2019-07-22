@@ -42,7 +42,7 @@
                                 <select class="form-control" id="agenda" name="agenda_id">
                                     <option selected="true" disabled="disabled">Selecione uma reunião</option>
                                     @foreach($agendas as $agenda)
-                                        <option value="{{ $agenda->id }}" {{ (collect(old('agenda_id'))->contains($agenda->id)) ? 'selected':'' }} > {{$agenda->list_agenda}} </option>
+                                        <option value="{{ $agenda->id }}" {{ (collect(old('agenda_id'))->contains($agenda->id)) ? 'selected':'' }} > {{$agenda->listaAgendasConselheiro}} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -59,14 +59,14 @@
                                                                                     style="color:red">(Este é um resumo público que aparecerá na Alda.)</span>
 
                                 <textarea class="form-control"
-                                          name="texto">{{ old('texto')}}</textarea>
+                                          name="texto" rows="10">{{ old('texto')}}</textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="resumo">Pauta completa da reunião</label> <span class="text-right"
                                                                                             style="color:red">(Texto completo. Apenas ISP terá acesso.)</span>
                                 <textarea class="form-control"
-                                          name="pauta_interna">{{ old('pauta_interna')}}</textarea>
+                                          name="pauta_interna" rows="10">{{ old('pauta_interna')}}</textarea>
                             </div>
 
                             <div class="form-group">
@@ -266,9 +266,9 @@
     </script>
 
     <script>
-        $('#configreset').click(function () {
-            $('#configform')[0].reset();
-        });
+        // $('#configreset').click(function () {
+        //     $('#configform')[0].reset();
+        // });
     </script>
 
 

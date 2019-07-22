@@ -71,7 +71,7 @@ class Agenda extends Model
 
     }
 
-    public function getListaAgendaAttribute()
+    public function getListAgendaAttribute()
     {
         return "{$this->id} - [{$this->conselho->ccs}] [Data/Hora $this->data $this->hora] [{$this->status->status} ] [{$this->endereco}] ";
     }
