@@ -60,6 +60,38 @@
                                 <textarea class="form-control" name="ponto_referencia" rows="5"
                                           placeholder="Próximo a delegacia de polícia..."></textarea>
                             </div>
+
+                            <div class="col-md-12">
+                            <div class="form-group">
+                                <label> Assuntos </label> <span style="color:red">*</span>
+                                <select class="form-control" name="assunto[0]" id="assunto0">
+                                    <option selected="true" disabled="disabled">Selecione um assunto</option>
+                                    @foreach($assuntos as $assunto)
+                                        <option value="{{ $assunto->id }}" {{ (collect(old('assunto.0'))->contains($assunto->id)) ? 'selected':'' }}>{{ $assunto->assunto }}</option>
+
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" name="assunto[1]" id="assunto1">
+                                    <option selected="true" disabled="disabled">Selecione um assunto</option>
+                                    @foreach($assuntos as $assunto)
+                                        <option value="{{ $assunto->id }}" {{ (collect(old('assunto.1'))->contains($assunto->id)) ? 'selected':'' }}>{{ $assunto->assunto }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <select class="form-control" name="assunto[2]" id="assunto2">
+                                    <option selected="true" disabled="disabled">Selecione um assunto</option>
+                                    @foreach($assuntos as $assunto)
+                                        <option value="{{ $assunto->id }}" {{ (collect(old('assunto.2'))->contains($assunto->id)) ? 'selected':'' }}>{{ $assunto->assunto }}</option>                                    @endforeach
+                                </select>
+                            </div>
+
+                        </div>
+
+
                             <div class="form-group">
                                 <button class="btn btn-danger">Cancelar</button>
                                 <button type="submit" class="btn btn-success"> Salvar</button>

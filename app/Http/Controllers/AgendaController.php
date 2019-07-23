@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Agenda;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use DateTime;
 class AgendaController extends Controller
 {
     public function __construct()
@@ -33,12 +34,15 @@ class AgendaController extends Controller
     public function create(Request $request)
     {
         $agenda = new Agenda();
-        $agenda->data = $request->data;
-        $agenda->hora = $request->hora;
+        $agenda->data = DateTime::createFromFormat('d/m/Y', $request->data);
+        $agenda->hora = Carbon::parse($request->hora)->format('h:m');
         $agenda->endereco = $request->endereco;
         $agenda->bairro = $request->bairro;
-        $agenda->conselh_id = Auth::user()->conselho->id;
+        $agenda->conselho_id = Auth::user()->conselho->id;
         $agenda->status_id = 4;
+//        foreach ($request->assunto as $assunto) {
+//            $r->assuntos()->syncWithoutDetaching($assunto);
+//        }
 
         $agenda->save();
 

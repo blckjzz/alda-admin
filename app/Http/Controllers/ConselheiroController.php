@@ -154,7 +154,8 @@ class ConselheiroController extends Controller
 
     public function viewCadastrarReuniao()
     {
-        return view('conselheiro.pauta.criar_agenda');
+        $assuntos = Assunto::all();
+        return view('conselheiro.pauta.criar_agenda', compact('assuntos'));
     }
 
 
@@ -167,11 +168,33 @@ class ConselheiroController extends Controller
 
     public function storeReuniao(Request $request)
     {
+        $rules = array(
+            'data' => 'required',
+            'hora' => 'required',
+            'endereco' => 'required',
+            'bairro' => 'required',
+            'ponto_referencia' => 'nullable|min:5',
+            "assunto" => "required|array|min:1",
+            "assunto.*" => "required|string|distinct|min:1",
+        );
+
+//        $messages = array(
+//            'comandante_id.required' => 'Você precisa informar qual Comandante estava presente.',
+//            'delegado_id.required' => 'Você precisa informar qual Delegado estava presente.'
+//        );
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return back()->withInput($request->all())->withErrors($validator->errors()->first());
+        }
 
         $agendaController = new AgendaController();
 
         $agenda = $agendaController->create($request);
-        return view('conselheiro.pauta.index')->with(['message' => 'Sua agenda foi armazenada com sucesso!']);
-        dd($agenda);
+        $assuntos = Assunto::all();
+
+        return view('conselheiro.pauta.criar_agenda', compact('assuntos'))
+            ->with(['message' => "Sua agenda foi armazenada com sucesso!", 'alert-type' => 'success']);
     }
 }

@@ -37,11 +37,11 @@ class Agenda extends Model
 
     }
 
-    public function setDataAttribute($data)
-    {
-        $data = DateTime::createFromFormat('d/m/Y', $data);
-        $this->attributes['data'] = $data;
-    }
+//    public function setDataAttribute($data)
+//    {
+//        $data = DateTime::createFromFormat('d/m/Y', $data);
+//        $this->attributes['data'] = $data;
+//    }
 
     public function status()
     {
@@ -52,6 +52,11 @@ class Agenda extends Model
     {
         return $this->hasOne('App\Presenca','agenda_id');
     }
+
+//    public function assuntos()
+//    {
+//
+//    }
 
 //    public function getMembrosNatosAttribute()
 //    {
