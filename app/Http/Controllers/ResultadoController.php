@@ -37,11 +37,10 @@ class ResultadoController extends Controller
 
         $a = Agenda::find($request->agenda_id);
 
-        dd($a->presenca);
         if (isset($a->resultado) && isset($a->presenca)) { //update
             return $this->update($request, $a);
         } else { //cria novo
-            if (isset($a->resultado)) {
+
                 $r = new Resultado();
                 $r->agenda_id = $request->agenda_id;
                 $r->texto = $request->texto;
@@ -54,16 +53,15 @@ class ResultadoController extends Controller
                 foreach ($request->assunto as $assunto) {
                     $r->assuntos()->syncWithoutDetaching($assunto);
                 }
-            }
 
-            if (isset($a->presenca)) {
+
                 $p = new Presenca(); //cria a presença // ajustar
                 $p->agenda_id = $request->agenda_id; // ajustar
                 $p->diretoria = json_encode($request->diretoria); //ajustar
                 $p->membrosnato = json_encode($request->membrosnato); // ajustar
                 $p->save(); //salva a presença
                 return $r;
-            }
+
         }
     }
 
