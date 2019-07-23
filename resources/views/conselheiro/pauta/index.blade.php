@@ -117,40 +117,29 @@
                                 <label for="">Quais membros da Diretoria estavam presentes?</label>
                                 @foreach($agenda->conselho->diretoria->sort() as $diretor)
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="diretor{{$diretor->id}}"
+                                        <input class="form-check-input" type="checkbox" id="dir{{$diretor->id}}"
                                                value="{{$diretor->id}}" name="diretoria[]">
-                                        <label class="form-check-label" for="diretor{{$diretor->id}}">{{$diretor->nome}}
+                                        <label class="form-check-label" for="dir{{$diretor->id}}">{{$diretor->nome}}
                                             - {{$diretor->cargo}}</label>
                                     </div>
                                 @endforeach
 
                             </div>
                             <div class="form-group">
-                                <label for="">Selecione um bairro: </label>
-                                <select class="form-control" name="bairro" id="bairro">
-                                    <option selected="true" disabled="disabled">Selecione um bairro</option>
-                                    @foreach($bairros as $id => $bairro)
-                                        <option value="{{$id}}" {{ (collect(old('bairro'))->contains($id)) ? 'selected':'' }}>{{ $bairro }}</option>
-                                    @endforeach
-                                </select>
-
                                 <div id="membro-nato">
                                     <label for="">Membros Natos presentes </label> <span style="color:red">*</span>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox"
-                                               id="comandante"
-                                               value=""
-                                               name="comandante_id">
-                                        <label class="form-check-label"
-                                               for="comandante" id="comandanteName"></label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox"
-                                               id="delegado"
-                                               value=""
-                                               name="delegado_id">
-                                        <label class="form-check-label"
-                                               for="delegado" id="delegadoName"></label>
+                                        @foreach($membrosNatos as $mn)
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox"
+                                                       id="mn{{$mn->id}}"
+                                                       value="{{$mn->id}}"
+                                                       name="membronato[]">
+
+                                                <label class="form-check-label"
+                                                       for="mn{{$mn->id}}" >{{$mn->name}}</label>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -172,33 +161,33 @@
     <script src="{{asset('js/tag-it.js')}}" type="text/javascript" charset="utf-8"></script>
 
     <script>
-        // $("#membro-nato").toggle();
-        $("#bairro").on('change', function () {
-            var abrangenciaId = $(this).children("select option:selected").val();
-            // console.log(abrangenciaId)
-            $.ajax({
-                method: 'GET', // Type of response and matches what we said in the route,
-                dataType: 'json',
-                url: '/painel/conselheiro/getMembroNatoById/' + abrangenciaId, // This is the url we gave in the route
-                success: function (membros) { // What to do if we succeed
-                    // console.log(membros);
-                    // $("#membro-nato").show('slow');
-                    $("input[name='comandante_id']").val(membros.comandante.id);
-                    $('#comandanteName').text(membros.comandante.name);
-
-                    $("input[name='delegado_id']").val(membros.delegado.id);
-                    $('#delegadoName').text(membros.delegado.name);
-                },
-
-                error:
-
-                    function (jqXHR, textStatus, errorThrown) { // What to do if we fail
-                        console.log(JSON.stringify(jqXHR));
-                        console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
-                    }
-            })
-        })
-        ;
+        // // $("#membro-nato").toggle();
+        // $("#bairro").on('change', function () {
+        //     var abrangenciaId = $(this).children("select option:selected").val();
+        //     // console.log(abrangenciaId)
+        //     $.ajax({
+        //         method: 'GET', // Type of response and matches what we said in the route,
+        //         dataType: 'json',
+        //         url: '/painel/conselheiro/getMembroNatoById/' + abrangenciaId, // This is the url we gave in the route
+        //         success: function (membros) { // What to do if we succeed
+        //             // console.log(membros);
+        //             // $("#membro-nato").show('slow');
+        //             $("input[name='comandante_id']").val(membros.comandante.id);
+        //             $('#comandanteName').text(membros.comandante.name);
+        //
+        //             $("input[name='delegado_id']").val(membros.delegado.id);
+        //             $('#delegadoName').text(membros.delegado.name);
+        //         },
+        //
+        //         error:
+        //
+        //             function (jqXHR, textStatus, errorThrown) { // What to do if we fail
+        //                 console.log(JSON.stringify(jqXHR));
+        //                 console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+        //             }
+        //     })
+        // })
+        // ;
 
 
     </script>
@@ -238,17 +227,22 @@
                         dataType: 'json',
                         url: '/painel/presenca/' + agenda.agenda_id, // This is the url we gave in the route
                         success: function (presenca) { // What to do if we succeed
-                            $('#comandante').val(presenca.membrosNatos[0].id).prop('checked', true);
-                            $('#comandanteName').text(presenca.membrosNatos[0].name);
-                            $('#delegado').val(presenca.membrosNatos[1].id).prop('checked', true);
-                            $('#delegadoName').text(presenca.membrosNatos[1].name);
-
-                            $.each(presenca.diretoria, function (key, value) {
-                                console.log('#diretor' + value.id);
-                                if ($('#diretor' + value.id).val() == value.id) {
-                                    $('#diretor' + value.id).prop('checked', true);
+                            console.log(presenca);
+                            $.each(presenca.membrosNatos, function (key, value) {
+                                console.log('#mn' + value.id);
+                                if ($('#mn' + value.id).val() == value.id) {
+                                    $('#mn' + value.id).prop('checked', true);
                                 }
                             });
+
+                            $.each(presenca.diretoria, function (key, value) {
+                                console.log('#dir' + value.id);
+                                if ($('#dir' + value.id).val() == value.id) {
+                                    $('#dir' + value.id).prop('checked', true);
+                                }
+                            });
+
+
                         }
                     });
                     // }

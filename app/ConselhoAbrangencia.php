@@ -27,6 +27,16 @@ class ConselhoAbrangencia extends Model
         return $this->belongsTo('App\MembroNatoAbrangencia', 'membronato_id');
     }
 
+//    public function delegado()
+//    {
+//        return $this->hasOne('App\MembroNato', 'delegado_id');
+//    }
+//
+//    public function comandante()
+//    {
+//        return $this->belongsTo('App\MembroNato', 'comandante_id');
+//    }
+
 }
 
 

@@ -72,6 +72,7 @@ Route::group([
     route::GET('resultado/{id}/assuntos', 'ResultadoController@findAssuntosByResultadoId');
     route::GET('resultado/view/{id}', 'ResultadoController@show');
     Route::GET('conselheiro/getMembroNatoById/{id}', 'ConselheiroController@getMembroNatoByAbrangenciaId');
+    Route::GET('conselheiro/getAllMembrosNatosByAgendaId/{agendaId}', 'ConselheiroController@getMembrosNatosByConselhoId');
 
     /***
      * Agenda
@@ -86,6 +87,11 @@ Route::group([
 
     route::GET('presenca/{agendaId}', 'PresencaController@findPresencaByAgendaId');
     route::GET('presenca/{agendaId}/presentes', 'PresencaController@findAllMembrosById');
+
+
+
+
+
 
 
 });

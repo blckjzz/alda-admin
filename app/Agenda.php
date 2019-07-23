@@ -53,15 +53,15 @@ class Agenda extends Model
         return $this->hasOne('App\Presenca','agenda_id');
     }
 
-    public function getMembrosNatosAttribute()
-    {
-        return MembroNato::where('id', array($this->presenca->membrosnatos))->get();
-    }
-
-    public function getDiretoriaAttribute()
-    {
-        return MembroNato::where('id', array($this->presenca->diretoria))->get(); //find();
-    }
+//    public function getMembrosNatosAttribute()
+//    {
+//        return MembroNato::where('id', array($this->presenca->membrosnatos))->get();
+//    }
+//
+//    public function getDiretoriaAttribute()
+//    {
+//        return MembroNato::where('id', array($this->presenca->diretoria))->get(); //find();
+//    }
 
 
     public function getIdCssEnderecoAttribute()

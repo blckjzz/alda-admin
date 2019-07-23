@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Agenda;
 use App\ConselhoAbrangencia;
 use App\Diretoria;
+use App\MembroNatoAbrangencia;
 use App\Resultado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,9 @@ use App\Assunto;
 use App\MembroNato;
 use App\User;
 use Illuminate\Support\Facades\Input;
+use function PHPSTORM_META\map;
 use \Validator;
+use DB;
 
 class ConselheiroController extends Controller
 {
@@ -33,7 +36,9 @@ class ConselheiroController extends Controller
         $agendas = $user->conselho->agendas->where('realizada', true);
         $assuntos = Assunto::all();
         $bairros = $user->conselho->abrangencias->pluck('bairro', 'id');
-        return view('conselheiro.pauta.index', compact('agendas', 'assuntos'))->with(['bairros' => $bairros]);
+        $membrosNatos = $this->getMembrosNatosByConselhoId($user->conselho->id);
+//        dd($membrosNatos);
+        return view('conselheiro.pauta.index', compact('agendas', 'assuntos'))->with(['bairros' => $bairros, 'membrosNatos' => $membrosNatos]);
     }
 
     public function viewCCS()
@@ -79,19 +84,6 @@ class ConselheiroController extends Controller
 
     public function storePauta(Request $request)
     {
-//
-//        $this->validate($request, [
-//            'texto' => 'required|min:30',
-//            'agenda_id' => 'required',
-//            'data' => 'required',
-//            "assunto" => "required|array|min:1",
-//            "assunto.*" => "required|string|distinct|min:1",
-//            "comandante_id" => "required|array|min:1",
-//            "delegado_id." => "required|string|distinct|min:1",
-//            'data' => 'required',
-//            'pauta_interna' => 'required|min:100',
-//            'present_members' => 'required|integer|min:1',
-//        ]);
 
         $rules = array(
             'texto' => 'required|min:30',
@@ -99,19 +91,19 @@ class ConselheiroController extends Controller
             'data' => 'required',
             "assunto" => "required|array|min:1",
             "assunto.*" => "required|string|distinct|min:1",
-            "comandante_id" => 'required_without:delegado_id',
-            'delegado_id' => 'required_without:comandante_id',
+            "membronato" => 'required|array|min:1',
+            "assunto.*" => "required|string|distinct|min:1",
             'data' => 'required',
             'pauta_interna' => 'required|min:100',
             'present_members' => 'required|integer|min:1',
         );
 
-        $messages = array(
-            'comandante_id.required' => 'Você precisa informar qual Comandante estava presente.',
-            'delegado_id.required' => 'Você precisa informar qual Delegado estava presente.'
-        );
+//        $messages = array(
+//            'comandante_id.required' => 'Você precisa informar qual Comandante estava presente.',
+//            'delegado_id.required' => 'Você precisa informar qual Delegado estava presente.'
+//        );
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             return back()->withInput($request->all())->withErrors($validator->errors()->first());
@@ -133,6 +125,25 @@ class ConselheiroController extends Controller
         return view('conselheiro.membrosnato.index', compact('conselho'));
     }
 
+
+    public function getMembrosNatosByConselhoId($conselhoId)
+    {
+       $cpm = DB::table('membrosnatos_abrangencia')
+            ->join('abrangencias', 'abrangencias.membronato_id', '=', 'membrosnatos_abrangencia.id')
+            ->join('membros_natos as mn1', 'mn1.id', '=', 'membrosnatos_abrangencia.comandante_id')
+            ->select('mn1.*')
+            ->where('conselho_id', $conselhoId)
+            ->get()->unique('id')->all();
+
+        $delegados = DB::table('membrosnatos_abrangencia')
+            ->join('abrangencias', 'abrangencias.membronato_id', '=', 'membrosnatos_abrangencia.id')
+            ->join('membros_natos as mn2', 'mn2.id', '=', 'membrosnatos_abrangencia.delegado_id')
+            ->select('mn2.*')
+            ->where('conselho_id', $conselhoId)
+            ->get()->unique('id')->all();
+
+        return array_merge($delegados,$cpm);
+    }
 
     public function getMembroNatoByAbrangenciaId($id)
     {

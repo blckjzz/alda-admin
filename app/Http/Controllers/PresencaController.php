@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Diretoria;
 use App\MembroNato;
 use App\Presenca;
 use Illuminate\Http\Request;
@@ -98,20 +99,11 @@ class PresencaController extends Controller
 
     public function findPresencaByAgendaId($agendaId)
     {
-        $presenca = Agenda::find($agendaId)->presenca;
+        $agenda = Agenda::find($agendaId);
 
 
-        $diretoriaPresente =
-            DB::table('diretorias')->
-            whereIn('id', $presenca->diretoria)
-                ->get();
-
-        $membrosNatosPresente =
-            DB::table('membros_natos')->
-            whereIn('id', $presenca->membrosnato)
-                ->get();
-
-        return response()->json(['membrosNatos' => $membrosNatosPresente,'diretoria' => $diretoriaPresente]);
+        return response()->json(['membrosNatos' => MembroNato::whereIn('id', $agenda->presenca->membrosnato)->get(),
+            'diretoria' => Diretoria::whereIn('id', $agenda->presenca->diretoria)->get()]);
     }
 
     public function findAllMembrosById($agendaId)

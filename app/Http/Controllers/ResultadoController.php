@@ -55,7 +55,7 @@ class ResultadoController extends Controller
                 $r->assuntos()->syncWithoutDetaching($assunto);
             }
 
-
+            dd($request->all());
             $p = new Presenca(); //cria a presença // ajustar
             $p->agenda_id = $request->agenda_id; // ajustar
             $p->diretoria = json_encode($request->diretoria); //ajustar
@@ -93,9 +93,9 @@ class ResultadoController extends Controller
         }
 
 //        dd($request->all());
-        if ($request->has('delegado_id') || $request->has('comandante_id')) {
+        if ($request->has('membronato')) {
             $a->presenca()->update([
-                'membrosnato' => json_encode(array($request->delegado_id, $request->comandante_id)),
+                'membrosnato' => json_encode(array($request->membronato)),
             ]);
         }
 
