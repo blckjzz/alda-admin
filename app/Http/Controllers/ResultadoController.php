@@ -37,31 +37,33 @@ class ResultadoController extends Controller
 
         $a = Agenda::find($request->agenda_id);
 
-//        dd(isset($a->resultado));
-        if (isset($a->resultado)) { //update
+        dd($a->presenca);
+        if (isset($a->resultado) && isset($a->presenca)) { //update
             return $this->update($request, $a);
         } else { //cria novo
+            if (isset($a->resultado)) {
+                $r = new Resultado();
+                $r->agenda_id = $request->agenda_id;
+                $r->texto = $request->texto;
+                $r->pauta_interna = $request->pauta_interna;
+                $r->revisionstatus_id = 1; // Em análise
+                $r->present_members = $request->present_members;
+                $r->data = $request->data;
 
-            $r = new Resultado();
-            $r->agenda_id = $request->agenda_id;
-            $r->texto = $request->texto;
-            $r->pauta_interna = $request->pauta_interna;
-            $r->revisionstatus_id = 1; // Em análise
-            $r->present_members = $request->present_members;
-            $r->data = $request->data;
-
-            $r->save(); //salva resultado da ata eletronica
-            foreach ($request->assunto as $assunto) {
-                $r->assuntos()->syncWithoutDetaching($assunto);
+                $r->save(); //salva resultado da ata eletronica
+                foreach ($request->assunto as $assunto) {
+                    $r->assuntos()->syncWithoutDetaching($assunto);
+                }
             }
 
-            dd($request->all());
-            $p = new Presenca(); //cria a presença // ajustar
-            $p->agenda_id = $request->agenda_id; // ajustar
-            $p->diretoria = json_encode($request->diretoria); //ajustar
-            $p->membrosnato = json_encode($request->membrosnato); // ajustar
-            $p->save(); //salva a presença
-            return $r;
+            if (isset($a->presenca)) {
+                $p = new Presenca(); //cria a presença // ajustar
+                $p->agenda_id = $request->agenda_id; // ajustar
+                $p->diretoria = json_encode($request->diretoria); //ajustar
+                $p->membrosnato = json_encode($request->membrosnato); // ajustar
+                $p->save(); //salva a presença
+                return $r;
+            }
         }
     }
 
@@ -88,14 +90,14 @@ class ResultadoController extends Controller
 
         if ($request->has('diretoria')) {
             $a->presenca()->update([
-                'diretoria' =>  json_encode($request->diretoria),
+                'diretoria' => json_encode($request->diretoria),
             ]);
         }
 
 //        dd($request->all());
         if ($request->has('membronato')) {
             $a->presenca()->update([
-                'membrosnato' => json_encode(array($request->membronato)),
+                'membrosnato' => json_encode($request->membronato)
             ]);
         }
 

@@ -94,7 +94,7 @@ class ConselheiroController extends Controller
             "membronato" => 'required|array|min:1',
             "assunto.*" => "required|string|distinct|min:1",
             'data' => 'required',
-            'pauta_interna' => 'required|min:100',
+            'pauta_interna' => 'required|min:30',
             'present_members' => 'required|integer|min:1',
         );
 
