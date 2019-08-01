@@ -39,10 +39,9 @@ class Resultado extends Model
 
     }
 
-    public function setDataAttribute($data)
+    public function setDataAttribute($value)
     {
-        $data = DateTime::createFromFormat('d/m/Y', $data);
-        $this->attributes['data'] = $data;
+        $this->attributes['data'] = Carbon::createFromFormat('d/m/Y', $value);
     }
 
 }

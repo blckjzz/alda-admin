@@ -41,26 +41,27 @@ class ResultadoController extends Controller
             return $this->update($request, $a);
         } else { //cria novo
 
-                $r = new Resultado();
-                $r->agenda_id = $request->agenda_id;
-                $r->texto = $request->texto;
-                $r->pauta_interna = $request->pauta_interna;
-                $r->revisionstatus_id = 1; // Em análise
-                $r->present_members = $request->present_members;
-                $r->data = $request->data;
-
-                $r->save(); //salva resultado da ata eletronica
-                foreach ($request->assunto as $assunto) {
-                    $r->assuntos()->syncWithoutDetaching($assunto);
-                }
+            $r = new Resultado();
+            $r->agenda_id = $request->agenda_id;
+            $r->texto = $request->texto;
+            $r->pauta_interna = $request->pauta_interna;
+            $r->revisionstatus_id = 1; // Em análise
+            $r->present_members = $request->present_members;
+            $r->data = $request->data;
 
 
-                $p = new Presenca(); //cria a presença // ajustar
-                $p->agenda_id = $request->agenda_id; // ajustar
-                $p->diretoria = json_encode($request->diretoria); //ajustar
-                $p->membrosnato = json_encode($request->membrosnato); // ajustar
-                $p->save(); //salva a presença
-                return $r;
+            $r->save(); //salva resultado da ata eletronica
+            foreach ($request->assunto as $assunto) {
+                $r->assuntos()->syncWithoutDetaching($assunto);
+            }
+
+
+            $p = new Presenca(); //cria a presença // ajustar
+            $p->agenda_id = $request->agenda_id; // ajustar
+            $p->diretoria = json_encode($request->diretoria); //ajustar
+            $p->membrosnato = json_encode($request->membrosnato); // ajustar
+            $p->save(); //salva a presença
+            return $r;
 
         }
     }
