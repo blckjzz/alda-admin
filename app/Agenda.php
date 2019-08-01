@@ -37,11 +37,10 @@ class Agenda extends Model
 
     }
 
-//    public function setDataAttribute($data)
-//    {
-//        $data = DateTime::createFromFormat('d/m/Y', $data);
-//        $this->attributes['data'] = $data;
-//    }
+    public function setDataAttribute($value)
+    {
+        $this->attributes['data'] = Carbon::createFromFormat('d/m/Y', $value);
+    }
 
     public function status()
     {
@@ -53,20 +52,11 @@ class Agenda extends Model
         return $this->hasOne('App\Presenca','agenda_id');
     }
 
-//    public function assuntos()
-//    {
-//
-//    }
+    public function assuntos()
+    {
+        return $this->belongsToMany('App\Assunto', 'assunto_agenda', 'agenda_id');
+    }
 
-//    public function getMembrosNatosAttribute()
-//    {
-//        return MembroNato::where('id', array($this->presenca->membrosnatos))->get();
-//    }
-//
-//    public function getDiretoriaAttribute()
-//    {
-//        return MembroNato::where('id', array($this->presenca->diretoria))->get(); //find();
-//    }
 
 
     public function getIdCssEnderecoAttribute()

@@ -62,7 +62,11 @@ Route::group([
 
     Route::GET('conselheiro/reuniao', 'ConselheiroController@viewCadastrarReuniao');
     Route::POST('conselheiro/reuniao', 'ConselheiroController@storeReuniao');
+    Route::POST('conselheiro/reuniao/reuniao', 'ConselheiroController@updateReuniao');
     Route::GET('conselheiro/reuniao/lista', 'ConselheiroController@viewReuniao');
+    Route::GET('conselheiro/{agendaId}/assuntos', 'AssuntoController@getAssuntoAgendaByAgendaId');
+
+
 
     /**
      * Resultados
@@ -87,11 +91,6 @@ Route::group([
 
     route::GET('presenca/{agendaId}', 'PresencaController@findPresencaByAgendaId');
     route::GET('presenca/{agendaId}/presentes', 'PresencaController@findAllMembrosById');
-
-
-
-
-
 
 
 });

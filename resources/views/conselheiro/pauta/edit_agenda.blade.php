@@ -17,7 +17,7 @@
 
     <div class="page-content container-fluid">
         <form class="form-edit-add" role="form"
-              action="{{ action('ConselheiroController@storeReuniao') }}"
+              action="{{ action('ConselheiroController@updateReuniao') }}"
               method="POST" enctype="multipart/form-data" autocomplete="off">
             <!-- PUT Method if we are editing -->
             {{ csrf_field() }}
@@ -71,11 +71,52 @@
                                 <textarea class="form-control" name="ponto_referencia" rows="5"
                                           placeholder="Próximo a delegacia de polícia..."></textarea>
                             </div>
+                            <div class="form-group  col-md-12">
+                                <div class="form-group">
+                                    <label> Assuntos </label> <span style="color:red">*</span>
+                                    <select class="form-control" name="assunto[0]" id="assunto0">
+                                        <option selected="true" disabled="disabled">Selecione um assunto</option>
+                                        @foreach($assuntos as $assunto)
+                                            <option
+                                                value="{{ $assunto->id }}" {{ (collect(old('assunto.0'))->contains($assunto->id)) ? 'selected':'' }}>
+                                                {{ $assunto->assunto }}
+                                            </option>
+
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <select class="form-control" name="assunto[1]" id="assunto1">
+                                        <option selected="true" disabled="disabled">Selecione um assunto</option>
+                                        @foreach($assuntos as $assunto)
+                                            <option
+                                                value="{{ $assunto->id }}" {{ (collect(old('assunto.1'))->contains($assunto->id)) ? 'selected':'' }}>
+                                                {{ $assunto->assunto }}
+                                            </option>
+
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control" name="assunto[2]" id="assunto2">
+                                        <option selected="true" disabled="disabled">Selecione um assunto</option>
+                                        @foreach($assuntos as $assunto)
+                                            <option
+                                                value="{{ $assunto->id }}" {{ (collect(old('assunto.2'))->contains($assunto->id)) ? 'selected':'' }}>
+                                                {{ $assunto->assunto }}
+                                            </option>
+
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <button class="btn btn-danger">Cancelar</button>
                                 <button type="submit" class="btn btn-success"> Salvar</button>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -93,7 +134,7 @@
             $.ajax({
                 method: 'GET', // Type of response and matches what we said in the route,
                 dataType: 'json',
-                url: '/painel/agenda/ver/' + id , // This is the url we gave in the route
+                url: '/painel/agenda/ver/' + id, // This is the url we gave in the route
                 success: function (agenda) { // What to do if we succeed
                     console.log(agenda);
                     $("input[name='hora']").val(agenda.hora);
@@ -105,7 +146,22 @@
                     $("input[name='data']").val(agenda.data);
                     $("input[name='bairro']").val(agenda.bairro);
                     $("textarea[name='ponto_referencia']").val(agenda.ponto_referencia);
-                },
+
+                    $.ajax({
+                        method: 'GET', // Type of response and matches what we said in the route
+                        dataType: 'json',
+                        url: '/painel/conselheiro/' + agenda.id + '/assuntos/', // This is the url we gave in the route
+                        success: function (assunto) { // What to do if we succeed
+                            $.each(assunto, function (key, value) {
+                                $('#assunto' + key + ' option[value=' + value.id + ']').attr('selected', 'selected');
+                            });
+                        }
+                    });
+                }
+
+
+                ,
+
 
                 error: function (jqXHR, textStatus, errorThrown) { // What to do if we fail
                     console.log(JSON.stringify(jqXHR));

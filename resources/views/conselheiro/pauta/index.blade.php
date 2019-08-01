@@ -47,12 +47,12 @@
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <label for="">Data</label> <span style="color:red">*</span>
-                                <input type="input" name="data"
-                                       value="{{(collect(old('data'))->contains($agenda->data)) ? $agenda->data : \Carbon\Carbon::today()->format('d/m/Y') }}"
-                                       class="form-control">
-                            </div>
+{{--                            <div class="form-group">--}}
+{{--                                <label for="">Data</label> <span style="color:red">*</span>--}}
+{{--                                <input type="input" name="data"--}}
+{{--                                       value="{{(collect(old('data'))->contains($agenda->data)) ? $agenda->data : \Carbon\Carbon::today()->format('d/m/Y') }}"--}}
+{{--                                       class="form-control">--}}
+{{--                            </div>--}}
 
                             <div class="form-group">
                                 <label for="resumo">Resumo da reunião</label> <span class="text-right"
@@ -203,11 +203,11 @@
                     // console.log(agenda);
                     $("textarea[name='texto']").val(agenda.texto);
                     $("textarea[name='pauta_interna']").val(agenda.pauta_interna);
-                    if ($("input[name='data']").val()) {
-                        $(this).val(new Date());
-                    }
-
-                    $("input[name='data']").val(agenda.data);
+                    // // if ($("input[name='data']").val()) {
+                    // //     $(this).val(new Date());
+                    // // }
+                    //
+                    // $("input[name='data']").val(agenda.data);
                     $("input[name='present_members']").val(agenda.present_members);
 
                     $.ajax({
