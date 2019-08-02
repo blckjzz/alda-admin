@@ -12,6 +12,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="{{asset('admin/plugins/timepicker/bootstrap-timepicker.css')}}">
     <link rel="stylesheet" href="{{ asset("admin/bower_components/bootstrap/dist/css/bootstrap.min.css") }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href=" {{ asset("/admin/bower_components/font-awesome/css/font-awesome.min.css")}}">
@@ -34,6 +35,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -149,26 +152,27 @@ desired effect
 
         </div>
         <!-- Default to the left -->
-        <strong>Desenvolvido pelo <a href="https://itsrio.org" target="_blank">Instituto de Tecnologia e Sociedade do Rio</a></a>.</strong>
+        <strong>Desenvolvido pelo <a href="https://itsrio.org" target="_blank">Instituto de Tecnologia e Sociedade do
+                Rio</a></a>.</strong>
     </footer>
 
     {{--<!-- Control Sidebar -->--}}
     {{--<aside class="control-sidebar control-sidebar-dark">--}}
-        {{--<!-- Tab panes -->--}}
-        {{--<div class="tab-content">--}}
-            {{--<!-- Home tab content -->--}}
-            {{--<div class="tab-pane active" id="control-sidebar-home-tab">--}}
-                {{--<ul class="control-sidebar-menu">--}}
-                    {{--<li>--}}
-                        {{--<a href="{{ action('ConselheiroController@logout') }}" class="pull-left info">--}}
-                            {{--<i class="menu-icon fa fa-power-off bg-red"></i> Sair--}}
-                        {{--</a>--}}
-                    {{--</li>--}}
-                {{--</ul>--}}
+    {{--<!-- Tab panes -->--}}
+    {{--<div class="tab-content">--}}
+    {{--<!-- Home tab content -->--}}
+    {{--<div class="tab-pane active" id="control-sidebar-home-tab">--}}
+    {{--<ul class="control-sidebar-menu">--}}
+    {{--<li>--}}
+    {{--<a href="{{ action('ConselheiroController@logout') }}" class="pull-left info">--}}
+    {{--<i class="menu-icon fa fa-power-off bg-red"></i> Sair--}}
+    {{--</a>--}}
+    {{--</li>--}}
+    {{--</ul>--}}
 
-            {{--</div>--}}
+    {{--</div>--}}
 
-        {{--</div>--}}
+    {{--</div>--}}
     {{--</aside>--}}
 </div>
 <!-- ./wrapper -->
@@ -192,7 +196,7 @@ desired effect
 
 
 <script>
-            @if(Session::has('alerts'))
+        @if(Session::has('alerts'))
     let alerts = {!! json_encode(Session::get('alerts')) !!};
     helpers.displayAlerts(alerts, toastr);
     @endif
@@ -215,8 +219,8 @@ desired effect
 @yield('javascript')
 
 <script>
-    $(function() {
-        setTimeout(function() {
+    $(function () {
+        setTimeout(function () {
             $("#flashmessage").hide('blind', {}, 500)
         }, 5000);
     });

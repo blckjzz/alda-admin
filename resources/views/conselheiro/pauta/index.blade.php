@@ -42,31 +42,39 @@
                                 <select class="form-control" id="agenda" name="agenda_id">
                                     <option selected="true" disabled="disabled">Selecione uma reunião</option>
                                     @foreach($agendas as $agenda)
-                                        <option value="{{ $agenda->id }}" {{ (collect(old('agenda_id'))->contains($agenda->id)) ? 'selected':'' }} > {{$agenda->listaAgendasConselheiro}} </option>
+                                        <option
+                                            value="{{ $agenda->id }}" {{ (collect(old('agenda_id'))->contains($agenda->id)) ? 'selected':'' }} > {{$agenda->listaAgendasConselheiro}} </option>
                                     @endforeach
                                 </select>
                             </div>
 
-{{--                            <div class="form-group">--}}
-{{--                                <label for="">Data</label> <span style="color:red">*</span>--}}
-{{--                                <input type="input" name="data"--}}
-{{--                                       value="{{(collect(old('data'))->contains($agenda->data)) ? $agenda->data : \Carbon\Carbon::today()->format('d/m/Y') }}"--}}
-{{--                                       class="form-control">--}}
-{{--                            </div>--}}
+                            {{--                            <div class="form-group">--}}
+                            {{--                                <label for="">Data</label> <span style="color:red">*</span>--}}
+                            {{--                                <input type="input" name="data"--}}
+                            {{--                                       value="{{(collect(old('data'))->contains($agenda->data)) ? $agenda->data : \Carbon\Carbon::today()->format('d/m/Y') }}"--}}
+                            {{--                                       class="form-control">--}}
+                            {{--                            </div>--}}
 
                             <div class="form-group">
                                 <label for="resumo">Resumo da reunião</label> <span class="text-right"
-                                                                                    style="color:red">(Este é um resumo público que aparecerá na Alda.)</span>
+                                                                                    style="color:red"> (Este é um resumo público que aparecerá na Alda.)</span>
+                                <div class="text-right">
+                                    <div id="charNum0"></div>
+                                </div>
 
                                 <textarea class="form-control"
-                                          name="texto" rows="10">{{ old('texto')}}</textarea>
+                                          name="texto" id="resumo" rows="10">{{ old('texto')}}</textarea>
                             </div>
 
                             <div class="form-group">
-                                <label for="resumo">Pauta completa da reunião</label> <span class="text-right"
-                                                                                            style="color:red">(Texto completo. Apenas ISP terá acesso.)</span>
+                                <label for="pauta">Pauta completa da reunião</label> <span class="text-right"
+                                                                                           style="color:red">
+                            (Texto completo. Apenas ISP terá acesso.)</span>
+                                <div class="text-right">
+                                    <div id="charNum1"></div>
+                                </div>
                                 <textarea class="form-control"
-                                          name="pauta_interna" rows="10">{{ old('pauta_interna')}}</textarea>
+                                          name="pauta_interna" id="pauta" rows="10">{{ old('pauta_interna')}}</textarea>
                             </div>
 
                             <div class="form-group">
@@ -74,7 +82,10 @@
                                 <select class="form-control" name="assunto[0]" id="assunto0">
                                     <option selected="true" disabled="disabled">Selecione um assunto</option>
                                     @foreach($assuntos as $assunto)
-                                        <option value="{{ $assunto->id }}" {{ (collect(old('assunto.0'))->contains($assunto->id)) ? 'selected':'' }}>{{ $assunto->assunto }}</option>
+                                        <option
+                                            value="{{ $assunto->id }}" {{ (collect(old('assunto.0'))->contains($assunto->id)) ? 'selected':'' }}>
+                                            {{ $assunto->assunto }}
+                                        </option>
 
                                     @endforeach
                                 </select>
@@ -84,7 +95,10 @@
                                 <select class="form-control" name="assunto[1]" id="assunto1">
                                     <option selected="true" disabled="disabled">Selecione um assunto</option>
                                     @foreach($assuntos as $assunto)
-                                        <option value="{{ $assunto->id }}" {{ (collect(old('assunto.1'))->contains($assunto->id)) ? 'selected':'' }}>{{ $assunto->assunto }}</option>
+                                        <option
+                                            value="{{ $assunto->id }}" {{ (collect(old('assunto.1'))->contains($assunto->id)) ? 'selected':'' }}>
+                                            {{ $assunto->assunto }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -93,7 +107,10 @@
                                 <select class="form-control" name="assunto[2]" id="assunto2">
                                     <option selected="true" disabled="disabled">Selecione um assunto</option>
                                     @foreach($assuntos as $assunto)
-                                        <option value="{{ $assunto->id }}" {{ (collect(old('assunto.2'))->contains($assunto->id)) ? 'selected':'' }}>{{ $assunto->assunto }}</option>                                    @endforeach
+                                        <option
+                                            value="{{ $assunto->id }}" {{ (collect(old('assunto.2'))->contains($assunto->id)) ? 'selected':'' }}>
+                                            {{ $assunto->assunto }}
+                                        </option>                                    @endforeach
                                 </select>
                             </div>
 
@@ -108,8 +125,8 @@
                     <div class="panel panel-bordered">
                         <div class="panel-body">
                             <div class="form-group">
-                                <label for="">Haviam quantos presentes na reunião?</label> <span
-                                        style="color:red">*</span>
+                                <label for="">Quantos participantes estavam presentes?</label> <span
+                                    style="color:red">*</span>
                                 <input type="number" class="form-control" name="present_members"
                                        value="{{ old('present_members') }}">
                             </div>
@@ -137,7 +154,7 @@
                                                        name="membronato[]">
 
                                                 <label class="form-check-label"
-                                                       for="mn{{$mn->id}}" >{{$mn->name}}</label>
+                                                       for="mn{{$mn->id}}">{{$mn->name}}</label>
                                             </div>
                                         @endforeach
                                     </div>
@@ -147,7 +164,7 @@
 
                             <div class="form-group">
                                 <button class="btn btn-danger">Cancelar</button>
-                                <button type="submit" class="btn btn-success"> Salvar</button>
+                                <button type="submit" id="btnSubmit" class="btn btn-success"> Salvar</button>
                             </div>
                         </div>
                     </div>
@@ -159,39 +176,6 @@
 @section('javascript')
     <script src="{{asset('js/jquery-ui.js')}}"></script>
     <script src="{{asset('js/tag-it.js')}}" type="text/javascript" charset="utf-8"></script>
-
-    <script>
-        // // $("#membro-nato").toggle();
-        // $("#bairro").on('change', function () {
-        //     var abrangenciaId = $(this).children("select option:selected").val();
-        //     // console.log(abrangenciaId)
-        //     $.ajax({
-        //         method: 'GET', // Type of response and matches what we said in the route,
-        //         dataType: 'json',
-        //         url: '/painel/conselheiro/getMembroNatoById/' + abrangenciaId, // This is the url we gave in the route
-        //         success: function (membros) { // What to do if we succeed
-        //             // console.log(membros);
-        //             // $("#membro-nato").show('slow');
-        //             $("input[name='comandante_id']").val(membros.comandante.id);
-        //             $('#comandanteName').text(membros.comandante.name);
-        //
-        //             $("input[name='delegado_id']").val(membros.delegado.id);
-        //             $('#delegadoName').text(membros.delegado.name);
-        //         },
-        //
-        //         error:
-        //
-        //             function (jqXHR, textStatus, errorThrown) { // What to do if we fail
-        //                 console.log(JSON.stringify(jqXHR));
-        //                 console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
-        //             }
-        //     })
-        // })
-        // ;
-
-
-    </script>
-
     <script>
         $("#agenda").on('change', function () {
             var id = $("select option:selected").val();
@@ -203,11 +187,6 @@
                     // console.log(agenda);
                     $("textarea[name='texto']").val(agenda.texto);
                     $("textarea[name='pauta_interna']").val(agenda.pauta_interna);
-                    // // if ($("input[name='data']").val()) {
-                    // //     $(this).val(new Date());
-                    // // }
-                    //
-                    // $("input[name='data']").val(agenda.data);
                     $("input[name='present_members']").val(agenda.present_members);
 
                     $.ajax({
@@ -227,22 +206,20 @@
                         dataType: 'json',
                         url: '/painel/presenca/' + agenda.agenda_id, // This is the url we gave in the route
                         success: function (presenca) { // What to do if we succeed
-                            console.log(presenca);
+                            // console.log(presenca);
                             $.each(presenca.membrosNatos, function (key, value) {
-                                console.log('#mn' + value.id);
+                                // console.log('#mn' + value.id);
                                 if ($('#mn' + value.id).val() == value.id) {
                                     $('#mn' + value.id).prop('checked', true);
                                 }
                             });
 
                             $.each(presenca.diretoria, function (key, value) {
-                                console.log('#dir' + value.id);
+                                // console.log('#dir' + value.id);
                                 if ($('#dir' + value.id).val() == value.id) {
                                     $('#dir' + value.id).prop('checked', true);
                                 }
                             });
-
-
                         }
                     });
                     // }
@@ -260,14 +237,27 @@
     </script>
 
     <script>
-        // $('#configreset').click(function () {
-        //     $('#configform')[0].reset();
-        // });
+        $(document).ready(function () {
+            $("#charNum0").text("Caracteres restantes: " + 300);
+            $("#resumo").on('keyup paste change focus', function () {
+
+                var Characters = $("#resumo").val().replace(/(<([^>]+)>)/ig, "").length; // '$' is missing from the selector
+
+                $("#charNum0").text("Caracteres restantes: " + (300 - Characters));
+            });
+            $("#charNum1").text("Caracteres restantes: " + (3000));
+
+            $("#pauta").on('keyup paste change focus', function () {
+
+                var Characters = $("#pauta").val().replace(/(<([^>]+)>)/ig, "").length; // '$' is missing from the selector
+
+                $("#charNum1").text("Caracteres restantes: " + (3000 - Characters));
+            });
+
+
+        });
+
     </script>
-
-
-
-
 
 
 @endsection
