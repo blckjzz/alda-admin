@@ -184,7 +184,7 @@ class ConselheiroController extends Controller
         $agendaController->create($request);
 
         return redirect()->action('ConselheiroController@viewReuniao')
-            ->with(['message' => "Sua agenda foi armazenada com sucesso!", 'alert-type' => 'success']);
+            ->with(['success' => "Sua agenda foi armazenada com sucesso!", 'alert-type' => 'success']);
     }
 
     public function updateReuniao(Request $request)
@@ -211,6 +211,6 @@ class ConselheiroController extends Controller
         $agendaController->update($request, $request->agenda);
 
         return redirect()->action('ConselheiroController@viewReuniao')
-            ->with(['message' => "Sua agenda foi armazenada com sucesso!", 'alert-type' => 'success']);
+            ->with(['success' => "Sua agenda foi armazenada com sucesso!", 'alert-type' => 'success']);
     }
 }
