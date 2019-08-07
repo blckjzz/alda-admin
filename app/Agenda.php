@@ -11,7 +11,7 @@ class Agenda extends Model
 
     protected $table = 'agendas';
 
-    protected $fillable = ['data, hora, endereco, conselho_id, status_id, data_hora', 'bairro'];
+    protected $fillable = ['data, hora, hora_fim, endereco, conselho_id, status_id, data_hora', 'bairro'];
 
     protected $dates = ['data'];
 
@@ -26,14 +26,26 @@ class Agenda extends Model
     {
         return $this->hasOne('App\Resultado', 'agenda_id');
     }
+//
+//    public function getDataAttribute($data)
+//    {
+//        if ($data == null || $data == '')
+//            return "00/00/0000";
+//        else
+//            $date = Carbon::parse($data)->format('d/m/Y');
+//            return $date;
+//
+//    }
+//
+//    public function setDataAttribute($value)
+//    {
+//        $this->attributes['data'] = Carbon::createFromFormat('d/m/Y', $value);
+//    }
 
-    public function getDataAttribute($data)
+    public function getDataAttribute($value)
     {
-        if ($data == null || $data == '')
-            return "00/00/0000";
-        else
-            $date = Carbon::parse($data)->format('d/m/Y');
-            return $date;
+        $date = Carbon::parse($value)->format('d/m/Y');
+        return $date;
 
     }
 

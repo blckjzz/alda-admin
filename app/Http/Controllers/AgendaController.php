@@ -35,8 +35,9 @@ class AgendaController extends Controller
     public function create(Request $request)
     {
         $agenda = new Agenda();
-        $agenda->data = DateTime::createFromFormat('d/m/Y', $request->data);
+        $agenda->data = $request->data;
         $agenda->hora = Carbon::parse($request->hora)->format('h:m');
+        $agenda->hora_fim = Carbon::parse($request->hora_fim)->format('h:m');
         $agenda->endereco = $request->endereco;
         $agenda->bairro = $request->bairro;
         $agenda->ponto_referencia = $request->ponto_referencia;
@@ -59,9 +60,11 @@ class AgendaController extends Controller
 
         $a->data = $request->data;
         $a->hora = $request->hora;
+        $a->hora_fim = $request->hora_fim;
         $a->endereco = $request->endereco;
         $a->bairro = $request->bairro;
         $a->ponto_referencia = $request->ponto_referencia;
+
 
         $a->save();
 

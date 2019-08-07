@@ -165,6 +165,7 @@ class ConselheiroController extends Controller
         $rules = array(
             'data' => 'required',
             'hora' => 'required',
+            'hora_fim' => 'required',
             'endereco' => 'required',
             'bairro' => 'required',
             'ponto_referencia' => 'nullable|min:5',
@@ -179,6 +180,7 @@ class ConselheiroController extends Controller
             return back()->withInput($request->all())->withErrors($validator->errors()->first());
         }
 
+//        dd($request->all());
         $agendaController = new AgendaController();
 
         $agendaController->create($request);
@@ -192,6 +194,7 @@ class ConselheiroController extends Controller
         $rules = array(
             'data' => 'required',
             'hora' => 'required',
+            'hora_fim' => 'required',
             'endereco' => 'required',
             'bairro' => 'required',
             'ponto_referencia' => 'nullable|min:5',
@@ -208,6 +211,7 @@ class ConselheiroController extends Controller
 
         $agendaController = new AgendaController();
 
+//        dd($request->all());
         $agendaController->update($request, $request->agenda);
 
         return redirect()->action('ConselheiroController@viewReuniao')

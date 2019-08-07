@@ -8,7 +8,6 @@
     </h1>
 
 @stop
-
 @section('content')
 
     <div class="page-content container-fluid">
@@ -37,12 +36,16 @@
                         <div class="panel-body">
                             <div class="form-group col-md-12">
                                 <label for="">Data</label>
-                                <input type="text" class="form-control" name="data" placeholder="Data"
-                                       value="00/00/0000">
+                                <input type="text" class="form-control" name="data"
+                                       id="data">
                             </div>
                             <div class="form-group col-md-12">
-                                <label for="">Hora</label> <i class="fa fa-clock-o"></i>
+                                <label for="">Horário de Início</label> <i class="fa fa-clock-o"></i>
                                 <input type="text" class="form-control timepicker" name="hora"/>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="">Horário de Término </label> <i class="fa fa-clock-o"></i>
+                                <input type="text" class="form-control timepicker" name="hora_fim"/>
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="name">Endereço</label>
@@ -99,7 +102,6 @@
 
                             </div>
 
-
                             <div class="form-group">
                                 <button class="btn btn-danger">Cancelar</button>
                                 <button type="submit" class="btn btn-success"> Salvar</button>
@@ -119,6 +121,12 @@
             $('.timepicker').timepicker({
                 showMeridian: false
             });
+        });
+
+
+        $( "#data" ).datepicker({
+            format: 'dd/mm/yyyy',
+            language: 'pt-BR'
         });
     </script>
 @endsection

@@ -48,13 +48,15 @@
 
                             <div class="form-group col-md-12">
                                 <label for="">Data</label>
-                                <input type="text" class="form-control" name="data" placeholder="Data"
-                                       value="00/00/0000">
+                                <input type="text" class="form-control" id = "data"name="data">
                             </div>
                             <div class="form-group col-md-12">
-                                <label for="">Hora</label>
-                                <input type="time" data-name="Hora" class="form-control" name="hora" placeholder="Hora"
-                                       value="">
+                                <label for="">Horário de Início</label> <i class="fa fa-clock-o"></i>
+                                <input type="text" class="form-control timepicker" name="hora"/>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="">Horário de Término </label> <i class="fa fa-clock-o"></i>
+                                <input type="text" class="form-control timepicker" name="hora_fim"/>
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="name">Endereço</label>
@@ -125,9 +127,22 @@
 
 @endsection
 @section('javascript')
-    <script src="{{asset('js/jquery-ui.js')}}"></script>
+    {{--<script src="{{asset('js/jquery-ui.js')}}"></script>--}}
     <script src="{{asset('js/tag-it.js')}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{asset('admin/plugins/timepicker/bootstrap-timepicker.js')}}"></script>
+    <script>
+        $(function () {
+            $('.timepicker').timepicker({
+                showMeridian: false
+            });
+        });
 
+
+        $( "#data" ).datepicker({
+            format: 'dd/mm/yyyy',
+            language: 'pt-BR'
+        });
+    </script>
     <script>
         $("#agenda").on('change', function () {
             var id = $("select option:selected").val();
@@ -138,6 +153,7 @@
                 success: function (agenda) { // What to do if we succeed
                     console.log(agenda);
                     $("input[name='hora']").val(agenda.hora);
+                    $("input[name='hora_fim']").val(agenda.hora_fim);
                     $("textarea[name='endereco']").val(agenda.endereco);
                     if ($("input[name='data']").val()) {
                         $(this).val(new Date());
