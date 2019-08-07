@@ -119,7 +119,6 @@
                     </div>
                 </div>
             </div>
-            {{--{{dd($agenda->resultado)}}--}}
             <div class="row">
                 <div class="col-md-10">
                     <div class="panel panel-bordered">
@@ -160,7 +159,23 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-bordered">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="">Imagem da Ata física</label>
+                                        <input class="form-control" type="file" name="ata" multiple>
+
+                                        <label for="">Imagem do Livro de Presenças</label>
+                                        <input class="form-control" type="file" name="ata" multiple>
+
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <button class="btn btn-danger">Cancelar</button>
