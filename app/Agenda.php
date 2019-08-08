@@ -11,7 +11,7 @@ class Agenda extends Model
 
     protected $table = 'agendas';
 
-    protected $fillable = ['data, hora, hora_fim, endereco, conselho_id, status_id, data_hora', 'bairro'];
+    protected $fillable = ['data, hora, hora_fim, endereco, conselho_id, status_id, data_hora', 'bairro', 'file_path'];
 
     protected $dates = ['data'];
 
