@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Input;
 use function PHPSTORM_META\map;
 use \Validator;
 use DB;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 
 class ConselheiroController extends Controller
 {
@@ -104,7 +106,26 @@ class ConselheiroController extends Controller
 
 
         $rc = new ResultadoController();
-        $rc->store($request); // armazena o Resultado da reunião
+        $resultado = $rc->store($request); // armazena o Resultado da reunião
+
+//        dd($resultado->agenda->conselho->id);
+
+        $fc = new FileHandleController();
+
+        $pathAta = $fc->getAtaPath($fc->getBasePathResultado($resultado));
+
+
+        $imgsAta = $request->file('img_ata');
+
+        /**
+         * Storing img from atas
+         */
+        foreach ($imgsAta as $img) {
+            Storage::putFile($pathAta, $img);
+        }
+
+        $rc->updateFilePath($resultado, $pathAta);
+
 
         return redirect()->action('ConselheiroController@viewPauta')
             ->with('success', 'Ata eletrônica registrada com
@@ -112,16 +133,18 @@ class ConselheiroController extends Controller
     }
 
 
-    public function viewMembrosNato()
+    public
+    function viewMembrosNato()
     {
         $conselho = Auth::user()->conselho;
         return view('conselheiro.membrosnato.index', compact('conselho'));
     }
 
 
-    public function getMembrosNatosByConselhoId($conselhoId)
+    public
+    function getMembrosNatosByConselhoId($conselhoId)
     {
-       $cpm = DB::table('membrosnatos_abrangencia')
+        $cpm = DB::table('membrosnatos_abrangencia')
             ->join('abrangencias', 'abrangencias.membronato_id', '=', 'membrosnatos_abrangencia.id')
             ->join('membros_natos as mn1', 'mn1.id', '=', 'membrosnatos_abrangencia.comandante_id')
             ->select('mn1.*')
@@ -135,24 +158,27 @@ class ConselheiroController extends Controller
             ->where('conselho_id', $conselhoId)
             ->get()->unique('id')->all();
 
-        return array_merge($delegados,$cpm);
+        return array_merge($delegados, $cpm);
     }
 
-    public function getMembroNatoByAbrangenciaId($id)
+    public
+    function getMembroNatoByAbrangenciaId($id)
     {
         $abrangencia = ConselhoAbrangencia::find($id);
         return ['comandante' => $abrangencia->membrosNatos->comandante, 'delegado' => $abrangencia->membrosNatos->delegado];
 
     }
 
-    public function viewCadastrarReuniao()
+    public
+    function viewCadastrarReuniao()
     {
         $assuntos = Assunto::all();
         return view('conselheiro.pauta.criar_agenda', compact('assuntos'));
     }
 
 
-    public function viewReuniao()
+    public
+    function viewReuniao()
     {
         $agendas = Auth::user()->conselho->agendas()->where('realizada', 0)->get();
         $assuntos = Assunto::all();
@@ -160,7 +186,8 @@ class ConselheiroController extends Controller
             compact('agendas', 'assuntos'));
     }
 
-    public function storeReuniao(Request $request)
+    public
+    function storeReuniao(Request $request)
     {
         $rules = array(
             'data' => 'required',
@@ -185,11 +212,23 @@ class ConselheiroController extends Controller
 
         $agendaController->create($request);
 
+//        $pathPresenca = $this->getPresencaPath($fc->getBasePathResultado($resultado));
+//        $imgl_ivro_presenca = $request->file('imgl_ivro_presenca');
+//
+//        /**
+//         * Storing img from atas
+//         */
+//        foreach ($imgl_ivro_presenca as $img) {
+//            Storage::putFile($pathPresenca, $img);
+//        }
+
+
         return redirect()->action('ConselheiroController@viewReuniao')
             ->with(['success' => "Sua agenda foi armazenada com sucesso!", 'alert-type' => 'success']);
     }
 
-    public function updateReuniao(Request $request)
+    public
+    function updateReuniao(Request $request)
     {
         $rules = array(
             'data' => 'required',
@@ -214,7 +253,16 @@ class ConselheiroController extends Controller
 //        dd($request->all());
         $agendaController->update($request, $request->agenda);
 
+
         return redirect()->action('ConselheiroController@viewReuniao')
             ->with(['success' => "Sua agenda foi armazenada com sucesso!", 'alert-type' => 'success']);
     }
+
+    public function getAtaFilesByResultadoId($agendaId)
+    {
+        $rc = new ResultadoController();
+        $files = $rc->getAtaFilesByAgendaId($agendaId);
+        return $files;
+    }
+
 }

@@ -6,6 +6,7 @@ use App\Presenca;
 use App\Resultado;
 use App\Agenda;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ResultadoController extends Controller
 {
@@ -32,13 +33,13 @@ class ResultadoController extends Controller
      * @param Request $request
      * @return Resultado
      */
-    public function store(Request $request)
+    public function store(Request $request, $filePath = null)
     {
 
         $a = Agenda::find($request->agenda_id);
 
         if (isset($a->resultado) && isset($a->presenca)) { //update
-            return $this->update($request, $a);
+            return $this->update($request, $a, $filePath);
         } else { //cria novo
 
             $r = new Resultado();
@@ -72,7 +73,7 @@ class ResultadoController extends Controller
      * @return mixed
      */
 
-    public function update(Request $request, Agenda $a)
+    public function update(Request $request, Agenda $a, $filePath = null)
     {
         $a->resultado
             ->update
@@ -84,6 +85,7 @@ class ResultadoController extends Controller
                     'revisionstatus_id' => ($request->revisionstatus_id == null) ? 1 : $request->revisionstatus_id,
                     'present_members' => (isset($$request->present_members)) ? $request->present_members : $a->resultado->present_members, //
                     'data' => (isset($request->data)) ? $request->data : $a->resultado->data,
+                    'file_path' => (isset($filePath)) ? $filePath : $a->resultado->filePath,
                 ]
             );
 
@@ -103,6 +105,19 @@ class ResultadoController extends Controller
         if ($request->has('assunto') && is_array($request->assunto) && count($request->assunto))
             $a->resultado->assuntos()->sync($request->assunto);
 
-        return $a->resultado->agenda->list_agenda;
+        return $a->resultado;
+    }
+
+    public function updateFilePath(Resultado $resultado, $filePath)
+    {
+        $resultado->file_path = $filePath;
+        return $resultado->save();
+    }
+
+
+    public function getAtaFilesByAgendaId($agendaId)
+    {
+        $agenda = Agenda::find($agendaId);
+        return $files = Storage::files($agenda->resultado->file_path);
     }
 }
