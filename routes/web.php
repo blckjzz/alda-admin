@@ -77,6 +77,7 @@ Route::group([
     route::GET('resultado/view/{id}', 'ResultadoController@show');
     Route::GET('conselheiro/getMembroNatoById/{id}', 'ConselheiroController@getMembroNatoByAbrangenciaId');
     Route::GET('conselheiro/getAllMembrosNatosByAgendaId/{agendaId}', 'ConselheiroController@getMembrosNatosByConselhoId');
+    Route::GET('conselheiro/getAllFilesByAgendaId/{resultadoId}', 'ConselheiroController@getAtaFilesByResultadoId');
 
     /***
      * Agenda
