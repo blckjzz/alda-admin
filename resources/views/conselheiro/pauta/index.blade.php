@@ -8,7 +8,11 @@
     </h1>
 
 @stop
+@section('css')
+    <link rel="stylesheet" href="{{asset("/admin/bower_components/bootstrap-fileinput/css/fileinput.css")}}">
+    <link rel="stylesheet" href="{{asset("/admin/bower_components/bootstrap-fileinput/css/fileinput-rtl.css")}}">
 
+@endsection
 @section('content')
     <div class="page-content container-fluid">
         <form id="form" class="form-edit-add" role="form"
@@ -167,11 +171,8 @@
                             <div class="panel panel-bordered">
                                 <div class="panel-body">
                                     <div class="form-group">
-                                        <label for="">Imagem da Ata física</label>
-                                        <input class="form-control" type="file" name="ata" multiple>
-
-                                        <label for="">Imagem do Livro de Presenças</label>
-                                        <input class="form-control" type="file" name="ata" multiple>
+                                        <label for="">Selecione Ata física (Fotos)</label>
+                                        <input class="form-control" id="fileupload" type="file" name="img_ata[]"  multiple="multiple">
 
                                     </div>
                                 </div>
@@ -189,9 +190,17 @@
     </div>
 @endsection
 @section('javascript')
-    <script src="{{asset('js/jquery-ui.js')}}"></script>
-    <script src="{{asset('js/tag-it.js')}}" type="text/javascript" charset="utf-8"></script>
+
+    <script src="{{asset("/admin/bower_components/bootstrap-fileinput/js/fileinput.js")}}"></script>
+    <script src="{{asset("/admin/bower_components/bootstrap-fileinput/js/plugins/piexif.js")}}"></script>
+    <script src="{{asset("/admin/bower_components/bootstrap-fileinput/js/plugins/purify.js")}}"></script>
+    <script src="{{asset("/admin/bower_components/bootstrap-fileinput/js/plugins/sortable.js")}}"></script>
+
     <script>
+        $("#fileupload").fileinput();
+
+
+
         $("#agenda").on('change', function () {
             var id = $("select option:selected").val();
             $.ajax({
@@ -217,36 +226,43 @@
                     });
 
                     $.ajax({
+                    method: 'GET', // Type of response and matches what we said in the route
+                    dataType: 'json',
+                    url: '/painel/presenca/' + agenda.agenda_id, // This is the url we gave in the route
+                    success: function (presenca) { // What to do if we succeed
+                        // console.log(presenca);
+                        $.each(presenca.membrosNatos, function (key, value) {
+                            // console.log('#mn' + value.id);
+                            if ($('#mn' + value.id).val() == value.id) {
+                                $('#mn' + value.id).prop('checked', true);
+                            }
+                        });
+
+                        $.each(presenca.diretoria, function (key, value) {
+                            // console.log('#dir' + value.id);
+                            if ($('#dir' + value.id).val() == value.id) {
+                                $('#dir' + value.id).prop('checked', true);
+                            }
+                        });
+                    }
+                });
+                    $.ajax({
                         method: 'GET', // Type of response and matches what we said in the route
                         dataType: 'json',
-                        url: '/painel/presenca/' + agenda.agenda_id, // This is the url we gave in the route
-                        success: function (presenca) { // What to do if we succeed
-                            // console.log(presenca);
-                            $.each(presenca.membrosNatos, function (key, value) {
-                                // console.log('#mn' + value.id);
-                                if ($('#mn' + value.id).val() == value.id) {
-                                    $('#mn' + value.id).prop('checked', true);
-                                }
-                            });
+                        url: '/painel/conselheiro/getAllFilesByAgendaId/' + agenda.agenda_id, // This is the url we gave in the route
+                        success: function (files) { // What to do if we succeed
+                            console.log(files);
 
-                            $.each(presenca.diretoria, function (key, value) {
-                                // console.log('#dir' + value.id);
-                                if ($('#dir' + value.id).val() == value.id) {
-                                    $('#dir' + value.id).prop('checked', true);
-                                }
-                            });
                         }
                     });
-                    // }
-
-                },
-
+        },
                 error: function (jqXHR, textStatus, errorThrown) { // What to do if we fail
                     console.log(JSON.stringify(jqXHR));
                     console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
                 }
             });
         });
+
 
 
     </script>
