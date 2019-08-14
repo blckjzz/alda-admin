@@ -118,6 +118,22 @@ class ResultadoController extends Controller
     public function getAtaFilesByAgendaId($agendaId)
     {
         $agenda = Agenda::find($agendaId);
-        return $files = Storage::files($agenda->resultado->file_path);
+
+        $filesInFolder = \File::files(env("LOCALSTORAGE_PATH") . $agenda->resultado->file_path);
+//        return env("LOCALSTORAGE_PATH") . $agenda->resultado->file_path;
+        return $filesInFolder;
+
+    }
+
+    public function getFileAddress($path)
+    {
+        $file = \File::get($path);
+        $type = \File::mimeType($path);
+
+        $response = \Response::make($file, 200);
+        $response->header("Content-Type", $type);
+
+
+        return $response;
     }
 }

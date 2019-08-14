@@ -2,22 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Agenda;
 use App\ConselhoAbrangencia;
 use App\Diretoria;
-use App\MembroNatoAbrangencia;
-use App\Resultado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Assunto;
-use App\MembroNato;
-use App\User;
-use Illuminate\Support\Facades\Input;
-use function PHPSTORM_META\map;
 use \Validator;
 use DB;
-use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use http\Client\Response;
+
 
 class ConselheiroController extends Controller
 {
@@ -115,17 +110,15 @@ class ConselheiroController extends Controller
         $pathAta = $fc->getAtaPath($fc->getBasePathResultado($resultado));
 
 
-        $imgsAta = $request->file('img_ata');
-
         /**
          * Storing img from atas
          */
-        foreach ($imgsAta as $img) {
-            Storage::putFile($pathAta, $img);
+        if ($request->file('img_ata') != null) {
+            foreach ($request->file('img_ata') as $img) {
+                Storage::putFile($pathAta, $img);
+            }
+            $rc->updateFilePath($resultado, $pathAta);
         }
-
-        $rc->updateFilePath($resultado, $pathAta);
-
 
         return redirect()->action('ConselheiroController@viewPauta')
             ->with('success', 'Ata eletrônica registrada com
@@ -262,7 +255,16 @@ class ConselheiroController extends Controller
     {
         $rc = new ResultadoController();
         $files = $rc->getAtaFilesByAgendaId($agendaId);
-        return $files;
+
+//        return collect(Storage::files($files));
+
+        $manager = new ImageManager();
+
+        foreach ($files as $file) {
+            $response[] = $manager->make($file->getRealPath());
+        }
+        return $response;
+
     }
 
 }
