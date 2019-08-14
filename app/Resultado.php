@@ -11,7 +11,7 @@ class Resultado extends Model
 
     protected $table = 'resultados';
 
-    protected $fillable = ['agenda_id', 'texto', 'pauta_interna', 'status_id', 'data', 'present_members', 'revisionstatus_id', 'file_path'];
+    protected $fillable = ['agenda_id', 'texto', 'pauta_interna', 'status_id', 'present_members', 'revisionstatus_id', 'file_path'];
 
     protected $dates = ['data'];
 
