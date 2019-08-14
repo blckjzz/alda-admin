@@ -32,16 +32,16 @@ class Resultado extends Model
         return $this->belongsTo('App\RevisionStatus', 'revisionstatus_id');
     }
 
-    public function getDataAttribute($value)
-    {
-        $date = Carbon::parse($value)->format('d/m/Y');
-        return $date;
-
-    }
-
-    public function setDataAttribute($value)
-    {
-        $this->attributes['data'] = Carbon::createFromFormat('d/m/Y', $value);
-    }
+//    public function getDataAttribute($value)
+//    {
+//        $date = Carbon::parse($value)->format('d/m/Y');
+//        return $date;
+//
+//    }
+//
+//    public function setDataAttribute($value)
+//    {
+//        $this->attributes['data'] = Carbon::createFromFormat('d/m/Y', $value);
+//    }
 
 }
