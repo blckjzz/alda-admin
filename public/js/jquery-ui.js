@@ -2231,7 +2231,7 @@ if ( $.expr && $.expr.filters && $.expr.filters.animated ) {
 if ( $.uiBackCompat !== false ) {
 	$.extend( $.effects, {
 
-		// Saves a set of properties in a data storage
+		// Saves a set of properties in a data files
 		save: function( element, set ) {
 			var i = 0, length = set.length;
 			for ( ; i < length; i++ ) {
@@ -2241,7 +2241,7 @@ if ( $.uiBackCompat !== false ) {
 			}
 		},
 
-		// Restores a set of previously saved properties from a data storage
+		// Restores a set of previously saved properties from a data files
 		restore: function( element, set ) {
 			var val, i = 0, length = set.length;
 			for ( ; i < length; i++ ) {
