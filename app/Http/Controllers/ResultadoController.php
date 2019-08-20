@@ -7,6 +7,7 @@ use App\Resultado;
 use App\Agenda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
 
 class ResultadoController extends Controller
 {
@@ -118,22 +119,11 @@ class ResultadoController extends Controller
     public function getAtaFilesByAgendaId($agendaId)
     {
         $agenda = Agenda::find($agendaId);
-
-        $filesInFolder = \File::files(env("LOCALSTORAGE_PATH") . $agenda->resultado->file_path);
-//        return env("LOCALSTORAGE_PATH") . $agenda->resultado->file_path;
-        return $filesInFolder;
-
+        $files = Storage::disk()->allFiles($agenda->resultado->file_path);
+        foreach ($files as $file) {
+            $url[] = Storage::url($file);
+        }
+        return $url;
     }
 
-    public function getFileAddress($path)
-    {
-        $file = \File::get($path);
-        $type = \File::mimeType($path);
-
-        $response = \Response::make($file, 200);
-        $response->header("Content-Type", $type);
-
-
-        return $response;
-    }
 }

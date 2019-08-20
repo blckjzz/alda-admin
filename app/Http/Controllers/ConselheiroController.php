@@ -7,6 +7,7 @@ use App\Diretoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Assunto;
+use Intervention\Image\Image;
 use \Validator;
 use DB;
 use Illuminate\Support\Facades\Storage;
@@ -34,7 +35,6 @@ class ConselheiroController extends Controller
         $assuntos = Assunto::all();
         $bairros = $user->conselho->abrangencias->pluck('bairro', 'id');
         $membrosNatos = $this->getMembrosNatosByConselhoId($user->conselho->id);
-//        dd($membrosNatos);
         return view('conselheiro.pauta.index', compact('agendas', 'assuntos'))->with(['bairros' => $bairros, 'membrosNatos' => $membrosNatos]);
     }
 
@@ -45,7 +45,7 @@ class ConselheiroController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in files.
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
@@ -113,6 +113,7 @@ class ConselheiroController extends Controller
         /**
          * Storing img from atas
          */
+//        dd(public_path('storage'));
         if ($request->file('img_ata') != null) {
             foreach ($request->file('img_ata') as $img) {
                 Storage::putFile($pathAta, $img);
@@ -255,16 +256,16 @@ class ConselheiroController extends Controller
     {
         $rc = new ResultadoController();
         $files = $rc->getAtaFilesByAgendaId($agendaId);
-
-//        return collect(Storage::files($files));
-
-        $manager = new ImageManager();
-
-        foreach ($files as $file) {
-            $response[] = $manager->make($file->getRealPath());
+        if (count($files) > 0) {
+            return $files;
         }
-        return $response;
-
+        return abort(400);
     }
 
+    public function unlinkImages($filePath)
+    {
+        dd(Storage::disk()->exists($filePath));
+        Storage::disk()->delete($filePath);
+
+    }
 }

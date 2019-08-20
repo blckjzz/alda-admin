@@ -32,7 +32,7 @@ class PresencaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in files.
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
@@ -75,7 +75,7 @@ class PresencaController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in files.
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
@@ -87,7 +87,7 @@ class PresencaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from files.
      *
      * @param int $id
      * @return \Illuminate\Http\Response

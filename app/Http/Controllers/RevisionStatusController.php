@@ -28,7 +28,7 @@ class RevisionStatusController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in files.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -61,7 +61,7 @@ class RevisionStatusController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in files.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\RevisionStatus  $revisionStatus
@@ -73,7 +73,7 @@ class RevisionStatusController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from files.
      *
      * @param  \App\RevisionStatus  $revisionStatus
      * @return \Illuminate\Http\Response

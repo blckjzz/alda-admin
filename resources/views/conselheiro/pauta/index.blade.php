@@ -172,12 +172,20 @@
                                 <div class="panel-body">
                                     <div class="form-group">
                                         <label for="">Selecione Ata física (Fotos)</label>
-                                        <input class="form-control" id="fileupload" type="file" name="img_ata[]"  multiple="multiple">
+                                        <input class="form-control" id="fileupload" type="file" name="img_ata[]"
+                                               multiple="multiple">
 
                                     </div>
+                                    <div class="form-group">
+                                        <label for="">Arquivos Armazenados</label>
+                                        <div class="form-inline" id="uploaded-files">
+
+                                        </div>
+                                    </div>
+
+
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <button class="btn btn-danger">Cancelar</button>
                                 <button type="submit" id="btnSubmit" class="btn btn-success"> Salvar</button>
@@ -197,9 +205,16 @@
     <script src="{{asset("/admin/bower_components/bootstrap-fileinput/js/plugins/sortable.js")}}"></script>
 
     <script>
+
+        $(document).ready(function(){
+            $('.remover').on('click', function(e){
+                e.preventDefault();
+                alert("Handling link click");
+            });
+
+        });
+
         $("#fileupload").fileinput();
-
-
 
         $("#agenda").on('change', function () {
             var id = $("select option:selected").val();
@@ -226,43 +241,58 @@
                     });
 
                     $.ajax({
-                    method: 'GET', // Type of response and matches what we said in the route
-                    dataType: 'json',
-                    url: '/painel/presenca/' + agenda.agenda_id, // This is the url we gave in the route
-                    success: function (presenca) { // What to do if we succeed
-                        // console.log(presenca);
-                        $.each(presenca.membrosNatos, function (key, value) {
-                            // console.log('#mn' + value.id);
-                            if ($('#mn' + value.id).val() == value.id) {
-                                $('#mn' + value.id).prop('checked', true);
-                            }
-                        });
+                        method: 'GET', // Type of response and matches what we said in the route
+                        dataType: 'json',
+                        url: '/painel/presenca/' + agenda.agenda_id, // This is the url we gave in the route
+                        success: function (presenca) { // What to do if we succeed
+                            // console.log(presenca);
+                            $.each(presenca.membrosNatos, function (key, value) {
+                                // console.log('#mn' + value.id);
+                                if ($('#mn' + value.id).val() == value.id) {
+                                    $('#mn' + value.id).prop('checked', true);
+                                }
+                            });
 
-                        $.each(presenca.diretoria, function (key, value) {
-                            // console.log('#dir' + value.id);
-                            if ($('#dir' + value.id).val() == value.id) {
-                                $('#dir' + value.id).prop('checked', true);
-                            }
-                        });
-                    }
-                });
+                            $.each(presenca.diretoria, function (key, value) {
+                                // console.log('#dir' + value.id);
+                                if ($('#dir' + value.id).val() == value.id) {
+                                    $('#dir' + value.id).prop('checked', true);
+                                }
+                            });
+                        }
+                    });
                     $.ajax({
                         method: 'GET', // Type of response and matches what we said in the route
                         dataType: 'json',
                         url: '/painel/conselheiro/getAllFilesByAgendaId/' + agenda.agenda_id, // This is the url we gave in the route
                         success: function (files) { // What to do if we succeed
-                            console.log(files);
+                            $('#uploaded-files', function () {
+                                $.each(files, function (key, url) {
+                                    // button = $('<input value='+ agenda.agenda_id +' class="btn btn-danger remover"/>');
+                                    var img = $('<img>'); //Equivalent: $(document.createElement('img'))
+                                    img.attr('src', url);
+                                    img.attr('class', 'img-thumbnail');
+                                    img.height(150);
+                                    img.width(150);
+                                    img.appendTo('#uploaded-files');
+                                    // button.appendTo(img);
+                                })
 
+                            });
                         }
-                    });
-        },
-                error: function (jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    console.log(JSON.stringify(jqXHR));
-                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
-                }
-            });
-        });
+                    })
 
+                },
+                error:
+
+                    function (jqXHR, textStatus, errorThrown) { // What to do if we fail
+                        console.log(JSON.stringify(jqXHR));
+                        console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                    }
+            })
+            ;
+        })
+        ;
 
 
     </script>
@@ -287,6 +317,8 @@
 
 
         });
+
+
 
     </script>
 
