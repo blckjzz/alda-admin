@@ -9,7 +9,7 @@ import keys from '../utils/keys';
 
 import { baseConfig } from './base-config';
 
-// internal storage for locale config files
+// internal files for locale config files
 var locales = {};
 var localeFamilies = {};
 var globalLocale;

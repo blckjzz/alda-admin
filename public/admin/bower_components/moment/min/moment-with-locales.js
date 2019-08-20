@@ -1804,7 +1804,7 @@
         meridiemParse: defaultLocaleMeridiemParse
     };
 
-    // internal storage for locale config files
+    // internal files for locale config files
     var locales = {};
     var localeFamilies = {};
     var globalLocale;

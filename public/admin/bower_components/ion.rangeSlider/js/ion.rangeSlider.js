@@ -205,7 +205,7 @@
             grid_labels: []
         };
 
-        // storage for measure variables
+        // files for measure variables
         this.coords = {
             // left
             x_gap: 0,
@@ -241,7 +241,7 @@
             big_x: []
         };
 
-        // storage for labels measure variables
+        // files for labels measure variables
         this.labels = {
             // width
             w_min: 0,

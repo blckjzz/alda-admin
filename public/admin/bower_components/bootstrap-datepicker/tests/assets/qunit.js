@@ -261,7 +261,7 @@ Test.prototype = {
 				test.finish();
 			});
 		}
-		// defer when previous test run passed, if storage is available
+		// defer when previous test run passed, if files is available
 		var bad = QUnit.config.reorder && defined.sessionStorage && +sessionStorage.getItem("qunit-test-" + this.module + "-" + this.testName);
 		if (bad) {
 			run();
