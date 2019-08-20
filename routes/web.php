@@ -93,14 +93,4 @@ Route::group([
     route::GET('presenca/{agendaId}', 'PresencaController@findPresencaByAgendaId');
     route::GET('presenca/{agendaId}/presentes', 'PresencaController@findAllMembrosById');
 
-
-    /**
-     * Images recovery
-     */
-
-    Route::get('storage/{agendaId}', function ($filename)
-    {
-        Image::make(storage_path(env("LOCALSTORAGE_PATH") . $filename))->response();
-    });
-
 });
