@@ -44,18 +44,21 @@ return [
     'disks' => [
         'production' => [
             'driver' => 'local',
-            'root'   => env('LOCALSTORAGE_PATH'),
+            'root' => env('LOCALSTORAGE_PATH'),
+            'url' => env('APP_URL') . '/storage', // added line (directory within "public")
+            'visibility' => 'private', // modified visibility
         ],
 
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
+            'url' => env('APP_URL') . '/',
         ],
 
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 

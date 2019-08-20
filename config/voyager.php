@@ -70,7 +70,7 @@ return [
     |
     */
 
-    'storage' => [
+    'files' => [
         'disk' => 'public',
     ],
 

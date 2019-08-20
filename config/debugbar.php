@@ -9,7 +9,7 @@ return [
      |
      | Debugbar is enabled by default, when debug is set to true in app.php.
      | You can override the value by setting enable to true or false instead of null.
-     | 
+     |
      | You can provide an array of URI's that must be ignored (eg. 'api/*')
      |
      */
@@ -27,11 +27,11 @@ return [
      | DebugBar stores data for session/ajax requests.
      | You can disable this, so the debugbar stores data in headers/session,
      | but this can cause problems with large data collectors.
-     | By default, file storage (in the storage folder) is used. Redis and PDO
+     | By default, file files (in the files folder) is used. Redis and PDO
      | can also be used. For PDO, run the package migrations first.
      |
      */
-    'storage' => [
+    'files' => [
         'enabled'    => true,
         'driver'     => 'file', // redis, file, pdo, custom
         'path'       => storage_path('debugbar'), // For file driver
@@ -79,7 +79,7 @@ return [
      |
      */
     'error_handler' => false,
-    
+
     /*
      |--------------------------------------------------------------------------
      | Clockwork integration
