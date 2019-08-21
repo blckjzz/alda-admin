@@ -7,7 +7,6 @@ use App\Resultado;
 use App\Agenda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
 
 class ResultadoController extends Controller
 {
@@ -60,8 +59,9 @@ class ResultadoController extends Controller
 
             $p = new Presenca(); //cria a presença // ajustar
             $p->agenda_id = $request->agenda_id; // ajustar
-            $p->diretoria = json_encode($request->diretoria); //ajustar
-            $p->membrosnato = json_encode($request->membrosnato); // ajustar
+            $p->diretoria = $request->diretoria; //ajustar
+            $p->delegado_id = $request->delegado_id; // ajustar
+            $p->comandante_id = $request->comandante_id; // ajustar
             $p->save(); //salva a presença
             return $r;
 
@@ -76,6 +76,7 @@ class ResultadoController extends Controller
 
     public function update(Request $request, Agenda $a, $filePath = null)
     {
+//        dd($request->all());
         $a->resultado
             ->update
             (
@@ -96,10 +97,10 @@ class ResultadoController extends Controller
             ]);
         }
 
-//        dd($request->all());
-        if ($request->has('membronato')) {
+        if ($request->has('delegado_id') & $request->has('comandante_id')) {
             $a->presenca()->update([
-                'membrosnato' => json_encode($request->membronato)
+                'delegado_id' => json_encode($request->delegado_id),
+                'comandante_id' => json_encode($request->comandante_id)
             ]);
         }
 

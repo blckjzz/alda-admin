@@ -7,12 +7,9 @@ use App\Diretoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Assunto;
-use Intervention\Image\Image;
 use \Validator;
 use DB;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
-use http\Client\Response;
 
 
 class ConselheiroController extends Controller
@@ -34,8 +31,9 @@ class ConselheiroController extends Controller
         $agendas = $user->conselho->agendas->where('realizada', true);
         $assuntos = Assunto::all();
         $bairros = $user->conselho->abrangencias->pluck('bairro', 'id');
-        $membrosNatos = $this->getMembrosNatosByConselhoId($user->conselho->id);
-        return view('conselheiro.pauta.index', compact('agendas', 'assuntos'))->with(['bairros' => $bairros, 'membrosNatos' => $membrosNatos]);
+        $delegados = $this->getDelegadosByConselhoId($user->conselho->id);
+        $comandantes = $this->getComandantesByConselhoId($user->conselho->id);
+        return view('conselheiro.pauta.index', compact('agendas', 'assuntos', 'delegados', 'comandantes'))->with(['bairros' => $bairros, 'delegados' => $delegados, 'comandantes' => $comandantes]);
     }
 
     public function viewCCS()
@@ -87,7 +85,7 @@ class ConselheiroController extends Controller
             'agenda_id' => 'required',
             "assunto" => "required|array|min:1",
             "assunto.*" => "required|string|distinct|min:1",
-            "membronato" => 'required|array|min:1',
+//            "membronato" => 'required|array|min:1',
             "assunto.*" => "required|string|distinct|min:1",
             'pauta_interna' => 'required|min:30',
             'present_members' => 'required|integer|min:1',
@@ -134,25 +132,32 @@ class ConselheiroController extends Controller
         return view('conselheiro.membrosnato.index', compact('conselho'));
     }
 
+    public
+    function getDelegadosByConselhoId($conselhoId)
+    {
+        $delegados = DB::table('conselhos as C')
+            ->join('abrangencias as AB', 'AB.conselho_id', '=', 'C.id')
+            ->join('delegados as D', 'AB.delegado_id', '=', 'D.id')
+            ->select('D.*')
+            ->groupBy('D.id')
+            ->where('AB.conselho_id', $conselhoId)
+            ->get()->all();
+
+        return $delegados;
+    }
 
     public
-    function getMembrosNatosByConselhoId($conselhoId)
+    function getComandantesByConselhoId($conselhoId)
     {
-        $cpm = DB::table('membrosnatos_abrangencia')
-            ->join('abrangencias', 'abrangencias.membronato_id', '=', 'membrosnatos_abrangencia.id')
-            ->join('membros_natos as mn1', 'mn1.id', '=', 'membrosnatos_abrangencia.comandante_id')
-            ->select('mn1.*')
-            ->where('conselho_id', $conselhoId)
-            ->get()->unique('id')->all();
+        $cpm = DB::table('conselhos as C')
+            ->join('abrangencias as AB', 'AB.conselho_id', '=', 'C.id')
+            ->join('comandantes as CPM', 'AB.comandante_id', '=', 'CPM.id')
+            ->select('CPM.*')
+            ->groupBy('CPM.id')
+            ->where('AB.conselho_id', $conselhoId)
+            ->get()->all();
 
-        $delegados = DB::table('membrosnatos_abrangencia')
-            ->join('abrangencias', 'abrangencias.membronato_id', '=', 'membrosnatos_abrangencia.id')
-            ->join('membros_natos as mn2', 'mn2.id', '=', 'membrosnatos_abrangencia.delegado_id')
-            ->select('mn2.*')
-            ->where('conselho_id', $conselhoId)
-            ->get()->unique('id')->all();
-
-        return array_merge($delegados, $cpm);
+        return $cpm;
     }
 
     public
