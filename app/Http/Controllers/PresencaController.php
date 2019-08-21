@@ -39,6 +39,10 @@ class PresencaController extends Controller
     {
         $agenda = Agenda::find($agendaId);
 
+        if($agenda->presenca == null){
+            abort(404, "Não há presença");
+        }
+
         return response()->json(
             ['delegados' => Comandante::whereIn('id', $agenda->presenca->delegado_id)->get(),
             'comandantes' => Delegado::whereIn('id', $agenda->presenca->comandante_id)->get(),
