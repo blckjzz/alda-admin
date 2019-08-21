@@ -146,54 +146,67 @@
 
                             </div>
                             <div class="form-group">
+                                <label for="">Membros Natos presentes </label> <span style="color:red">*</span>
                                 <div id="membro-nato">
-                                    <label for="">Membros Natos presentes </label> <span style="color:red">*</span>
+                                    <label for="">Comandante(s): </label>
                                     <div class="form-check form-check-inline">
-                                        @foreach($membrosNatos as $mn)
+                                        @foreach($comandantes as $comandante)
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="checkbox"
-                                                       id="mn{{$mn->id}}"
-                                                       value="{{$mn->id}}"
-                                                       name="membronato[]">
+                                                       id="comandante{{$comandante->id}}"
+                                                       value="{{$comandante->id}}"
+                                                       name="comandante_id[]">
 
                                                 <label class="form-check-label"
-                                                       for="mn{{$mn->id}}">{{$mn->name}}</label>
+                                                       for="comandante{{$comandante->id}}">{{$comandante->nome}}</label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <label for="">Delegado(s): </label>
+                                    <div class="form-check form-check-inline">
+                                        @foreach($delegados as $delegado)
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox"
+                                                       id="delegado{{$delegado->id}}"
+                                                       value="{{$delegado->id}}"
+                                                       name="delegado_id[]">
+
+                                                <label class="form-check-label"
+                                                       for="delegado{{$delegado->id}}">{{$delegado->nome}}</label>
                                             </div>
                                         @endforeach
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel panel-bordered">
-                                <div class="panel-body">
-                                    <div class="form-group">
-                                        <label for="">Selecione Ata física (Fotos)</label>
-                                        <input class="form-control" id="fileupload" type="file" name="img_ata[]"
-                                               multiple="multiple">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-bordered">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label for="">Selecione Ata física (Fotos)</label>
+                                                <input class="form-control" id="fileupload" type="file" name="img_ata[]"
+                                                       multiple="multiple">
 
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="">Arquivos Armazenados</label>
-                                        <div class="form-inline" id="uploaded-files">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="">Arquivos Armazenados</label>
+                                                <div class="form-inline" id="uploaded-files">
+
+                                                </div>
+                                            </div>
+
 
                                         </div>
                                     </div>
-
-
+                                    <div class="form-group">
+                                        <button class="btn btn-danger">Cancelar</button>
+                                        <button type="submit" id="btnSubmit" class="btn btn-success"> Salvar</button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-danger">Cancelar</button>
-                                <button type="submit" id="btnSubmit" class="btn btn-success"> Salvar</button>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
         </form>
     </div>
 @endsection
@@ -206,13 +219,13 @@
 
     <script>
 
-        $(document).ready(function(){
-            $('.remover').on('click', function(e){
-                e.preventDefault();
-                alert("Handling link click");
-            });
-
-        });
+        // $(document).ready(function(){
+        //     $('.remover').on('click', function(e){
+        //         e.preventDefault();
+        //         alert("Handling link click");
+        //     });
+        //
+        // });
 
         $("#fileupload").fileinput();
 
@@ -246,10 +259,17 @@
                         url: '/painel/presenca/' + agenda.agenda_id, // This is the url we gave in the route
                         success: function (presenca) { // What to do if we succeed
                             // console.log(presenca);
-                            $.each(presenca.membrosNatos, function (key, value) {
+                            $.each(presenca.delegados, function (key, value) {
                                 // console.log('#mn' + value.id);
-                                if ($('#mn' + value.id).val() == value.id) {
-                                    $('#mn' + value.id).prop('checked', true);
+                                if ($('#delegado' + value.id).val() == value.id) {
+                                    $('#delegado' + value.id).prop('checked', true);
+                                }
+                            });
+
+                            $.each(presenca.comandantes, function (key, value) {
+                                // console.log('#mn' + value.id);
+                                if ($('#comandante' + value.id).val() == value.id) {
+                                    $('#comandante' + value.id).prop('checked', true);
                                 }
                             });
 
@@ -317,7 +337,6 @@
 
 
         });
-
 
 
     </script>

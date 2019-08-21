@@ -10,12 +10,13 @@ class Presenca extends Model
 
     protected $table = 'presenca_reuniao';
 
-    protected $fillable = ['agenda_id', 'membrosnato', 'diretoria'];
+    protected $fillable = ['agenda_id', 'comandante_id', 'delegado_id', 'diretoria'];
 
     protected $dates = ['data'];
 
     protected $casts = [
-        'membrosnato' => 'array',
+        'comandante_id' => 'array',
+        'delegado_id' => 'array',
         'diretoria' => 'array',
     ];
 

@@ -91,6 +91,6 @@ Route::group([
      */
 
     route::GET('presenca/{agendaId}', 'PresencaController@findPresencaByAgendaId');
-    route::GET('presenca/{agendaId}/presentes', 'PresencaController@findAllMembrosById');
+//    route::GET('presenca/{agendaId}/presentes', 'PresencaController@findAllMembrosById');
 
 });
