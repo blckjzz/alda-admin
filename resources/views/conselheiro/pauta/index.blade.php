@@ -230,6 +230,7 @@
         $("#fileupload").fileinput();
 
         $("#agenda").on('change', function () {
+            $('#uploaded-files').empty();
             var id = $("select option:selected").val();
             $.ajax({
                 method: 'GET', // Type of response and matches what we said in the route,
