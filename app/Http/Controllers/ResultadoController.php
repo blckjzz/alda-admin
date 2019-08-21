@@ -87,7 +87,7 @@ class ResultadoController extends Controller
                     'revisionstatus_id' => ($request->revisionstatus_id == null) ? 1 : $request->revisionstatus_id,
                     'present_members' => (isset($$request->present_members)) ? $request->present_members : $a->resultado->present_members, //
                     'data' => (isset($request->data)) ? $request->data : $a->resultado->data,
-                    'file_path' => (isset($filePath)) ? $filePath : $a->resultado->filePath,
+                    'file_path' => (isset($a->resultado->filePath)) ? $a->resultado->filePath : $filePath,
                 ]
             );
 
@@ -120,6 +120,10 @@ class ResultadoController extends Controller
     public function getAtaFilesByAgendaId($agendaId)
     {
         $agenda = Agenda::find($agendaId);
+//        dd($agenda->resultado->file_path);
+        if ($agenda->resultado->file_path == null) {
+            abort(404, 'Não há imagens');
+        }
         $files = Storage::disk()->allFiles($agenda->resultado->file_path);
         foreach ($files as $file) {
             $url[] = Storage::url($file);
