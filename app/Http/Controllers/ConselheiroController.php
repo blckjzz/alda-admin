@@ -105,9 +105,12 @@ class ConselheiroController extends Controller
 
         $fc = new FileHandleController();
 
+
         $pathAta = $fc->getAtaPath($fc->getBasePathResultado($resultado));
 
-
+        if ($resultado->file_path == null) {
+            $rc->updateFilePath($resultado, $pathAta);
+        }
         /**
          * Storing img from atas
          */
@@ -116,7 +119,6 @@ class ConselheiroController extends Controller
             foreach ($request->file('img_ata') as $img) {
                 Storage::putFile($pathAta, $img);
             }
-            $rc->updateFilePath($resultado, $pathAta);
         }
 
         return redirect()->action('ConselheiroController@viewPauta')
@@ -257,7 +259,8 @@ class ConselheiroController extends Controller
             ->with(['success' => "Sua agenda foi armazenada com sucesso!", 'alert-type' => 'success']);
     }
 
-    public function getAtaFilesByResultadoId($agendaId)
+    public
+    function getAtaFilesByResultadoId($agendaId)
     {
         $rc = new ResultadoController();
         $files = $rc->getAtaFilesByAgendaId($agendaId);
@@ -267,7 +270,8 @@ class ConselheiroController extends Controller
         return abort(400);
     }
 
-    public function unlinkImages($filePath)
+    public
+    function unlinkImages($filePath)
     {
         dd(Storage::disk()->exists($filePath));
         Storage::disk()->delete($filePath);

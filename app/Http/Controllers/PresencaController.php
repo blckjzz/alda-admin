@@ -26,7 +26,7 @@ class PresencaController extends Controller
             $presenca->agenda_id = $request->agenda_id;
             $presenca->diretoria = array($request->diretoria);
             $presenca->comandante_id = array($request->comandante_id);
-            $presenca->delegado_id= array($request->delegado_id);
+            $presenca->delegado_id = array($request->delegado_id);
             $presenca->save();
             return true;
         } catch (\Exception $e) {
@@ -39,14 +39,17 @@ class PresencaController extends Controller
     {
         $agenda = Agenda::find($agendaId);
 
-        if($agenda->presenca == null){
+        if ($agenda->presenca == null) {
             abort(404, "Não há presença");
         }
 
         return response()->json(
-            ['delegados' => Comandante::whereIn('id', $agenda->presenca->delegado_id)->get(),
-            'comandantes' => Delegado::whereIn('id', $agenda->presenca->comandante_id)->get(),
-            'diretoria' => Diretoria::whereIn('id', $agenda->presenca->diretoria)->get()]);
+            [
+                'comandantes' => Comandante::whereIn('id', $agenda->presenca->comandante_id)->get(),
+                'delegados' => Delegado::whereIn('id', $agenda->presenca->delegado_id)->get(),
+                'diretoria' => Diretoria::whereIn('id', $agenda->presenca->diretoria)->get()
+            ]
+        );
     }
 
 }

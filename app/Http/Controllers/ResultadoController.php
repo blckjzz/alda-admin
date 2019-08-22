@@ -33,13 +33,12 @@ class ResultadoController extends Controller
      * @param Request $request
      * @return Resultado
      */
-    public function store(Request $request, $filePath = null)
+    public function store(Request $request)
     {
 
         $a = Agenda::find($request->agenda_id);
-
         if (isset($a->resultado) && isset($a->presenca)) { //update
-            return $this->update($request, $a, $filePath);
+            return $this->update($request, $a);
         } else { //cria novo
 
             $r = new Resultado();
@@ -74,9 +73,8 @@ class ResultadoController extends Controller
      * @return mixed
      */
 
-    public function update(Request $request, Agenda $a, $filePath = null)
+    public function update(Request $request, Agenda $a)
     {
-//        dd($request->all());
         $a->resultado
             ->update
             (
@@ -85,9 +83,8 @@ class ResultadoController extends Controller
                     'texto' => (isset($request->texto)) ? $request->texto : $a->resultado->texto,
                     'pauta_interna' => (isset($request->pauta_interna)) ? $request->pauta_interna : $a->resultado->pauta_interna,
                     'revisionstatus_id' => ($request->revisionstatus_id == null) ? 1 : $request->revisionstatus_id,
-                    'present_members' => (isset($$request->present_members)) ? $request->present_members : $a->resultado->present_members, //
+                    'present_members' => (isset($request->present_members)) ? $request->present_members : $a->resultado->present_members, //
                     'data' => (isset($request->data)) ? $request->data : $a->resultado->data,
-                    'file_path' => (isset($a->resultado->filePath)) ? $a->resultado->filePath : $filePath,
                 ]
             );
 
@@ -97,7 +94,7 @@ class ResultadoController extends Controller
             ]);
         }
 
-        if ($request->has('delegado_id') & $request->has('comandante_id')) {
+        if ($request->has('delegado_id') && $request->has('comandante_id')) {
             $a->presenca()->update([
                 'delegado_id' => json_encode($request->delegado_id),
                 'comandante_id' => json_encode($request->comandante_id)

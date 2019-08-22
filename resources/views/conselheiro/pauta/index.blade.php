@@ -147,34 +147,36 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Membros Natos presentes </label> <span style="color:red">*</span>
-                                <div id="membro-nato">
+                                <div id="comandante">
                                     <label for="">Comandante(s): </label>
                                     <div class="form-check form-check-inline">
                                         @foreach($comandantes as $comandante)
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="checkbox"
-                                                       id="comandante{{$comandante->id}}"
+                                                       id="com{{$comandante->id}}"
                                                        value="{{$comandante->id}}"
                                                        name="comandante_id[]">
 
                                                 <label class="form-check-label"
-                                                       for="comandante{{$comandante->id}}">{{$comandante->nome}}</label>
+                                                       for="com{{$comandante->id}}">{{$comandante->nome}}</label>
                                             </div>
                                         @endforeach
                                     </div>
-                                    <label for="">Delegado(s): </label>
-                                    <div class="form-check form-check-inline">
-                                        @foreach($delegados as $delegado)
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox"
-                                                       id="delegado{{$delegado->id}}"
-                                                       value="{{$delegado->id}}"
-                                                       name="delegado_id[]">
+                                    <div id="delegados">
+                                        <label for="">Delegado(s): </label>
+                                        <div class="form-check form-check-inline">
+                                            @foreach($delegados as $delegado)
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           id="del{{$delegado->id}}"
+                                                           value="{{$delegado->id}}"
+                                                           name="delegado_id[]">
 
-                                                <label class="form-check-label"
-                                                       for="delegado{{$delegado->id}}">{{$delegado->nome}}</label>
-                                            </div>
-                                        @endforeach
+                                                    <label class="form-check-label"
+                                                           for="del{{$delegado->id}}">{{$delegado->nome}}</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -207,6 +209,8 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
         </form>
     </div>
 @endsection
@@ -230,7 +234,6 @@
         $("#fileupload").fileinput();
 
         $("#agenda").on('change', function () {
-            $('#uploaded-files').empty();
             var id = $("select option:selected").val();
             $.ajax({
                 method: 'GET', // Type of response and matches what we said in the route,
@@ -259,27 +262,25 @@
                         dataType: 'json',
                         url: '/painel/presenca/' + agenda.agenda_id, // This is the url we gave in the route
                         success: function (presenca) { // What to do if we succeed
-                            // console.log(presenca);
-                            $.each(presenca.delegados, function (key, value) {
-                                // console.log('#mn' + value.id);
-                                if ($('#delegado' + value.id).val() == value.id) {
-                                    $('#delegado' + value.id).prop('checked', true);
-                                }
-                            });
-
-                            $.each(presenca.comandantes, function (key, value) {
-                                // console.log('#mn' + value.id);
-                                if ($('#comandante' + value.id).val() == value.id) {
-                                    $('#comandante' + value.id).prop('checked', true);
-                                }
-                            });
+                            $('input[type="checkbox"]').prop('checked', false); // Uncheck
 
                             $.each(presenca.diretoria, function (key, value) {
-                                // console.log('#dir' + value.id);
+                                // console.log(presenca.value);
                                 if ($('#dir' + value.id).val() == value.id) {
                                     $('#dir' + value.id).prop('checked', true);
                                 }
                             });
+
+                            console.log(presenca);
+                            $.each(presenca.delegados, function (key, value) {
+                                $('#del' + value.id).prop('checked', true);
+                            });
+
+                            $.each(presenca.comandantes, function (key, value) {
+                                $('#com' + value.id).prop('checked', true);
+                            });
+
+
                         }
                     });
                     $.ajax({
