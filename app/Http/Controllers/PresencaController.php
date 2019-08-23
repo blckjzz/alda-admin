@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Comandante;
 use App\Delegado;
 use App\Diretoria;
-use App\MembroNato;
 use App\Presenca;
 use Illuminate\Http\Request;
 use App\Agenda;
@@ -45,9 +44,9 @@ class PresencaController extends Controller
 
         return response()->json(
             [
-                'comandantes' => Comandante::whereIn('id', $agenda->presenca->comandante_id)->get(),
-                'delegados' => Delegado::whereIn('id', $agenda->presenca->delegado_id)->get(),
-                'diretoria' => Diretoria::whereIn('id', $agenda->presenca->diretoria)->get()
+                'comandantes'   =>      Comandante::whereIn('id', $agenda->presenca->comandante_id)->get(),
+                'delegados'     =>      Delegado::whereIn('id', $agenda->presenca->delegado_id)->get(),
+                'diretoria'     =>      Diretoria::whereIn('id', $agenda->presenca->diretoria)->get()
             ]
         );
     }

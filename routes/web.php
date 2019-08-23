@@ -22,6 +22,13 @@ Route::group(['prefix' => 'painel', 'middleware' => 'checkPanel'], function () {
     // Your overwrites here
     Route::post('login', ['uses' => 'LoginController@novoLogin', 'as' => 'custom.login.logic']);
 
+    /**
+     * Admin - Associar Conselheiro - USER x Conselho
+     */
+
+    Route::GET('/cadastro-conselheiro-ccs', 'ModeracaoController@viewCadastroCCS');
+    Route::POST('/cadastro-conselheiro-ccs', 'ModeracaoController@salvarConselheiroConselho');
+
 });
 
 /**
@@ -92,5 +99,7 @@ Route::group([
 
     route::GET('presenca/{agendaId}', 'PresencaController@findPresencaByAgendaId');
 //    route::GET('presenca/{agendaId}/presentes', 'PresencaController@findAllMembrosById');
+
+
 
 });
