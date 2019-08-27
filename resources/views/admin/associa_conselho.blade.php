@@ -30,8 +30,8 @@
                             <form action="{{action("ModeracaoController@salvarConselheiroConselho")}}" method="POST">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                    <label for="">Selecione um Conselheiro</label>
-                                    <select class="form-control" name="conselheiro" id="">
+                                    <label for="">Selecione um Conselho</label>
+                                    <select class="form-control" name="conselho" id="">
                                         <option selected="true" disabled="disabled">Selecione um CCS</option>
                                         @foreach($conselhos as $conselho)
                                             <option value="{{$conselho->id}}">{{$conselho->ccs}}</option>
@@ -40,8 +40,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="">Selecione um Conselho</label>
-                                    <select class="form-control" name="conselho" id="">
+                                    <label for="">Selecione um Conselheiro</label>
+                                    <select class="form-control" name="conselheiro" id="">
                                         <option selected="true" disabled="disabled">Selecione um Conselheiro</option>
                                         @foreach($conselheiros as $conselheiro)
                                             <option

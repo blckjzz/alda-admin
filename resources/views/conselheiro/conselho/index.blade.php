@@ -38,7 +38,7 @@
                                 <select class="form-control" id="dir" name="id">
                                     <option default> Selecione uma opção</option>
                                     @foreach($conselho->diretoria as $diretoria)
-                                        <option value="{{$diretoria->id}}"> {{$diretoria->nome .' - '. $diretoria->cargo}} </option>
+                                        <option value="{{$diretoria->id}}"> {{$diretoria->cargo}} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -46,8 +46,6 @@
                             <div class="form-group">
                                 <label for="">Nome</label>
                                 <input type="text" class="form-control" name="nome"/>
-                                <label for="">Cargo</label>
-                                <input type="text" class="form-control" name="cargo">
                                 <label for="">Início da Gestão</label>
                                 <input type="text" class="form-control" name="inicio_gestao"/>
                                 <label for="">Fim da Gestão</label>
@@ -76,7 +74,6 @@
                 success: function (response) { // What to do if we succeed
                     //console.log(response)
                     $("input[name='nome']").val(response.nome);
-                    $("input[name='cargo']").val(response.cargo);
                     $("input[name='inicio_gestao']").val(response.inicio_gestao);
                     $("input[name='fim_gestao']").val(response.fim_gestao);
 
