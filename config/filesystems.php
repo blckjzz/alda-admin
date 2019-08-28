@@ -47,7 +47,7 @@ return [
             'root' => env('LOCALSTORAGE_PATH'),
 //            'root' => env('LOCALSTORAGE_PATH'),
             'url' => env('APP_URL') . '/my-files', // added line (directory within "public")
-            'visibility' => 'private', // modified visibility
+            'visibility' => 'public', // modified visibility
         ],
 
         'local' => [
