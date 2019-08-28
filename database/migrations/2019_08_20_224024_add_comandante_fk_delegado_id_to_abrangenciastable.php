@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddChangeMembronatoreferenceOnAbrangencia extends Migration
+class AddComandanteFKDelegadoIdToAbrangenciastable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,8 @@ class AddChangeMembronatoreferenceOnAbrangencia extends Migration
     public function up()
     {
         Schema::table('abrangencias', function (Blueprint $table) {
-            $table->integer('membronato_id')->unsigned()->change();
-            $table->foreign('membronato_id')->references('id')->on('membrosnatos_abrangencia');
+            $table->foreign('comandante_id')->references('id')->on('comandantes');
+            $table->foreign('delegado_id')->references('id')->on('delegados');
         });
     }
 
@@ -27,7 +27,7 @@ class AddChangeMembronatoreferenceOnAbrangencia extends Migration
     public function down()
     {
         Schema::table('abrangencias', function (Blueprint $table) {
-            $table->dropForeign('membronato_id');
+            //
         });
     }
 }
