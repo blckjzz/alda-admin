@@ -19,22 +19,51 @@
 
 ## Setting up .env
 
+Na pasta do projeto copie o arquivo `.env.exemple` e ajuste as todas variáveis.
+
+    cd your-local-folder/project-folder
+    cp .env.exemple  .env
+
+## Setting up .env
+
 Você precisa "setar" as seguintes variáveis:
- 1. DB_HOST=`your-hostname/connection`
- 2. DB_PORT=`your-database-port (default 5432)`  
- 3. DB_DATABASE=`your-database`
- 4. DB_USERNAME=`your-username`  
- 5. DB_PASSWORD=`your-password`
- 6. APP_ENV=`production` (aqui serão omitidos todos quais quer debug da aplicação)
+ 	DB_HOST=`your-hostname/connection`
+	 DB_PORT=`your-database-port (default 5432)`  
+	 DB_DATABASE=`your-database`
+	 DB_USERNAME=`your-username`  
+	 DB_PASSWORD=`your-password`
+	 APP_ENV=`production` (aqui serão omitidos todos quais quer debug da aplicação)
+	 LOCALSTORAGE_PATH=`/local/path/storage/private`
+	 FILESYSTEM_DRIVER=`production`
+
+
+##  Settup do armazenamento local
+
+O caminho real de armazenamento será setado através da variável `LOCALSTORAGE_PATH`, onde deverá ser definido um diretório qualquer com estrutura `/storage/private`.
+
+No terminal execute:
+
+    ln -s /home/you-user/your-path/storage/private /home/your-user/alda-admin/public/my-files
+
+O projeto laravel irá realizar o link simbólico entre o `/public/my-files` e o real local de armazenamento. Assim a aplicação poderá disponibilizar imagens e outros arquivos dentro da aplicação.
+
+2) Executar passos abaixo apenas se armazenamento for local na pasta do projeto.
+
+1. criar diretório dentro da pasta `/storage/app/private`
+
+No terminal: 
+
+     mkdir your-project/alda-admin/storage/app/private
+	 ln -s /home/you-user/your-path/storage/private /home/your-user/alda-admin/public/my-files
 
 ## Antes de iniciar a aplicação
 
  1. Restaure o backup fornecido (o admin só irá funcionar com as devidas tabelas no banco)
- 2. Crie um usuário admin através do comando: 
-		 `php artisan voyager:admin your@email.com --create`
+ 2. Crie um usuário admin através do comando: `php artisan voyager:admin your@email.com --create`
  3. Siga os passos para adicionar uma  senha
  4. Pronto, a aplicação está pronta para ser acessada na url especificada.
- 5. Acesse a aplicação em: `https://yourapp-url.com/public/admin`
- 6. Faça login com as credenciais criadas no passo 2 e 3.
+ 5. para subir a aplicação ainda no terminal execute: `php artisan serve`
+ 6 . Acesse a aplicação em: `localhost:8080/painel/`
+ 7 . Faça login com as credenciais criadas no passo 2 e 3.
 
 
