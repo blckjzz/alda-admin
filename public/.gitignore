@@ -1,0 +1,4 @@
+# ignore everything ...
+/public/storage/*
+!/.gitignore
+
