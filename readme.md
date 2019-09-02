@@ -66,4 +66,13 @@ No terminal:
  6 . Acesse a aplicação em: `localhost:8080/painel/`
  7 . Faça login com as credenciais criadas no passo 2 e 3.
 
+## Scheduler
+
+O projeto consta com uma rotina que precisa ser executada 1x ao dia.
+
+Comando
+`php artisan agenda:update_status`
+
+Resultado será a atualização do flag booleano de reunio realizada para agendas que tem uma data inferior ao dia atual.
+
 
