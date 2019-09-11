@@ -14,7 +14,7 @@ class Diretoria extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['inicio_gestao','fim_gestao','cargo', 'nome'];
+    protected $fillable = ['inicio_gestao','fim_gestao','cargo', 'nome', 'conselho_id'];
 
 
     public function conselho()

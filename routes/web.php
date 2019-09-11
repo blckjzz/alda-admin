@@ -15,6 +15,9 @@ Route::get('/', function () {
     return redirect('/painel/login');
 });
 
+
+
+
 /**
  */
 Route::group(['prefix' => 'painel', 'middleware' => 'checkPanel'], function () {
@@ -46,7 +49,7 @@ Route::group([
     'prefix' => 'painel',
     'middleware' => ['checkConselheiro', 'checkPanel']
 ], function () {
-
+    route::GET('/dir/{id}', 'DiretoriaController@findDiretoriaById');
 
     Route::GET('conselheiro', ['uses' => 'ConselheiroController@dashboard', 'as' => 'conselheiro.dashboard']);
 
@@ -58,7 +61,7 @@ Route::group([
 
     route::get('conselheiro/logout', 'LoginController@logout');
 
-    route::GET('diretoria/{id}', 'DiretoriaController@findDiretoriaById');
+
 
     /**
      * Reunião & Pauta
@@ -98,6 +101,7 @@ Route::group([
      */
 
     route::GET('presenca/{agendaId}', 'PresencaController@findPresencaByAgendaId');
+
 //    route::GET('presenca/{agendaId}/presentes', 'PresencaController@findAllMembrosById');
 
 

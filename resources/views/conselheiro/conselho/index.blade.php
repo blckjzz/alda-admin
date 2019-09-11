@@ -35,10 +35,11 @@
                         <div class="panel-body">
                             <div class="form-group">
                                 <label for="name">{{$conselho->ccs}}</label>
+{{--                                {{dd($conselho->diretoria)}}--}}
                                 <select class="form-control" id="dir" name="id">
                                     <option default> Selecione uma opção</option>
-                                    @foreach($conselho->diretoria as $diretoria)
-                                        <option value="{{$diretoria->id}}"> {{$diretoria->cargo}} </option>
+                                    @foreach($conselho->diretoria as $dir)
+                                        <option value="{{$dir->id}}"> {{$dir->cargo}} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -66,13 +67,13 @@
 @endsection
 @section('javascript')
     <script>
-        $("#dir").click(function () {
+        $("#dir").on('change',function () {
             var id = $("select option:selected").val();
             $.ajax({
                 method: 'GET', // Type of response and matches what we said in the route
-                url: '/painel/diretoria/' + id, // This is the url we gave in the route
+                url: '/painel/dir/' + id, // This is the url we gave in the route
                 success: function (response) { // What to do if we succeed
-                    //console.log(response)
+                    console.log(response)
                     $("input[name='nome']").val(response.nome);
                     $("input[name='inicio_gestao']").val(response.inicio_gestao);
                     $("input[name='fim_gestao']").val(response.fim_gestao);
