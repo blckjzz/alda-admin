@@ -73,11 +73,9 @@
                 method: 'GET', // Type of response and matches what we said in the route
                 url: '/painel/dir/' + id, // This is the url we gave in the route
                 success: function (response) { // What to do if we succeed
-                    console.log(response)
                     $("input[name='nome']").val(response.nome);
                     $("input[name='inicio_gestao']").val(response.inicio_gestao);
                     $("input[name='fim_gestao']").val(response.fim_gestao);
-
                 },
                 error: function (jqXHR, textStatus, errorThrown) { // What to do if we fail
                     console.log(JSON.stringify(jqXHR));
