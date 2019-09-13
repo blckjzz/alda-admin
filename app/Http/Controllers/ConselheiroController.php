@@ -66,13 +66,11 @@ class ConselheiroController extends Controller
                     'inicio_gestao' => $request->inicio_gestao,
                     'fim_gestao' => $request->fim_gestao,
                     'nome' => $request->nome,
-                    'cargo' => $request->cargo
                 ]
             );
 
         return redirect()->action('ConselheiroController@viewCCS')
-            ->with(['message' => "Diretoria alterada com sucesso!",
-                'alert-type' => 'success']);
+            ->with('success', 'A Diretoria foi atualizada!');
     }
 
 
