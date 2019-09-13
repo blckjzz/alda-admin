@@ -80,6 +80,7 @@ class ConselheiroController extends Controller
     public function storePauta(Request $request)
     {
 
+
         $rules = array(
             'texto' => 'required|min:30',
             'agenda_id' => 'required',

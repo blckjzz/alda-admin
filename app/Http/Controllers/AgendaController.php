@@ -36,14 +36,14 @@ class AgendaController extends Controller
     {
         $agenda = new Agenda();
         $agenda->data = $request->data;
-        $agenda->hora = Carbon::parse($request->hora)->format('h:m');
-        $agenda->hora_fim = Carbon::parse($request->hora_fim)->format('h:m');
+
+        $agenda->hora = Carbon::parse($request->hora)->format('H:i');
+        $agenda->hora_fim = Carbon::parse($request->hora_fim)->format('H:i');
         $agenda->endereco = $request->endereco;
         $agenda->bairro = $request->bairro;
         $agenda->ponto_referencia = $request->ponto_referencia;
         $agenda->conselho_id = Auth::user()->conselho->id;
         $agenda->status_id = 4;
-//        dd($request->all());
         foreach ($request->assunto as $assunto) {
             $agenda->assuntos()->sync($assunto);
         }
