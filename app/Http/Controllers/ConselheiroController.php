@@ -56,7 +56,6 @@ class ConselheiroController extends Controller
         $this->validate($request, [
             'inicio_gestao' => 'required',
             'fim_gestao' => 'required',
-            'cargo' => 'required',
             'nome' => 'required'
         ]);
 
