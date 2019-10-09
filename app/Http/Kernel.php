@@ -62,5 +62,6 @@ class Kernel extends HttpKernel
         'checkConselheiro' => \App\Http\Middleware\CheckConselheiro::class,
         'checkModerador' => \App\Http\Middleware\CheckRoleModerador::class,
         'checkPanel' => \App\Http\Middleware\redirectsUserToSpecificPanel::class,
+        'cors' => \App\Http\Middleware\Cors::class, // <-- add this line
     ];
 }
