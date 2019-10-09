@@ -13,6 +13,7 @@ class Agenda extends Model
 
     protected $fillable = ['data, hora, hora_fim, endereco, conselho_id, status_id, data_hora', 'bairro', 'file_path'];
 
+
     protected $dates = ['data'];
 
     public $additional_attributes = ['id_css_endereco', 'list_agenda'];
