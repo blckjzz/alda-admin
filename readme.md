@@ -15,7 +15,7 @@
  No seu terminal digite os `seguintes comandos:
 1.   ` git clone https://github.com/se3k/alda-admin`
 2.   ` cd alda-admin`
-3.   ` php artisan install` (instalando todas dependências do projeto)
+3.   ` composer install` (instalando todas dependências do projeto)
 
 ## Setting up .env
 
